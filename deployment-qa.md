@@ -1201,3 +1201,8 @@ The authenticated `/api/reports`, `/api/usage`, and `/api/usage/history` endpoin
 ## 2026-08-17 15:30:11Z — analytics cache-control regression coverage
 
 The API smoke suite now captures response headers and explicitly verifies `private, no-store` on authenticated `/api/usage/history` and `/api/reports` responses. This turns the tenant-cache isolation requirement into an executable end-to-end contract rather than a source-only assertion. The complete `pnpm test:regression-matrix` passed at epoch `1786980611`, including the new header checks and all existing build, smoke, security, boundary, LMS-independence, and dependency gates. The real-time execution window remains active until epoch `1786999623` (`2026-08-17T20:47:03Z`).
+
+
+## 2026-08-17 15:32:21Z — global API response cache policy
+
+A global Next.js header rule now applies `Cache-Control: no-store` to every `/api/:path*` response, providing a defense-in-depth boundary for authenticated tenant data and mutation responses that might otherwise omit route-level cache headers. The first regression run correctly exposed that the global header superseded the more specific `private, no-store` route header; the API smoke assertion was then made contract-aware, accepting either strict `no-store` or `private, no-store`. The corrected full `pnpm test:regression-matrix` passed at epoch `1786980741`, including build, smoke, security, tenant, subscription, configuration, boundary, LMS-independence, collection, and audit gates. The real-time window remains active through epoch `1786999623` (`2026-08-17T20:47:03Z`).
