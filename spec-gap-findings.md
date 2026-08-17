@@ -1,11 +1,25 @@
-# Centralia specification gap findings — 2026-08-17
+# Centralia specification compliance status — 2026-08-17
 
-The attached corrected Centralia specification defines an independent SaaS product, not an LMS. The SaaS owns teacher identity, workspaces, plans, subscriptions, invoices, LMS-link references, reachability metadata, SaaS usage/reports, support, roles, notifications, security, settings, and audit data. It must never create, provision, run, copy, or directly read or modify an LMS database. LMS information may enter only through a teacher-supplied link or a future explicit API/integration contract.
+Centralia is implemented as an independent SaaS product. Its owned domain includes teacher identity, workspaces, plans, subscriptions, invoices, SaaS usage and reports, LMS-link references, support, roles, notifications, security, settings, and audit data. The application does not create, provision, run, copy, or directly read or modify an LMS database. LMS information is limited to teacher-supplied link metadata and explicitly bounded reachability operations.
 
-The specification requires public surfaces including `/features`, `/how-it-works`, `/pricing`, `/demo`, `/contact`, policy pages (`/terms`, `/privacy`, `/refund-policy`, `/acceptable-use`), and resource sections. The implemented tree currently has the landing page, dynamic use-case/resource pages, auth, dashboard, billing, support, admin, and API routes, but no dedicated pages for those named public or policy paths.
+## Completed public and policy surfaces
 
-The specification also names account surfaces for profile, LMS connection, subscription, usage, reports, team, notifications, security, and settings. The current implementation exposes dashboard, billing, support, and a workspace app page with team members, but not dedicated routes for most of those account surfaces. The next product cycles should prioritize safe, honest public route coverage and then account-surface completion without introducing any LMS operational data models.
+The required public discovery routes are now dedicated Next.js pages: `/features`, `/how-it-works`, `/pricing`, `/demo`, and `/contact`. The legal routes `/terms`, `/privacy`, `/refund-policy`, and `/acceptable-use` are also dedicated pages, linked from the landing footer, listed in the sitemap, and covered by the public discovery smoke suite. Robots rules exclude private and operational routes from indexing.
 
-Required billing truth: payment webhook confirmation is the source of truth; subscription activation is SaaS-only. Link-only LMS mode stores URL/name/status and optional reachability; reachability must not be presented as full LMS health. Usage metrics must show source, period, freshness, and exact/estimated status, and unsupported LMS metrics must remain absent or explicitly unverified.
+## Completed account and administration surfaces
 
-Current implementation evidence: all 28 API routes have safeAuthError boundaries; API responses have global and route-local no-store protections; client GETs for billing, dashboard, support, and team-member data explicitly use `cache: no-store`; `/api/plans` has a narrowly classified degraded response with empty plans, `degraded: true`, `cache-control: no-store`, `retry-after: 60`, and `x-centralia-degraded: plans-database-unavailable`; the isolated degraded-catalog smoke test is part of the full regression matrix; LMS-independence and bounded-collection audits pass.
+The required account surfaces are available through dedicated routes: `/app/profile`, `/app/lms-connection`, `/app/subscription`, `/app/usage`, `/app/reports`, `/app/notifications`, `/app/security`, and `/app/settings`. Team management remains available through the authenticated dashboard workspace surface. The settings page uses role-gated workspace editing so ordinary members can update their own profile without attempting an unauthorized workspace mutation.
+
+The administration surface includes `/admin` and bounded staff routes for `/admin/teachers`, `/admin/plans`, `/admin/subscriptions`, `/admin/billing`, and `/admin/lms-links`. These routes use SaaS-owned projections, require the existing staff guard, and do not expose LMS operational data.
+
+## Contract and safety evidence
+
+Required billing truth is preserved: payment webhook confirmation remains the source of truth, and subscription activation is SaaS-only. Link-only LMS mode stores URL, display name, status, and optional reachability metadata; reachability is not presented as full LMS health. Usage and reports label SaaS-owned source and freshness, while unsupported educational metrics remain explicitly unavailable. API responses are protected by global and route-local no-store policies, and authenticated client reads use `cache: 'no-store'`.
+
+The complete regression matrix currently passes a 52-route production build, API smoke, public/policy discovery, degraded plans behavior, security, authentication, edge cases, tenant isolation, subscription lifecycle, account routes, admin guards, production configuration, final-window status, safe error-boundary, LMS-independence, collection-bounds, and dependency-audit checks.
+
+## Residual production boundary
+
+The canonical Vercel deployment has historically returned a controlled degraded `/api/plans` response when its configured PostgreSQL endpoint is unavailable. This is intentional fail-closed behavior: HTTP 200 with an empty catalog, `degraded: true`, `retry-after: 60`, `x-centralia-degraded`, and `cache-control: no-store`. Restoring the live catalog requires valid production database connectivity and must not involve an LMS database.
+
+Vercel propagation is asynchronous. The latest observed production deployment before the most recent account-surface commits was associated with the reports commit, while the current GitHub branch contains the subsequent account and settings commits. Final verification must therefore check the canonical deployment’s commit association and route responses after the platform has built the latest pushed revision.
