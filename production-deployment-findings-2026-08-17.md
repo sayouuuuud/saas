@@ -36,3 +36,7 @@ A non-destructive request to reuse the linked Vercel project and build the lates
 ## Canonical account-route diagnosis — 2026-08-17T16:50Z
 
 Direct canonical probes returned HTTP 200 for `/app/settings`, `/app/security`, and `/app/notifications`, but each response was a 10.7 KB landing/not-found shell with the landing title and no route-specific marker. This confirms that the canonical alias is still serving an older deployment rather than the current GitHub source. Local production builds enumerate all three routes and the full regression matrix passes them; no source rollback or LMS access was performed.
+
+## Runtime-error grouping — 2026-08-17T16:50Z
+
+The Vercel project’s last-24-hour grouped runtime-error query returned exactly one error group: `/api/plans` with `PrismaClientInitializationError`, count 2, affecting 2 users, first seen 15:18:05Z and last seen 16:44:18Z on deployment `dpl_5ZE2e6kUSXwEU1NEUgH2ix8tWpZc`. No additional production runtime-error groups were reported.
