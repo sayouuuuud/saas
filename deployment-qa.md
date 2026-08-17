@@ -664,3 +664,11 @@ At 2026-08-17T13:32:04Z, the logout route received a top-level `safeAuthError` b
 
 عند `2026-08-17T13:32:04Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى مسار تسجيل الخروج، مع الحفاظ على LOGOUT audit المرتبط بالـ workspace، ومسح session cookie، واستجابة النجاح idempotent، مع جعل أخطاء persistence أو session غير المتوقعة حتمية. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `fdc8b83`.
 
+Registration error handling:
+
+At 2026-08-17T13:33:05Z, registration received a top-level `safeAuthError` boundary, preserving rate limiting, validation, duplicate-email 409 handling, atomic user/workspace/member/subscription/audit creation, session creation, and registration LOGIN auditing. Lint, strict TypeScript, authentication smoke, security smoke, edge-case smoke, API smoke, diff checks, and compiler-artifact cleanup passed before commit `c137db9` was pushed.
+
+معالجة أخطاء التسجيل:
+
+عند `2026-08-17T13:33:05Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى التسجيل، مع الحفاظ على rate limiting، والتحقق، واستجابة 409 للبريد المكرر، والإنشاء الذري للمستخدم والـ workspace والعضوية والاشتراك وaudit، وإنشاء session، وLOGIN audit الخاص بالتسجيل. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `c137db9`.
+
