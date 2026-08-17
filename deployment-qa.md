@@ -480,3 +480,11 @@ After the LMS-independence audit, at 2026-08-17T13:06:02Z, the security, authent
 
 بعد تدقيق استقلالية LMS، وعند `2026-08-17T13:06:02Z`، نجحت اختبارات security وauth-security وedge-cases على حالة المستودع المدفوعة. شملت هذه الاختبارات rate limiting والتحقق من SSRF وwebhook وحواجز الصلاحيات وpayloads المصادقة غير الصحيحة وتأكيدات audit وسلوك الطلبات الطرفية.
 
+Final-window verifier correction:
+
+At 2026-08-17T13:07:25Z, inspection found that the deferred verifier ran the full matrix but did not update `execution-window.json` after success. The script was corrected to atomically replace `status: active` with `status: window_complete` only after every required validation command passes, then print the transition in the final log. The old verifier was terminated and a fresh process from the corrected script was started with its process log outside the repository. Syntax validation passed and the repository remained clean on commit `331c09d`.
+
+تصحيح final-window verifier:
+
+عند `2026-08-17T13:07:25Z` أظهر الفحص أن verifier المؤجل كان يشغل المصفوفة كاملة لكنه لا يحدّث `execution-window.json` بعد النجاح. تم تصحيح السكربت ليبدل بشكل ذري `status: active` إلى `status: window_complete` فقط بعد نجاح كل أوامر التحقق المطلوبة، ثم يطبع الانتقال في final log. أُوقف verifier القديم وشُغّل process جديد من السكربت المصحح مع وضع process log خارج المستودع. نجح فحص syntax وظل المستودع نظيفًا على commit `331c09d`.
+
