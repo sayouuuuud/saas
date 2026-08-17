@@ -19,6 +19,7 @@
     "test:edge": "bash scripts/edge-cases-smoke.sh",
     "test:tenant": "bash scripts/tenant-isolation-smoke.sh",
     "test:subscription": "bash scripts/subscription-lifecycle-smoke.sh",
+    "test:final-window-status": "bash scripts/final-window-status-smoke.sh",
     "verify:production": "node scripts/verify-production-config.mjs --strict",
     "test:production-config": "bash scripts/production-config-smoke.sh"
   },
