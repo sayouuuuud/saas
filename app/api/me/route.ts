@@ -12,7 +12,8 @@ export async function PATCH(request: NextRequest) {
   try {
     const user = await getCurrentUser();
     if (!user) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
-    const body = await request.json();
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== "object" || Array.isArray(body)) return new Response(JSON.stringify({ error: "بيانات الطلب غير صالحة" }), { status: 400, headers: { "content-type": "application/json" } });
     const name = typeof body.name === "string" ? body.name.trim() : undefined;
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : undefined;
     if (name !== undefined && (name.length < 2 || name.length > 120)) return new Response(JSON.stringify({ error: "الاسم يجب أن يكون بين حرفين و120 حرفًا" }), { status: 400 });

@@ -12,6 +12,7 @@ status_request() {
 status_request -X POST -d "{\"name\":\"Edge QA\",\"email\":\"$EMAIL\",\"password\":\"secure-password-123\"}" "$BASE_URL/api/auth/register" | grep -qx '201'
 status_request -X POST -d "{\"name\":\"Edge QA\",\"email\":\"$EMAIL\",\"password\":\"secure-password-123\"}" "$BASE_URL/api/auth/register" | grep -qx '409'
 status_request -X POST --data-binary '{not-json' "$BASE_URL/api/auth/register" | grep -qx '400'
+status_request -X PATCH --data-binary '{not-json' "$BASE_URL/api/me" | grep -qx '400'
 status_request -X POST -d '{"planCode":"unknown-plan","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session" | grep -qx '404'
 status_request -X POST "$BASE_URL/api/auth/logout" | grep -qx '200'
 status_request "$BASE_URL/api/workspace" | grep -qx '401'

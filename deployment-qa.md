@@ -82,3 +82,8 @@ Landing-page accessibility hardening:
 
 The high-traffic landing page now exposes mobile-menu state and controls, gives pricing-cycle buttons explicit pressed semantics, labels the preview action, and adds keyboard-friendly FAQ accordion relationships. Lint, production build, API, security, authentication, edge-case, and tenant-isolation smoke tests all passed at 2026-08-17T11:22:53Z.
 
+
+Profile API input hardening:
+
+The authenticated profile PATCH endpoint now rejects malformed JSON and non-object payloads deterministically with HTTP 400 instead of falling through to a generic server error. The edge-case smoke suite now covers this regression and passed at 2026-08-17T11:24:05Z; the preceding full lint/build/API/security/auth/edge/tenant suite also passed.
+
