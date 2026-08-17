@@ -19,3 +19,8 @@ At 2026-08-17T15:18:05Z, the canonical `/api/plans` endpoint returned HTTP 200 w
 ## Runtime evidence
 
 Vercel grouped runtime errors for route `/api/plans` on deployment `dpl_9BbJXtb4DvLz6dPhyxVZQaQ2Nj47` as one `PrismaClientInitializationError` at 2026-08-17T15:18:05Z. The runtime-log query did not expose a more detailed message. The build succeeded, so this is a runtime database connectivity/configuration issue rather than a schema-generation failure.
+
+
+## Public-surface probe — 2026-08-17T16:10:53Z
+
+The canonical production hostname returned HTTP 200 for `/features`, `/how-it-works`, and `/pricing`, with the expected route-specific titles (`المزايا | مركزية`, `كيف تعمل | مركزية`, and `الأسعار | مركزية`). However, `/robots.txt` and `/sitemap.xml` returned the existing landing-page HTML rather than their expected text/XML route payloads, confirming that the robots-and-sitemap commit had not reached the canonical deployment at this checkpoint. This is a deployment-propagation observation, not a source or local-build failure; the local build enumerated both routes and the complete regression matrix passed their smoke assertions. The canonical response headers for the fallback landing page were `cache-control: private, no-cache, no-store, max-age=0, must-revalidate` and `content-type: text/html; charset=utf-8`.
