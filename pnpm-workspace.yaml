@@ -1,6 +1,7 @@
 overrides:
   hono: 4.12.25
   nanoid: 3.3.18
+  deepmerge-ts: 8.0.1
 
 allowBuilds:
   '@prisma/client': true

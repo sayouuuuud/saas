@@ -996,3 +996,11 @@ The deferred `final-window-verification.sh` now runs both Prisma schema validati
 تم توسيع تغطية verifier النهائي في 2026-08-17T14:23:41Z (epoch 1786976621):
 
 يشغل `final-window-verification.sh` المؤجل الآن التحقق من مخططي Prisma وstrict TypeScript وجميع smoke suites واختبار حالة النافذة وتدقيق safeAuthError وتدقيق استقلال SaaS عن LMS وتدقيق حدود استعلامات المجموعات وتدقيق تبعيات الإنتاج قبل نقل `execution-window.json` إلى `window_complete`. نجح فحص صياغة shell وعقد الحالة الموسع دون استهلاك أو محاكاة فترة الانتظار الإلزامية.
+
+Dependency-security remediation completed at 2026-08-17T14:27:04Z (epoch 1786976824):
+
+The expanded regression matrix initially exposed one high-severity `deepmerge-ts` advisory (`GHSA-ggr8-5vv4-36mx`) through Prisma 6.19.3. The first package-level override attempt was rejected by pnpm 11 because the `pnpm` manifest key is no longer read. The override was moved into the existing `pnpm-workspace.yaml` overrides map, the lockfile and installed tree were synchronized to `deepmerge-ts@8.0.1`, and `pnpm audit --prod` returned no known vulnerabilities. Both Prisma schemas, lint, strict TypeScript, the 33-route production build, all smoke suites, all boundary audits, and the clean audit then passed.
+
+اكتملت معالجة أمان التبعيات في 2026-08-17T14:27:04Z (epoch 1786976824):
+
+كشفت مصفوفة regression الموسعة أولًا عن advisory واحد عالي الخطورة لـ`deepmerge-ts` (`GHSA-ggr8-5vv4-36mx`) عبر Prisma 6.19.3. رُفضت المحاولة الأولى لوضع override داخل manifest لأن pnpm 11 لم يعد يقرأ مفتاح `pnpm`. نُقل override إلى خريطة overrides الموجودة في `pnpm-workspace.yaml`، وتمت مزامنة lockfile وشجرة التثبيت إلى `deepmerge-ts@8.0.1`، وأعاد `pnpm audit --prod` عدم وجود ثغرات معروفة. بعد ذلك نجح التحقق من مخططي Prisma وlint وstrict TypeScript وproduction build بعدد 33 route وجميع smoke suites وتدقيقات الحدود والتدقيق الأمني النظيف.
