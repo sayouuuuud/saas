@@ -88,3 +88,7 @@ A direct Vercel deployment lookup confirms `dpl_HcqgwTCFe3Z8kynRfdPd9sf1P1F5` is
 ## Latest source status — 2026-08-17T17:43Z
 
 GitHub reports commit `4d7e9dd` (`fix: clean regression server descendants`) with a Vercel status of `failure` and the provider description `Deployment rate limited — retry in 24 hours`. The latest source is fully covered by local regression, lint, TypeScript, and canonical smoke validation; the canonical alias remains independently green on the last READY deployment.
+
+## Runtime-error recheck — 2026-08-17T17:44Z
+
+The latest Vercel runtime-error query still returns one group only: `/api/plans` with `PrismaClientInitializationError`, count 11 across 5 users, last seen at 17:43:25Z on deployment `dpl_5oBggrJy94XKtabCgB39VNu23PNs`. This remains covered by the degraded plans response contract; no unexpected route error group is present.
