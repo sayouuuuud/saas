@@ -175,3 +175,18 @@ Support UX resilience:
 
 At 2026-08-17T11:58:35Z, the support page now loads its ticket list through the bounded endpoint, exposes a cancellable loading state, reports non-OK or malformed responses as an alert, and preserves an explicit empty state when no tickets exist. The ticket submission flow remains independently guarded by its existing busy and error states. Lint, production build, and all six smoke suites passed.
 
+Latest deployment distinction:
+
+At 2026-08-17T11:58:51Z, commit `af359ae` was pushed to GitHub and remained locally verified. GitHub reported the Vercel check as `failure` with target `upgradeToPro=build-rate-limit`; no new live deployment was verified for this commit. The canonical previous READY deployment remains separately verified and must not be attributed to `af359ae`.
+
+تمييز حالة النشر الأخيرة:
+
+في `2026-08-17T11:58:51Z` تم رفع commit `af359ae` إلى GitHub مع نجاح التحقق المحلي. سجّل GitHub فشل فحص Vercel بسبب `upgradeToPro=build-rate-limit`، ولذلك لم يتم التحقق من نشر حي جديد لهذا commit. يبقى deployment السابق READY متحققًا بصورة منفصلة ولا يجوز نسبه إلى `af359ae`.
+
+Support UX resilience:
+
+At 2026-08-17T11:58:35Z, the support page gained cancellable loading, explicit network-error feedback, response validation, and an accessible empty-ticket state. Lint, production build, and all six smoke suites passed before commit `af359ae` was pushed.
+
+تحسينات تجربة الدعم:
+
+في `2026-08-17T11:58:35Z` أضيفت حالات تحميل قابلة للإلغاء، ورسالة خطأ شبكة واضحة، والتحقق من الاستجابة، وحالة فارغة ميسّرة للتذاكر. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة قبل رفع commit `af359ae`.
