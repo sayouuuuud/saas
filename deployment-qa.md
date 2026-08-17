@@ -964,3 +964,11 @@ Workspace member smoke coverage strengthened at 2026-08-17T14:20:53Z (epoch 1786
 تم تقوية تغطية smoke لأعضاء مساحة العمل في 2026-08-17T14:20:53Z (epoch 1786976453):
 
 يطلب `test:api` الآن الصفحة الأولى المحدودة لأعضاء مساحة العمل ويتحقق من `membersPagination` والحد المطلوب وإظهار دور المالك المزروع، إضافة إلى اختبار حد offset غير الصفري. نجح اختبار API بعد التحديث.
+
+Post-workspace-smoke full regression completed at 2026-08-17T14:21:33Z (epoch 1786976493):
+
+Both Prisma schemas, lint, strict TypeScript, the 33-route production build, all API/security/auth/edge/tenant/subscription/production-config/final-window-status suites, the safeAuthError boundary audit, the SaaS/LMS-independence audit, and `pnpm audit --prod` all passed. The API suite included the new bounded workspace-member first-page and owner-role assertions. The real execution window remained active.
+
+اكتملت مصفوفة regression بعد تحديث smoke لأعضاء مساحة العمل في 2026-08-17T14:21:33Z (epoch 1786976493):
+
+نجح مخططا Prisma وlint وstrict TypeScript وproduction build بعدد 33 route وجميع اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر والاشتراك وإعدادات الإنتاج وحالة النافذة وتدقيق safeAuthError وتدقيق استقلال SaaS عن LMS، كما نجح `pnpm audit --prod`. تضمنت suite الـAPI assertions جديدة للصفحة الأولى المحدودة لأعضاء مساحة العمل ودور المالك. ظلت نافذة التنفيذ الحقيقية نشطة.
