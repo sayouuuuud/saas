@@ -796,3 +796,9 @@ Post-ticket-fix full regression completed at 2026-08-17T14:01:36Z:
 The complete matrix passed after the ticket pagination repair and Arabic status-label improvement: SQLite and PostgreSQL schema validation, lint, strict TypeScript, 33-route production build, API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-config, final-window-status, and production dependency audit. No known production dependency vulnerabilities were reported, and the repository remained clean and synchronized with origin/main.
 
 نجحت المصفوفة الكاملة بعد إصلاح pagination للتذاكر وتحسين ترجمة الحالات: تحقق مخططي SQLite وPostgreSQL، وlint، وstrict TypeScript، وproduction build الذي ولّد 33 route، واختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن، إضافة إلى تدقيق الاعتماديات. لم تظهر ثغرات معروفة، وبقي المستودع نظيفًا ومتزامنًا مع origin/main.
+
+Support pagination UI improvement completed at 2026-08-17T14:02:39Z:
+
+The support page now consumes the bounded ticket pagination contract: it requests offset pages, appends older tickets through an accessible Arabic load-more control, preserves retry behavior, and uses abortable stale-response protection. The implementation resets the opposite loading flag when a retry supersedes a page request, preventing a stuck disabled state. Known ticket statuses remain localized in Arabic. Lint and strict TypeScript passed.
+
+تستهلك صفحة الدعم الآن عقد pagination المحدود للتذاكر: تطلب الصفحات عبر offset، وتضيف التذاكر الأقدم من خلال زر عربي قابل للوصول، وتحافظ على إعادة المحاولة والحماية من الاستجابات القديمة عبر AbortController. تم أيضًا منع حالة التعطيل العالقة عند استبدال طلب تحميل المزيد بإعادة محاولة، مع استمرار ترجمة الحالات المعروفة بالعربية. نجحت lint وstrict TypeScript.
