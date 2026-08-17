@@ -456,3 +456,11 @@ At 2026-08-17T13:00:07Z, profile updates in `/api/me` were changed to update the
 
 عند `2026-08-17T13:00:07Z` أصبحت تحديثات الملف الشخصي في `/api/me` تعدل سجل المستخدم وسجل التدقيق الخاص بمساحة العمل داخل transaction واحدة. كما أصبح تعارض البريد الإلكتروني الفريد الناتج عن التزامن يعيد HTTP 409 بدلًا من 500 عام. نجحت lint وTypeScript وproduction build وAPI smoke قبل دفع commit `7d83ac4`.
 
+Latest production runtime health:
+
+A read-only grouped Vercel runtime-error query at 2026-08-17T13:01:10Z for project `prj_gkITRxYVuxcZvsutoPniiwm6EmSH` over the previous 24 hours returned **No runtime errors found in the selected time range**. This is an observability result for the project window, not a substitute for deployment state; the latest deployment inventory separately identified `dpl_Bbu3bi7S4JadAx76ZEwhYprFj6ZT` for commit `7d70390` as READY.
+
+صحة التشغيل في الإنتاج:
+
+أعاد استعلام Vercel للـ runtime errors، المنفذ للقراءة فقط عند `2026-08-17T13:01:10Z` للمشروع `prj_gkITRxYVuxcZvsutoPniiwm6EmSH` خلال آخر 24 ساعة، النتيجة **No runtime errors found in the selected time range**. هذه نتيجة observability للنطاق الزمني وليست بديلًا عن حالة deployment؛ إذ حدد سجل النشر بشكل منفصل `dpl_Bbu3biS4JadAx76ZEwhYprFj6ZT` للـ commit `7d70390` كحالة READY.
+
