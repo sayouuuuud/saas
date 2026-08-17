@@ -17,5 +17,17 @@ reset_token="$(printf '%s' "$forgot" | node -e 'let s="";process.stdin.on("data"
 [ -n "$reset_token" ] || { echo "missing local reset token" >&2; exit 1; }
 reset="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -H 'Content-Type: application/json' -d "{\"token\":\"$reset_token\",\"password\":\"NewStrongPass123!\"}" "$BASE_URL/api/auth/reset-password")"
 printf '%s' "$reset" | grep -q '"reset":true'
-[ "$(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIES" "$BASE_URL/api/auth/me")" = "401" ]
+login1="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -c "$COOKIES" -H 'Content-Type: application/json' -d "{\"email\":\"$EMAIL\",\"password\":\"NewStrongPass123!\"}" "$BASE_URL/api/auth/login")"
+printf '%s' "$login1" | grep -q '"user"'
+reports_before="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/reports")"
+before_count="$(printf '%s' "$reports_before" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(Number(JSON.parse(s).summary.auditEventCount||0)))')"
+[ "$before_count" -ge 2 ] || { echo "login audit event missing" >&2; exit 1; }
+printf '%s' "$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" -X POST "$BASE_URL/api/auth/logout")" | grep -q '"ok":true'
+login2="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -c "$COOKIES" -H 'Content-Type: application/json' -d "{\"email\":\"$EMAIL\",\"password\":\"NewStrongPass123!\"}" "$BASE_URL/api/auth/login")"
+printf '%s' "$login2" | grep -q '"user"'
+reports_after="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/reports")"
+after_count="$(printf '%s' "$reports_after" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(Number(JSON.parse(s).summary.auditEventCount||0)))')"
+[ "$after_count" -ge $((before_count + 2)) ] || { echo "logout/login audit events missing" >&2; exit 1; }
+printf '%s' "$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" -X POST "$BASE_URL/api/auth/logout")" | grep -q '"ok":true'
+[ "$(curl -s -o /dev/null -w '%{http_code}' -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/auth/me")" = "401" ]
 printf 'Auth security smoke passed for %s\n' "$EMAIL"

@@ -303,3 +303,10 @@ At 2026-08-17T12:26:04Z, `pnpm verify:production` was intentionally run against 
 ملاحظة الفحص الصارم:
 
 في `2026-08-17T12:26:04Z` شُغّل `pnpm verify:production` عمدًا على بيئة التطوير الحالية، وفشل بالحواجز المتوقعة للإصدار: `DATABASE_URL` من SQLite، أسرار افتراضية أو قصيرة، `APP_URL` محلي عبر HTTP، وغياب بيانات Stripe الحقيقية. هذه نتيجة أمان صحيحة وليست regression في المنتج. ينجح fixture الإعداد الصالح بشكل مستقل؛ ولا تزال الجاهزية الإنتاجية تتطلب إدخال PostgreSQL وHTTPS والأسرار وبيانات الفوترة الحقيقية في Vercel ثم إعادة تشغيل الفحص الصارم.
+Authentication audit hardening:
+
+At 2026-08-17T12:29:17Z, successful password login and explicit logout now create workspace-scoped `LOGIN` and `LOGOUT` audit events. Email verification now updates the user and writes its `SECURITY_EVENT` audit row inside one transaction using the known owner workspace lookup, avoiding an unloaded relation. The auth smoke suite now exercises two login/logout cycles and checks the audit-count contract; lint, build, API, security, auth, edge, tenant-isolation, and subscription suites all passed cleanly with no lint warnings.
+
+تصليب تدقيق المصادقة:
+
+في `2026-08-17T12:29:17Z` أصبحت عملية تسجيل الدخول الناجحة وتسجيل الخروج الصريح تنشئان سجلي تدقيق `LOGIN` و`LOGOUT` مرتبطين بمساحة العمل. أصبحت عملية تحقق البريد تحدّث المستخدم وتكتب سجل `SECURITY_EVENT` داخل transaction واحدة باستخدام lookup لمساحة عمل المالك المعروفة، بدل الاعتماد على relation غير محمّلة. يختبر auth smoke الآن دورتين كاملتين للدخول والخروج ويتحقق من عقد عدّاد التدقيق؛ ونجحت lint وbuild واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك دون تحذيرات lint.

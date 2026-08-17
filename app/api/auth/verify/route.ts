@@ -13,7 +13,11 @@ export async function POST(request: Request) {
   if (!token) return NextResponse.json({ error: "رمز التحقق مطلوب" }, { status: 400 });
   const user = await prisma.user.findFirst({ where: { emailVerificationTokenHash: hash(token) } });
   if (!user || !user.emailVerificationExpiresAt || user.emailVerificationExpiresAt <= new Date()) return NextResponse.json({ error: "رمز التحقق غير صالح أو منتهي" }, { status: 400 });
-  const updated = await prisma.user.update({ where: { id: user.id }, data: { emailVerifiedAt: new Date(), emailVerificationTokenHash: null, emailVerificationExpiresAt: null } });
-  if (updated.workspace) await prisma.auditLog.create({ data: { actorId: updated.id, workspaceId: updated.workspace.id, action: "SECURITY_EVENT", entity: "User", entityId: updated.id, reason: "email_verified" } });
+  await prisma.$transaction(async (tx) => {
+    const nextUser = await tx.user.update({ where: { id: user.id }, data: { emailVerifiedAt: new Date(), emailVerificationTokenHash: null, emailVerificationExpiresAt: null }, select: { id: true } });
+    const workspace = await tx.workspace.findUnique({ where: { ownerId: nextUser.id }, select: { id: true } });
+    if (workspace) await tx.auditLog.create({ data: { actorId: nextUser.id, workspaceId: workspace.id, action: "SECURITY_EVENT", entity: "User", entityId: nextUser.id, reason: "email_verified" } });
+    return nextUser;
+  });
   return NextResponse.json({ verified: true });
 }
