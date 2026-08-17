@@ -1186,3 +1186,8 @@ The matrix exposed and corrected three reproducibility defects during this cycle
 - Added a production configuration guard requiring `postgres://` or `postgresql://`, a host and database path, and explicit `sslmode=require`, `verify-ca`, or `verify-full`. Added a smoke fixture proving a PostgreSQL URL without TLS mode fails while the TLS-enabled fixture passes.
 - `pnpm test:regression-matrix` passed completely at system epoch `1786980201`, including schema validation, lint, TypeScript, build, migrations, seed, API/security/auth/edge/tenant/subscription smoke suites, production-config smoke, final-window status, safe-auth boundary audit, LMS independence audit, collection bounds audit, and `pnpm audit --prod`.
 - The 12-hour execution window remains active. Required completion is still `2026-08-17T20:47:03Z` (epoch `1786999623`).
+
+
+## 2026-08-17 15:25:34Z — Prisma generation failure-path hardening
+
+The Prisma client generation script was corrected to import `node:fs`, ensuring an absent `DATABASE_URL` produces the intended actionable validation message instead of a runtime `ReferenceError`. The missing-URL failure path and SQLite generation path were both exercised directly. The full `pnpm test:regression-matrix` passed again, covering both Prisma schemas, lint, strict build, migrations, seed, all API/security/auth/edge/tenant/subscription suites, production TLS configuration, final-window status, 28 safe-auth boundaries, LMS independence, collection bounds, and the production dependency audit. The real-time execution window remains active at epoch `1786980334`; required completion remains epoch `1786999623` (`2026-08-17T20:47:03Z`).
