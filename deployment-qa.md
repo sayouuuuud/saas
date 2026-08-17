@@ -1349,3 +1349,10 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Added all four routes to the canonical sitemap and linked acceptable-use from the landing-page legal footer.
 - Validation passed: lint, strict TypeScript, production build with 48 static/dynamic routes, and public discovery smoke including metadata, content markers, content types, footer links, and sitemap entries.
 - No LMS database was accessed or modified.
+
+## 2026-08-17 — Dedicated reports account surface
+
+- Added `/app/reports` backed by `/api/reports`, showing exact SaaS subscription, invoice, support, LMS-link-reference, and audit summaries with generation freshness and explicit unavailable educational metrics.
+- Dashboard navigation now separates usage and reports, and account smoke covers the page plus protected no-store `/api/reports` behavior.
+- Validation passed: lint, strict TypeScript, production build with 49 routes, and account smoke for profile, subscription, usage, reports, LMS connection, and protected APIs.
+- The reports page never infers learner, course, video, storage, or bandwidth metrics from an LMS link; no LMS database was accessed or modified.
