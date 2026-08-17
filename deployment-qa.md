@@ -1092,3 +1092,11 @@ The latest observed READY production deployment remains `dpl_DR19R2mjaMLCgzhSMhu
 إعادة فحص حد Vercel بعد تثبيت package manager في 2026-08-17T14:35:01Z (epoch 1786977301):
 
 لا يزال أحدث deployment إنتاجي READY المرصود هو `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` للـ commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d`. لم يظهر deployment READY أحدث للـ commits الحالية الخاصة بتثبيت pnpm أو regression-matrix أو لوحة الفريق؛ لذلك تبقى هذه commits مدفوعة دون إعلانها live.
+
+Vercel runtime-health check completed at 2026-08-17T14:35:26Z (epoch 1786977326):
+
+The configured Vercel runtime-error query returned no runtime errors in the selected 24-hour range. This clean result is recorded for the currently verified READY boundary `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe`; it is not treated as validation of commits that have not yet reached READY.
+
+اكتمل فحص runtime health في Vercel في 2026-08-17T14:35:26Z (epoch 1786977326):
+
+أعاد استعلام أخطاء runtime في Vercel عدم وجود أخطاء خلال نطاق 24 ساعة المحدد. تُسجل النتيجة النظيفة للـ READY boundary الحالي `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe`، ولا تُعتبر تحققًا من commits لم تصل بعد إلى READY.
