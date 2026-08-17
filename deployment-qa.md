@@ -171,3 +171,7 @@ Billing UX resilience:
 
 At 2026-08-17T11:57:44Z, the billing page gained cancellable loading-state handling, explicit fetch-error feedback, disabled actions while data is unavailable, an accessible loading state for invoices, and a preserved empty-invoice state. The plan and invoice requests now validate response status before updating the UI. Lint, production build, and all six smoke suites passed.
 
+Support UX resilience:
+
+At 2026-08-17T11:58:35Z, the support page now loads its ticket list through the bounded endpoint, exposes a cancellable loading state, reports non-OK or malformed responses as an alert, and preserves an explicit empty state when no tickets exist. The ticket submission flow remains independently guarded by its existing busy and error states. Lint, production build, and all six smoke suites passed.
+
