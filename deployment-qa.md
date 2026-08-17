@@ -1291,3 +1291,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Subscription lifecycle smoke passed after the projection change, including checkout, idempotent cancel/reactivate, invalid plan-change, and optional webhook assertions.
 - Lint, strict TypeScript, and SQLite-backed production build passed with 40 generated routes.
 - One initial page-smoke attempt exposed an orphaned prior dev server holding Next’s lock; the process was terminated and the fresh retry passed. No production or LMS database was accessed.
+
+## 2026-08-17 — Full regression and production propagation for subscription surface
+
+- `pnpm test:regression-matrix` passed end to end after the account-surface changes: Prisma validation for SQLite and PostgreSQL schemas, lint, strict TypeScript, production build, migrations, seed, API, public pages, degraded plans, security, authentication, edge cases, tenant isolation, subscription lifecycle, subscription-page, production configuration, final-window status, auth-boundary, LMS-independence, collection-bounds, and `pnpm audit --prod`.
+- The build generated 40 routes and the matrix confirmed no LMS database access or forbidden LMS persistence identifiers.
+- Vercel deployment `dpl_6bTVJJCApTya8NobjENTzKxsqzW5` for commit `526c39c198d703f8d8ce907fa488695a6895005c` reached `READY` with production target. Deployment-specific URL: `https://saas-hjkonb859-itz4kairo-5176s-projects.vercel.app/`.
