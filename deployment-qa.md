@@ -1458,3 +1458,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - The complete `pnpm test:regression-matrix` passed after the explicit no-store client-request hardening.
 - Evidence: 53-route SQLite production build, database validation and migrations, API/public/degraded/security/auth/edge/tenant/subscription/account/client-cache/admin/production-config/final-window/auth-boundary/LMS-independence/collection-bounds suites all passed; `pnpm audit --prod` reported no known vulnerabilities.
+
+## 2026-08-17 — Final-window provenance gate
+
+- Strengthened `scripts/final-window-verification.sh` to record the tested Git revision and branch, require a clean repository before and after the final local/canonical verification, and only then mark `execution-window.json` complete.
+- `bash -n scripts/final-window-verification.sh` and `pnpm test:final-window-status` passed; the deferred verifier was restarted on the published revision `77e45b2` and remains active until the required system epoch.
