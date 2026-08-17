@@ -712,3 +712,11 @@ At 2026-08-17T13:38:24Z, the dedicated ticket-close endpoint was changed to pers
 
 عند `2026-08-17T13:38:24Z` تم تعديل endpoint إغلاق التذكرة لحفظ تغيير الحالة وaudit logging داخل Prisma transaction واحدة، مع استخدام boundary `safeAuthError` المشتركة للأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `292a6cb`.
 
+Generic ticket action error handling:
+
+At 2026-08-17T13:39:31Z, generic ticket GET, PATCH, and action POST handlers received deterministic `safeAuthError` boundaries while retaining workspace isolation and the shared atomic update/message/audit transaction. Lint, strict TypeScript, production build, API smoke, security smoke, edge-case smoke, diff checks, and compiler-artifact cleanup passed before commit `d5f474f` was pushed.
+
+معالجة أخطاء عمليات التذاكر العامة:
+
+عند `2026-08-17T13:39:31Z` تمت إضافة boundaries حتمية باستخدام `safeAuthError` إلى GET وPATCH وPOST الخاصة بالتذاكر العامة، مع الحفاظ على عزل الـ workspace والمعاملة الذرية المشتركة لتحديث التذكرة والرسالة وaudit. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `d5f474f`.
+
