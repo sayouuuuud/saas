@@ -225,3 +225,11 @@ At 2026-08-17T12:09:08Z, the security smoke suite was extended to verify that un
 تغطية اختبار صلاحيات الصفحات:
 
 في `2026-08-17T12:09:08Z` تم توسيع security smoke للتحقق من أن الطلبات غير الموثقة إلى `/admin` تستقبل استجابة صفحة الموظفين المحمية، وأن الطلبات غير الموثقة إلى `/app/overview` تستقبل استجابة ضرورة تسجيل الدخول بدل مؤشرات المستأجر. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة بعد إضافة هذه التأكيدات.
+
+Documentation consistency:
+
+At 2026-08-17T12:10:17Z, README.md was updated to document idempotent LMS integration-request responses and the rule that Vercel deployment claims require a matching deployment ID, commit SHA, and  state. , lint, and production build passed after the documentation update.
+
+اتساق التوثيق:
+
+في 2026-08-17T12:10:17Z تم تحديث README.md لتوثيق استجابات طلبات تكامل LMS المتكررة كعمليات idempotent، ولتأكيد أن إعلان نشر Vercel يتطلب تطابق deployment ID وcommit SHA وحالة . نجح  وlint وproduction build بعد تحديث التوثيق.

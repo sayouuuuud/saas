@@ -84,7 +84,7 @@ pnpm dev
 | `PATCH /api/lms-link/[id]` | جلسة | تحديث رابط محدد ضمن مساحة العمل |
 | `DELETE /api/lms-link/[id]` | جلسة | حذف رابط محدد ضمن مساحة العمل |
 | `POST /api/lms-link/[id]/check` | جلسة | فحص قابلية الوصول للرابط الآمن |
-| `POST /api/lms-link/[id]/request-integration` | جلسة | طلب تكامل لمساحة العمل |
+| `POST /api/lms-link/[id]/request-integration` | جلسة | طلب تكامل لمساحة العمل؛ التكرار يعيد `already_recorded` دون تكرار سجل التدقيق |
 | `GET /api/tickets` | جلسة | عرض تذاكر الدعم مع filters |
 | `POST /api/tickets` | جلسة | إنشاء تذكرة دعم |
 | `GET /api/tickets/[id]` | جلسة | جلب تذكرة ضمن مساحة العمل |
@@ -100,7 +100,7 @@ pnpm dev
 
 المستودع الرسمي هو [`sayouuuuud/saas`](https://github.com/sayouuuuud/saas)، وفرع النشر هو `main`. يرتبط المستودع بمشروع Vercel، ويُنشئ كل push ناجح deployment إنتاجيًا. يجب ضبط `DATABASE_URL` على PostgreSQL في بيئة الإنتاج بدل SQLite المحلي، مع حفظ الأسرار في Vercel Environment Variables وعدم وضعها في Git.
 
-للمراجعة اليدوية بعد النشر، تحقق من HTTP 200 على النطاق canonical، ووجود `dir="rtl"` والمحتوى العربي، ووجود CSP و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` و`Referrer-Policy`.
+للمراجعة اليدوية بعد النشر، تحقق من HTTP 200 على النطاق canonical، ووجود `dir="rtl"` والمحتوى العربي، ووجود CSP و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` و`Referrer-Policy`. اربط حالة commit بحالة Vercel الفعلية؛ فإذا ظهر `upgradeToPro=build-rate-limit` فلا تُنسب نسخة READY سابقة إلى commit الجديد، ولا تُسجّل النسخة كمنشورة إلا بعد التحقق من deployment ID وcommit SHA وحالة `READY`.
 
 ## نطاق المشروع
 
