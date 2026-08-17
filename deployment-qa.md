@@ -1044,3 +1044,11 @@ API, security, safeAuthError boundary, SaaS/LMS-independence, collection-bounds,
 اكتملت دورة smoke المركزة بعد تحسين accessibility في 2026-08-17T14:29:58Z (epoch 1786976998):
 
 نجحت اختبارات API وsecurity وتدقيق safeAuthError واستقلال SaaS عن LMS وحدود استعلامات المجموعات وإعدادات الإنتاج وعقد حالة final-window بعد تغيير لوحة أعضاء الفريق. لا تزال نافذة التنفيذ الإلزامية نشطة ولم تُعتبر مكتملة.
+
+Vercel deployment boundary rechecked at 2026-08-17T14:30:41Z (epoch 1786977041):
+
+A newer READY production deployment is now observed: `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe`, for commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d` (`docs: record latest deployment boundary`). The current local HEAD `c1fa808` and the newer dependency-remediation/security and team-panel commits remain beyond this live boundary and are not claimed as deployed.
+
+تمت إعادة فحص حد deployment في Vercel في 2026-08-17T14:30:41Z (epoch 1786977041):
+
+ظهر deployment إنتاجي أحدث بحالة READY وهو `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` للـ commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d` بعنوان `docs: record latest deployment boundary`. لا يزال HEAD المحلي الحالي `c1fa808` وcommits أمان التبعيات ولوحة الفريق الأحدث خارج هذا الحد الحي، ولا تُعلن كمنشورة.
