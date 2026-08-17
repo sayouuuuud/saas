@@ -852,3 +852,11 @@ A repository scan of client TSX sources found no enabled button lacking an onCli
 اكتمل تدقيق عناصر التحكم المفعلة في 2026-08-17T14:08:01Z:
 
 لم يجد فحص مصادر TSX العميلية أي زر مفعل يفتقد إجراء onClick أو onSubmit أو type-submit. أصبحت العناصر الثابتة أو غير المنفذة بعد في المعاينة الرئيسية ولوحة التحكم والفوترة والدعم معطلة بوضوح. يكمل هذا التدقيق نتائج lint وstrict TypeScript الناجحة.
+
+Unbounded Prisma collection audit completed at 2026-08-17T14:08:33Z:
+
+The repository scan found no remaining app/lib findMany collection query without a nearby take/limit/pagination safeguard. The authenticated-user projection already caps LMS links at five, while invoices, tickets, LMS links, and workspace members expose bounded pagination contracts. No code change was required for this cycle.
+
+اكتمل تدقيق استعلامات Prisma غير المحدودة في 2026-08-17T14:08:33Z:
+
+لم يجد الفحص أي استعلام findMany متبقٍ في app/lib دون حماية قريبة عبر take أو limit أو pagination. يحدد projection الخاص بالمستخدم الحالي روابط LMS بخمسة، بينما تعرض الفواتير والتذاكر وروابط LMS وأعضاء مساحة العمل عقود pagination محدودة. لم تكن هناك حاجة لتعديل برمجي في هذه الدورة.
