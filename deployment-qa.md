@@ -1028,3 +1028,11 @@ Canonical production probe after dependency remediation at 2026-08-17T14:28:29Z 
 تم فحص canonical production بعد معالجة التبعيات في 2026-08-17T14:28:29Z (epoch 1786976909):
 
 أعاد `https://saas-gold-seven-80.vercel.app/` الحالة HTTP/2 200. تضمنت الاستجابة CSP وHSTS مع preload و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` وسياسة referrer صارمة وسياسة permissions مقيدة ونوع محتوى HTML. يؤكد الفحص سلامة السطح canonical، لكنه لا يحدد commit منشورًا أحدث من حد deployment المرصود في Vercel.
+
+Team-members accessibility and retry-state improvement completed at 2026-08-17T14:29:37Z (epoch 1786976977):
+
+The bounded team-members panel now exposes semantic `role=list`/`role=listitem` structure, announces append failures through an assertive live alert, and changes the existing bounded control to an explicit `إعادة المحاولة` label after a failed page request. Lint, strict TypeScript, and the 33-route production build passed.
+
+اكتمل تحسين accessibility وحالة retry في لوحة أعضاء الفريق في 2026-08-17T14:29:37Z (epoch 1786976977):
+
+تعرض لوحة أعضاء الفريق المحدودة الآن بنية semantic عبر `role=list` و`role=listitem`، وتعلن أخطاء التحميل الإضافي عبر live alert، وتحوّل الزر المحدود نفسه إلى تسمية `إعادة المحاولة` بعد فشل الطلب. نجح lint وstrict TypeScript وproduction build الذي يحتوي 33 route.

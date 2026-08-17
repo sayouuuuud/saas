@@ -53,9 +53,9 @@ export default function TeamMembersPanel({ initialMembers, initialNextOffset }: 
   return (
     <article className="workspace-panel team-members-panel" aria-labelledby="team-members-title">
       <div className="workspace-panel-heading"><div><b id="team-members-title">أعضاء مساحة العمل</b><span>الأدوار المعروضة من SaaS فقط.</span></div><Users size={17} aria-hidden="true" /></div>
-      {members.length ? <div className="team-member-list">{members.map((member) => <div className="team-member-row" key={member.id}><span className="team-member-avatar" aria-hidden="true">{member.user.name.slice(0, 1) || "م"}</span><span className="team-member-meta"><b>{member.user.name}</b><small>{member.user.email}</small></span><span className="team-member-role">{roleLabels[member.role] || member.role}</span></div>)}</div> : <p className="workspace-empty">لا يوجد أعضاء إضافيون في مساحة العمل.</p>}
-      {error && <p className="team-member-error" role="alert">{error}</p>}
-      {nextOffset !== null && <button type="button" className="text-button team-member-more" onClick={() => void loadMore()} disabled={loading} aria-busy={loading}>{loading ? <><RefreshCw size={14} className="spin" /> جارٍ التحميل...</> : <><ArrowLeft size={14} /> تحميل أعضاء إضافيين</>}</button>}
+      {members.length ? <div className="team-member-list" role="list" aria-label="أعضاء مساحة العمل">{members.map((member) => <div className="team-member-row" key={member.id} role="listitem"><span className="team-member-avatar" aria-hidden="true">{member.user.name.slice(0, 1) || "م"}</span><span className="team-member-meta"><b>{member.user.name}</b><small>{member.user.email}</small></span><span className="team-member-role">{roleLabels[member.role] || member.role}</span></div>)}</div> : <p className="workspace-empty">لا يوجد أعضاء إضافيون في مساحة العمل.</p>}
+      {error && <p className="team-member-error" role="alert" aria-live="assertive">{error}</p>}
+      {nextOffset !== null && <button type="button" className="text-button team-member-more" onClick={() => void loadMore()} disabled={loading} aria-busy={loading}>{loading ? <><RefreshCw size={14} className="spin" /> جارٍ التحميل...</> : <><ArrowLeft size={14} /> {error ? "إعادة المحاولة" : "تحميل أعضاء إضافيين"}</>}</button>}
     </article>
   );
 }
