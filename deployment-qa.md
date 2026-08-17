@@ -1100,3 +1100,11 @@ The configured Vercel runtime-error query returned no runtime errors in the sele
 اكتمل فحص runtime health في Vercel في 2026-08-17T14:35:26Z (epoch 1786977326):
 
 أعاد استعلام أخطاء runtime في Vercel عدم وجود أخطاء خلال نطاق 24 ساعة المحدد. تُسجل النتيجة النظيفة للـ READY boundary الحالي `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe`، ولا تُعتبر تحققًا من commits لم تصل بعد إلى READY.
+
+Canonical production probe completed at 2026-08-17T14:35:41Z (epoch 1786977341):
+
+`https://saas-gold-seven-80.vercel.app/` returned HTTP/2 200 with CSP, HSTS, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, and the expected Vercel response. This verifies the canonical surface and headers only; live code claims remain bounded to the observed READY deployment.
+
+اكتمل فحص canonical production في 2026-08-17T14:35:41Z (epoch 1786977341):
+
+أعاد `https://saas-gold-seven-80.vercel.app/` الحالة HTTP/2 200 مع CSP وHSTS و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` و`Referrer-Policy` واستجابة Vercel المتوقعة. يثبت ذلك السطح canonical والرؤوس فقط؛ وتظل ادعاءات الكود الحي مقيدة بـ READY deployment المرصود.
