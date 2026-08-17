@@ -58,9 +58,9 @@ export default function LoginPage() {
             <p>{mode === 'signup' ? 'أنشئ حسابك في أقل من دقيقتين.' : 'سجّل الدخول إلى مساحة عملك في مركزية.'}</p>
           </div>
           <form className="auth-form" onSubmit={submit}>
-            {mode === 'signup' && <label>الاسم الكامل<input required minLength={2} value={name} onChange={(event) => setName(event.target.value)} type="text" placeholder="أحمد علي" /></label>}
-            <label>البريد الإلكتروني<div className="input-with-icon"><Mail size={15} /><input required value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="you@example.com" /></div></label>
-            <label>كلمة المرور<div className="input-with-icon"><LockKeyhole size={15} /><input required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} type="password" placeholder="8 أحرف على الأقل" /></div></label>
+            {mode === 'signup' && <label>الاسم الكامل<input required minLength={2} value={name} onChange={(event) => setName(event.target.value)} type="text" autoComplete="name" placeholder="أحمد علي" /></label>}
+            <label>البريد الإلكتروني<div className="input-with-icon"><Mail size={15} /><input required value={email} onChange={(event) => setEmail(event.target.value)} type="email" autoComplete="email" placeholder="you@example.com" /></div></label>
+            <label>كلمة المرور<div className="input-with-icon"><LockKeyhole size={15} /><input required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} placeholder="8 أحرف على الأقل" /></div></label>
             {error && <p className="form-error" role="alert">{error}</p>}
             <button disabled={loading} type="submit" className="button button-dark button-large">{loading ? 'جارٍ التنفيذ...' : mode === 'signup' ? 'أنشئ حسابك' : 'تسجيل الدخول'} <ArrowLeft size={15} /></button>
           </form>

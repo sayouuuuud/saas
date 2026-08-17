@@ -1108,3 +1108,11 @@ Canonical production probe completed at 2026-08-17T14:35:41Z (epoch 1786977341):
 اكتمل فحص canonical production في 2026-08-17T14:35:41Z (epoch 1786977341):
 
 أعاد `https://saas-gold-seven-80.vercel.app/` الحالة HTTP/2 200 مع CSP وHSTS و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` و`Referrer-Policy` واستجابة Vercel المتوقعة. يثبت ذلك السطح canonical والرؤوس فقط؛ وتظل ادعاءات الكود الحي مقيدة بـ READY deployment المرصود.
+
+Auth-form accessibility improvement completed at 2026-08-17T14:36:49Z (epoch 1786977409):
+
+The combined Arabic sign-in/sign-up form now declares `name`, `email`, `new-password`, and `current-password` autocomplete semantics according to the active mode. Lint, strict TypeScript, and the 33-route production build passed; generated incremental artifacts were removed.
+
+اكتمل تحسين accessibility لنموذج المصادقة في 2026-08-17T14:36:49Z (epoch 1786977409):
+
+يعلن نموذج تسجيل الدخول/إنشاء الحساب العربي الآن دلالات autocomplete المناسبة لـ `name` و`email` و`new-password` و`current-password` وفق الوضع النشط. نجح lint وstrict TypeScript وproduction build الذي يحتوي 33 route، وأزيلت الملفات incremental الناتجة.
