@@ -408,3 +408,27 @@ At the checkpoint recorded at 2026-08-17T12:54:22Z, the system clock measured ep
 
 عند نقطة التحقق `2026-08-17T12:54:22Z` كان epoch ساعة النظام `1786971262`، والمنقضي `14839` ثانية من `1786956423`، والمتبقي `28361` ثانية. بقي watchdog نشطًا وظل `execution-window.json` بالحالة `active`، ولا يُعلن الاكتمال قبل `1786999623`.
 
+Latest Vercel deployment verification:
+
+A read-only deployment inventory captured at 2026-08-17T12:57:27Z shows that Vercel accepted commit `7d703901c8ea87c642d1298e8e1d49ca2e2f020e` (`fix: make LMS mutations atomic`) as production deployment `dpl_Bbu3bi7S4JadAx76ZEwhYprFj6ZT`, state `READY`, created at 2026-08-17T12:51:54.074Z. This supersedes the earlier `8f61451` entry as the latest verified READY deployment. The offset-pagination commit `962d513` and later documentation commits were not present in that inventory at query time, so they remain pushed-and-locally-verified rather than claimed live.
+
+Offset pagination contract:
+
+At 2026-08-17T12:57:40Z, bounded offset pagination was added to `/api/workspace`, `/api/lms-link`, and `/api/invoices`. Each endpoint caps limits at 50 and offsets at 10,000, performs database-side `skip`/`take` retrieval, and returns `offset`, `hasMore`, and `nextOffset` metadata. The API smoke suite now exercises both the first page and a nonzero offset page. Lint, TypeScript, production build, tenant-isolation, subscription-lifecycle, production-config, and dependency-audit checks all passed before commit `962d513` was pushed.
+
+أحدث تحقق من نشر Vercel:
+
+أظهر سجل النشر للقراءة فقط عند `2026-08-17T12:57:27Z` أن Vercel قبل commit `7d703901c8ea87c642d1298e8e1d49ca2e2f020e` بعنوان `fix: make LMS mutations atomic` كنشر إنتاجي `dpl_Bbu3bi7S4JadAx76ZEwhYprFj6ZT` بالحالة `READY`، وقد أُنشئ عند `2026-08-17T12:51:54.074Z`. يحل هذا محل إدخال `8f61451` باعتباره آخر نشر READY متحقق. لم يظهر commit `962d513` ولا commits التوثيق اللاحقة في السجل وقت الاستعلام، ولذلك تبقى pushed وlocally verified دون ادعاء أنها live.
+
+عقد pagination بالإزاحة:
+
+في `2026-08-17T12:57:40Z` أضيفت pagination بإزاحة محدودة إلى `/api/workspace` و`/api/lms-link` و`/api/invoices`. كل endpoint يفرض سقفًا قدره 50 على limit و10,000 على offset، ويستخدم `skip` و`take` داخل قاعدة البيانات، ويعيد `offset` و`hasMore` و`nextOffset`. يختبر API smoke الصفحة الأولى وصفحة بإزاحة غير صفرية. نجحت lint وTypeScript وproduction build واختبارات عزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وتدقيق الاعتماديات قبل دفع commit `962d513`.
+
+Current window checkpoint:
+
+At 2026-08-17T12:57:55Z, the system clock was epoch `1786971475`; the watchdog and final verifier remained active, and the required completion epoch remained `1786999623`. No final-completion claim is made before that epoch and the generated final verification log confirms a passed matrix.
+
+نقطة النافذة الحالية:
+
+عند `2026-08-17T12:57:55Z` كان epoch ساعة النظام `1786971475`، وبقي watchdog وfinal verifier نشطين، وظل epoch الإكمال المطلوب `1786999623`. لا يُعلن الاكتمال قبل ذلك epoch وقبل أن يؤكد final verification log نجاح المصفوفة.
+
