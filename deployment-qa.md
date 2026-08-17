@@ -1060,3 +1060,11 @@ Added `scripts/regression-matrix.sh` and `test:regression-matrix` as the single 
 اكتمل توحيد مصفوفة regression في 2026-08-17T14:32:22Z (epoch 1786977142):
 
 أضيف `scripts/regression-matrix.sh` والأمر `test:regression-matrix` ليكونا الأمر التدقيقي الموحد للتحقق المحلي وverifier النهائي المؤجل. يشغل الأمر مخططي Prisma وlint وstrict TypeScript وproduction build وجميع smoke suites وجميع boundary guards و`pnpm audit --prod`، مع تنظيف `tsconfig.tsbuildinfo` الناتج عند الخروج. نجحت المصفوفة كاملة وفحص shell syntax وتم التحقق من التنظيف.
+
+Regression documentation cycle completed at 2026-08-17T14:33:17Z (epoch 1786977197):
+
+The Arabic README command table now documents `test:auth-boundaries`, `test:lms-independence`, `test:collection-bounds`, and the consolidated `test:regression-matrix`. README diff validation, lint, shell syntax, and all three boundary audits passed.
+
+اكتملت دورة توثيق regression في 2026-08-17T14:33:17Z (epoch 1786977197):
+
+يوثق جدول الأوامر العربي في README الآن أوامر `test:auth-boundaries` و`test:lms-independence` و`test:collection-bounds` والأمر الموحد `test:regression-matrix`. نجح فحص diff وlint وفحص shell syntax وتدقيقات الحدود الثلاثة.

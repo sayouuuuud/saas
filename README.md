@@ -37,6 +37,10 @@ pnpm dev
 | `pnpm audit --prod` | فحص ثغرات اعتماديات الإنتاج |
 | `pnpm verify:production` | بوابة إصدار صارمة تتحقق من PostgreSQL وHTTPS والأسرار ومتطلبات Stripe |
 | `pnpm test:production-config` | اختبار قبول ورفض إعدادات الإنتاج بشكل حتمي |
+| `pnpm test:auth-boundaries` | تدقيق وجود `safeAuthError` في جميع API routes |
+| `pnpm test:lms-independence` | تدقيق عدم إنشاء أو استخدام قاعدة بيانات LMS داخل Centralia |
+| `pnpm test:collection-bounds` | تدقيق أن جميع استعلامات القوائم محدودة أو تستخدم pagination |
+| `pnpm test:regression-matrix` | تشغيل المصفوفة الكاملة: schema وbuild وsmoke وboundary audits وproduction audit |
 
 ## المصادقة وعزل البيانات
 
