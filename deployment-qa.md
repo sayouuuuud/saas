@@ -811,8 +811,8 @@ The billing page now consumes bounded invoice pagination, loads 25 invoices init
 
 Vercel deployment boundary observed at 2026-08-17T14:04:20Z:
 
-The deployment inventory returned a latest READY production deployment  for commit  (). The newer pushed commits , , , , , and  were not present in this inventory at observation time, so no claim is made that ticket pagination, status localization, or billing invoice pagination is live on Vercel yet. The previous READY production surface remains the verified live boundary.
+The deployment inventory returned a latest READY production deployment `dpl_7hEfLg5H47ksyhQVE2LwooofYQ7M` for commit `77f207f0f2fecbbb4fa7eb995e404a3b9003c9a0` (`feat: enable billing invoice exports`). The newer pushed commits `37c2e64`, `a3df497`, `cab89d4`, `f9b3b3f`, `817dd85`, and `d270891` were not present in this inventory at observation time, so no claim is made that ticket pagination, status localization, or billing invoice pagination is live on Vercel yet. The previous READY production surface remains the verified live boundary.
 
 حد النشر المرصود على Vercel في 2026-08-17T14:04:20Z:
 
-أظهر سجل النشر أن أحدث deployment بحالة READY هو  للالتزام  (). الالتزامات الأحدث  و و و و و لم تظهر في السجل وقت الملاحظة، لذلك لا يتم الادعاء بأنها منشورة على Vercel بعد. يظل deployment السابق بحالة READY هو الحد الحي المتحقق منه.
+أظهر سجل النشر أن أحدث deployment بحالة READY هو `dpl_7hEfLg5H47ksyhQVE2LwooofYQ7M` للالتزام `77f207f0f2fecbbb4fa7eb995e404a3b9003c9a0` (`feat: enable billing invoice exports`). الالتزامات الأحدث `37c2e64` و`a3df497` و`cab89d4` و`f9b3b3f` و`817dd85` و`d270891` لم تظهر في السجل وقت الملاحظة، لذلك لا يتم الادعاء بأنها منشورة على Vercel بعد. يظل deployment السابق بحالة READY هو الحد الحي المتحقق منه.
