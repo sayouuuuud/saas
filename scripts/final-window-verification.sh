@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+LOCK_FILE="${TMPDIR:-/tmp}/centralia-final-window-verification.lock"
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+  printf 'final_verification_status=skipped_lock_held\n'
+  exit 0
+fi
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 WINDOW_FILE="$ROOT_DIR/execution-window-current.json"
 if [[ ! -f "$WINDOW_FILE" ]]; then
