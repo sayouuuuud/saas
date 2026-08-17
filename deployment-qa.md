@@ -1116,3 +1116,11 @@ The combined Arabic sign-in/sign-up form now declares `name`, `email`, `new-pass
 اكتمل تحسين accessibility لنموذج المصادقة في 2026-08-17T14:36:49Z (epoch 1786977409):
 
 يعلن نموذج تسجيل الدخول/إنشاء الحساب العربي الآن دلالات autocomplete المناسبة لـ `name` و`email` و`new-password` و`current-password` وفق الوضع النشط. نجح lint وstrict TypeScript وproduction build الذي يحتوي 33 route، وأزيلت الملفات incremental الناتجة.
+
+Auth-focused post-accessibility smoke cycle completed at 2026-08-17T14:37:08Z (epoch 1786977428):
+
+Auth security, general security, all 28 safeAuthError route-boundary checks, and production-configuration smoke tests passed after adding mode-aware autocomplete hints to the login/sign-up form. The mandatory execution window remains active.
+
+اكتملت دورة smoke المركزة للمصادقة بعد تحسين accessibility في 2026-08-17T14:37:08Z (epoch 1786977428):
+
+نجحت اختبارات auth security وsecurity العامة وجميع فحوص safeAuthError لـ 28 route واختبار إعدادات الإنتاج بعد إضافة autocomplete واعٍ بالوضع إلى نموذج تسجيل الدخول/إنشاء الحساب. لا تزال نافذة التنفيذ الإلزامية نشطة.
