@@ -13,7 +13,7 @@ const nav = [
   { label: 'الاستخدام', icon: FileText, href: '/app/usage' },
   { label: 'التقارير', icon: FileText, href: '/app/reports' },
   { label: 'رابط المنصة', icon: Link2, href: '/app/lms-connection' },
-  { label: 'الفريق', icon: Users, href: '/dashboard#team' },
+  { label: 'الفريق', icon: Users, href: '/app/team' },
   { label: 'الإعدادات', icon: Settings, href: '/app/settings' },
   { label: 'الأمان', icon: ShieldCheck, href: '/app/security' },
   { label: 'الإشعارات', icon: Bell, href: '/app/notifications' },

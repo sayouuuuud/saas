@@ -1418,3 +1418,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Updated `final-window-verification.sh` to run `pnpm test:canonical-production` immediately after the complete local regression matrix and to record `canonical_production_smoke=passed` before marking the execution window complete.
 - `bash -n scripts/final-window-verification.sh` and the simulated `pnpm test:final-window-status` contract both passed.
+
+## 2026-08-17 — Dedicated team account surface
+
+- Added `/app/team` as a dedicated private account route, using only the SaaS workspace API’s bounded member projection and role metadata; LMS data and health claims remain explicitly out of scope.
+- Wired the route into dashboard navigation and expanded account smoke coverage for team content, all-account noindex metadata, and the protected no-store workspace API.
+- Lint, strict TypeScript, the SQLite production build (53 routes), and a clean local account-pages smoke all passed.
