@@ -911,3 +911,11 @@ The newest GitHub commit `a34e9f5` (`docs: record disabled-style regression`) ha
 حد Vercel المرصود في 2026-08-17T14:12:47Z:
 
 آخر commit على GitHub وهو `a34e9f5` بعنوان `docs: record disabled-style regression` لديه deployment رقم `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` بحالة `BUILDING`. أحدث deployment مكتمل بحالة `READY` هو `dpl_7hEfLg5H47ksyhQVE2LwooofYQ7M` للـ commit `77f207f` بعنوان `feat: enable billing invoice exports`. لذلك تغييرات CSS/accessibility الأخيرة مدفوعة وتُبنى، لكن لم تُعلن بعد ككود إنتاج حي.
+
+Vercel runtime health checked at 2026-08-17T14:13:47Z:
+
+The Vercel connector reported no runtime errors for the Centralia project in the selected 24-hour range. This is recorded separately from deployment readiness: the newest observed READY build is the `a34e9f5` deployment, while subsequent documentation commits may still be awaiting their own build boundary.
+
+تم فحص صحة التشغيل على Vercel في 2026-08-17T14:13:47Z:
+
+أبلغ موصل Vercel عن عدم وجود أخطاء تشغيل لمشروع Centralia خلال نطاق الـ24 ساعة المحدد. سُجلت هذه النتيجة منفصلة عن جاهزية deployment: أحدث build مرصود بحالة READY هو deployment الخاص بـ `a34e9f5`، بينما قد تكون commits التوثيق اللاحقة بانتظار حد البناء الخاص بها.
