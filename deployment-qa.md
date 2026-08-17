@@ -331,3 +331,10 @@ At 2026-08-17T12:34:25Z, Centralia gained a separate validated production datamo
 مسار PostgreSQL للإنتاج:
 
 في `2026-08-17T12:34:25Z` أضيف datamodel منفصل ومتحقق للإنتاج في `prisma/postgresql/schema.prisma` وسجل migrations في `prisma/postgresql/migrations`، مولّدان من schema SaaS فقط مع `provider = "postgresql"`. نجح `DATABASE_URL='postgresql://...' pnpm db:validate:postgres`، كما نجح اختبار إعدادات الإنتاج وlint وproduction build واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك. بقي schema وmigrations SQLite المحليان دون تغيير للتطوير، ولم تُنشأ أي جداول أو اتصالات بقاعدة LMS.
+Protocol-aware Prisma build:
+
+At 2026-08-17T12:36:42Z, the build now selects `prisma/schema.prisma` for SQLite URLs and `prisma/postgresql/schema.prisma` for PostgreSQL URLs before generating Prisma Client. Both generation modes passed, followed by the production-config smoke, lint, production build, API, security, auth, edge, tenant-isolation, and subscription suites. This prevents a PostgreSQL production deployment from silently generating a SQLite client while retaining the local development workflow.
+
+توليد Prisma حسب البروتوكول:
+
+في `2026-08-17T12:36:42Z` أصبح build يختار `prisma/schema.prisma` لعناوين SQLite و`prisma/postgresql/schema.prisma` لعناوين PostgreSQL قبل توليد Prisma Client. نجح نمطا التوليد، ثم نجح اختبار إعدادات الإنتاج وlint وproduction build واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك. يمنع ذلك نشر PostgreSQL من توليد client خاص بـ SQLite بصمت، مع الحفاظ على مسار التطوير المحلي.
