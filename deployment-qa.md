@@ -1206,3 +1206,8 @@ The API smoke suite now captures response headers and explicitly verifies `priva
 ## 2026-08-17 15:32:21Z — global API response cache policy
 
 A global Next.js header rule now applies `Cache-Control: no-store` to every `/api/:path*` response, providing a defense-in-depth boundary for authenticated tenant data and mutation responses that might otherwise omit route-level cache headers. The first regression run correctly exposed that the global header superseded the more specific `private, no-store` route header; the API smoke assertion was then made contract-aware, accepting either strict `no-store` or `private, no-store`. The corrected full `pnpm test:regression-matrix` passed at epoch `1786980741`, including build, smoke, security, tenant, subscription, configuration, boundary, LMS-independence, collection, and audit gates. The real-time window remains active through epoch `1786999623` (`2026-08-17T20:47:03Z`).
+
+
+## 2026-08-17 15:34:11Z — shared authentication error cache boundary
+
+The shared `safeAuthError` helper now uses one explicit `cache-control: no-store` JSON header set for all unauthenticated, forbidden, missing-workspace, and unexpected-error responses. This keeps error payloads from being cached independently of route-level or framework-level API headers. The complete `pnpm test:regression-matrix` passed at epoch `1786980851`, including strict build, all smoke suites, production configuration, auth-boundary coverage for 28 routes, LMS independence, collection bounds, and dependency audit. The real-time execution window remains active through epoch `1786999623` (`2026-08-17T20:47:03Z`).
