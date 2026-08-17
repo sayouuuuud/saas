@@ -948,3 +948,11 @@ The latest deployment inventory contains no deployment newer than `dpl_4SWgBvRyh
 تمت إعادة مراجعة حد Vercel في 2026-08-17T14:19:42Z (epoch 1786976382):
 
 لا يحتوي سجل deployments الأخير على deployment أحدث من `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf`، وهو `READY` للـ commit `a34e9f5` بعنوان `docs: record disabled-style regression`. إن commit ميزة أعضاء الفريق `4a98ec0` وإصلاح سجل QA `4793c3e` وحارس استقلال LMS `a1469d3` وcommit سجل regression `4cd0443` مدفوعة إلى GitHub ومتحقق منها محليًا، لكن لم تُعلن ككود إنتاج حي لعدم وجود deployment أحدث في النطاق المفحوص.
+
+Vercel runtime health rechecked at 2026-08-17T14:20:02Z (epoch 1786976402):
+
+The Vercel runtime-error query returned no runtime errors for the Centralia project in the selected 24-hour window. This clean observability result is recorded separately from the deployment boundary: the latest observed READY deployment remains `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` for `a34e9f5`.
+
+تمت إعادة فحص صحة التشغيل على Vercel في 2026-08-17T14:20:02Z (epoch 1786976402):
+
+أعاد استعلام أخطاء التشغيل في Vercel عدم وجود أخطاء لمشروع Centralia خلال نافذة الـ24 ساعة المحددة. سُجلت نتيجة المراقبة النظيفة منفصلة عن حد deployment: يظل أحدث deployment مرصود بحالة READY هو `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` للـ commit `a34e9f5`.
