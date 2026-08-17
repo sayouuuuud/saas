@@ -14,6 +14,10 @@ status -X POST -d "{\"name\":\"Security QA\",\"email\":\"$EMAIL\",\"password\":\
 status -X POST -d '{"displayName":"Private HTTPS","publicUrl":"https://localhost"}' "$BASE_URL/api/lms-link" | grep -qx '400'
 status -X POST "$BASE_URL/api/auth/logout" | grep -qx '200'
 status "$BASE_URL/api/auth/me" | grep -qx '401'
+status "$BASE_URL/admin" | grep -qx '200'
+grep -q 'لوحة الإدارة محمية' /tmp/saas-security-response.json
+status "$BASE_URL/app/overview" | grep -qx '200'
+grep -q 'سجّل الدخول أولًا' /tmp/saas-security-response.json
 status -X POST -d '{"type":"subscription.active","payload":{}}' -H 'x-billing-event-id: security-invalid-signature' -H 'x-billing-signature: invalid' "$BASE_URL/api/checkout/webhook" | grep -qx '401'
 WEBHOOK_SECRET="${BILLING_WEBHOOK_SECRET:-}"
 if [ -z "$WEBHOOK_SECRET" ] && [ -f .env.local ]; then WEBHOOK_SECRET="$(sed -n 's/^BILLING_WEBHOOK_SECRET="\(.*\)"$/\1/p' .env.local)"; fi

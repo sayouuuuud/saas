@@ -218,3 +218,10 @@ At 2026-08-17T12:08:12Z, the SaaS Prisma schema gained a composite AuditLog inde
 تغطية استعلامات AuditLog:
 
 في `2026-08-17T12:08:12Z` أضيف إلى مخطط Prisma الخاص بـ SaaS فهرس مركب على AuditLog بالحقول `(workspaceId, entity, entityId, createdAt)` لدعم idempotency المعزول بمساحة العمل واستعلامات التسلسل الإداري دون لمس أي قاعدة LMS. نجح `prisma validate` و`prisma db push --skip-generate`، ثم lint وproduction build ومصفوفة الاختبارات الست كاملة و`pnpm audit --prod` الذي أبلغ بعدم وجود ثغرات إنتاج معروفة.
+Page authorization smoke coverage:
+
+At 2026-08-17T12:09:08Z, the security smoke suite was extended to verify that unauthenticated requests to `/admin` receive the protected staff-page response and that unauthenticated requests to `/app/overview` receive the login-required response, rather than tenant metrics. Lint, production build, and all six smoke suites passed after the added assertions.
+
+تغطية اختبار صلاحيات الصفحات:
+
+في `2026-08-17T12:09:08Z` تم توسيع security smoke للتحقق من أن الطلبات غير الموثقة إلى `/admin` تستقبل استجابة صفحة الموظفين المحمية، وأن الطلبات غير الموثقة إلى `/app/overview` تستقبل استجابة ضرورة تسجيل الدخول بدل مؤشرات المستأجر. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة بعد إضافة هذه التأكيدات.
