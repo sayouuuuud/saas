@@ -167,3 +167,7 @@ Smoke-test repeatability hardening:
 
 At 2026-08-17T11:56:38Z, the API, authentication, edge-case, and subscription smoke suites were updated to generate unique per-run test client identities, matching the earlier security-suite fix. This prevents local in-memory auth rate-limit buckets from causing false failures during repeated verification while preserving the security suite’s intentional same-identity burst test. The complete six-suite matrix passed after the changes.
 
+Billing UX resilience:
+
+At 2026-08-17T11:57:44Z, the billing page gained cancellable loading-state handling, explicit fetch-error feedback, disabled actions while data is unavailable, an accessible loading state for invoices, and a preserved empty-invoice state. The plan and invoice requests now validate response status before updating the UI. Lint, production build, and all six smoke suites passed.
+
