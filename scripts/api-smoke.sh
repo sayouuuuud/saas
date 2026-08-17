@@ -105,6 +105,13 @@ test "$(printf '%s' "$billing_profile" | grep -c 'profile')" -eq 1
 billing_profile_update="$(json_request -X PATCH -d "{\"billingCompany\":\"QA Centralia\",\"billingContactName\":\"QA Billing\",\"billingContactEmail\":\"$EMAIL\"}" "$BASE_URL/api/billing/profile")"
 test "$(printf '%s' "$billing_profile_update" | grep -c 'QA Centralia')" -eq 1
 test "$(printf '%s' "$billing_profile_update" | grep -c "$EMAIL")" -eq 1
+notification_preferences_status="$(status_and_headers_request "$BASE_URL/api/notifications/preferences")"
+test "$notification_preferences_status" = "200"
+grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
+notification_preferences="$(cat /tmp/saas-smoke-response.json)"
+test "$(printf '%s' "$notification_preferences" | grep -c 'emailEnabled')" -eq 1
+updated_notification_preferences="$(json_request -X PATCH -d '{"emailEnabled":true,"productEnabled":false,"billingEnabled":true}' "$BASE_URL/api/notifications/preferences")"
+test "$(printf '%s' "$updated_notification_preferences" | grep -c '"productEnabled":false')" -eq 1
 reports_status="$(status_and_headers_request "$BASE_URL/api/reports")"
 test "$reports_status" = "200"
 grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
