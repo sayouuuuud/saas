@@ -1280,3 +1280,14 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 ## 2026-08-17 — Content-type discovery hardening
 
 - Commit `f82089c` pushed to `main` with response `Content-Type` assertions for `robots.txt` and `sitemap.xml`, plus persisted production findings.
+
+## 2026-08-17 — Dedicated subscription account surface
+
+- Added `/app/subscription` as a dedicated account route for SaaS subscription status, plan summary, billing cycle, current period, cancellation-at-period-end, reactivation, and recent subscription events.
+- The page uses `cache: no-store`, abortable loading, accessible status/error announcements, retry behavior, and truthful copy distinguishing SaaS subscription state from LMS health.
+- Hardened `GET /api/subscription` to select only presentation-safe subscription, plan, and event fields; provider references and event metadata payloads are not returned.
+- Dashboard subscription navigation now points to `/app/subscription`; billing remains the source for invoices and plan catalog actions.
+- Added `scripts/subscription-page-smoke.sh`, registered `test:subscription-page`, and included it in `regression-matrix.sh`. The smoke passed with `/app/subscription` HTTP 200, unauthenticated `/api/subscription` HTTP 401, and no-store headers.
+- Subscription lifecycle smoke passed after the projection change, including checkout, idempotent cancel/reactivate, invalid plan-change, and optional webhook assertions.
+- Lint, strict TypeScript, and SQLite-backed production build passed with 40 generated routes.
+- One initial page-smoke attempt exposed an orphaned prior dev server holding Next’s lock; the process was terminated and the fresh retry passed. No production or LMS database was accessed.

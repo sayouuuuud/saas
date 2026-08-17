@@ -20,6 +20,7 @@
     "test:edge": "bash scripts/edge-cases-smoke.sh",
     "test:tenant": "bash scripts/tenant-isolation-smoke.sh",
     "test:subscription": "bash scripts/subscription-lifecycle-smoke.sh",
+    "test:subscription-page": "bash scripts/subscription-page-smoke.sh",
     "test:final-window-status": "bash scripts/final-window-status-smoke.sh",
     "test:auth-boundaries": "bash scripts/auth-error-boundary-audit.sh",
     "test:lms-independence": "bash scripts/lms-independence-audit.sh",

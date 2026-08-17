@@ -41,6 +41,7 @@ pnpm test:auth
 pnpm test:edge
 pnpm test:tenant
 pnpm test:subscription
+pnpm test:subscription-page
 pnpm test:production-config
 pnpm test:final-window-status
 pnpm test:auth-boundaries
