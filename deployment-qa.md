@@ -122,3 +122,8 @@ Latest production deployment verification:
 
 Vercel reported deployment `dpl_5dtoLm7iZAr1SkAZLcxi13CBsWW3` for commit `87e98d6` as READY and production-targeted. The deployment-specific URL is protected by Vercel Authentication and therefore redirects unauthenticated requests to Vercel SSO; this is platform protection, not an application response. The canonical production alias was independently checked at 2026-08-17T11:31:48Z and returned HTTP 200 with the Centralia Arabic RTL marker plus CSP, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, and strict referrer policy headers.
 
+
+Production observability:
+
+The Vercel grouped runtime-error query for the SaaS project returned no runtime errors in the selected 24-hour window at 2026-08-17T11:34:16Z.
+
