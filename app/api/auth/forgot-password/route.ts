@@ -1,12 +1,14 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
+import { safeAuthError } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export async function POST(request: Request) {
-  const rate = checkRateLimit(request, "auth:forgot-password", 5);
+  try {
+    const rate = checkRateLimit(request, "auth:forgot-password", 5);
   if (!rate.allowed) return NextResponse.json({ accepted: true }, { status: 200, headers: rateLimitHeaders(rate) });
   const body = await request.json().catch(() => ({}));
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
@@ -23,5 +25,8 @@ export async function POST(request: Request) {
       if (process.env.NODE_ENV !== "production") response.resetToken = token;
     }
   }
-  return NextResponse.json(response);
+    return NextResponse.json(response);
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
