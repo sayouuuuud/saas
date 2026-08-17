@@ -688,3 +688,11 @@ At 2026-08-17T13:35:48Z, the reset-password route received a top-level `safeAuth
 
 عند `2026-08-17T13:35:48Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى reset-password، مع الحفاظ على rate limiting، واستجابات token غير الصالح أو المنتهي، والتحديث الذري لكلمة المرور وحذف الجلسات، وSECURITY_EVENT audit. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `61f91f3`.
 
+Email-verification error handling:
+
+At 2026-08-17T13:36:35Z, the email-verification route received a top-level `safeAuthError` boundary, preserving rate limits, invalid/expired-token responses, atomic verification-token cleanup, and SECURITY_EVENT auditing. Lint, strict TypeScript, authentication smoke, security smoke, edge-case smoke, API smoke, diff checks, and compiler-artifact cleanup passed before commit `4fc3b22` was pushed.
+
+معالجة أخطاء التحقق من البريد الإلكتروني:
+
+عند `2026-08-17T13:36:35Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى مسار التحقق من البريد، مع الحفاظ على rate limiting، واستجابات token غير الصالح أو المنتهي، والتنظيف الذري لـ verification token، وSECURITY_EVENT audit. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `4fc3b22`.
+
