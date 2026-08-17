@@ -496,3 +496,11 @@ At 2026-08-17T13:09:17Z, the new `pnpm test:final-window-status` smoke test pass
 
 عند `2026-08-17T13:09:17Z` نجح اختبار `pnpm test:final-window-status` الجديد. يشغل verifier المؤجل داخل window مؤقتة مع epoch مستوفى، ويستبدل أمر التحقق بأداة harmless دون تنفيذ عمل إنتاجي، ثم يؤكد أن `execution-window.json` يحتوي `status=window_complete` وأن final log يحتوي markers النجاح. كما نجحت lint قبل دفع commit `3e4c7b5`.
 
+Post-verifier Vercel deployment boundary:
+
+The deployment inventory queried at 2026-08-17T13:10:06Z showed a new production deployment `dpl_EG4XkUartvH2aK5dFY3XA6gyh1ax`, state `READY`, created at 2026-08-17T13:06:23.936Z, for commit `e71aa93189e016a0e18f9307e6e93662c6e74b65` (`docs: record post-audit security tests`). The later commits `331c09d`, `3e4c7b5`, and `89ccd86` were not present in this inventory, so they are recorded as pushed and locally verified only; no live-deployment claim is made for them.
+
+حدود نشر Vercel بعد verifier:
+
+أظهر سجل النشر الذي استُعلم عنه عند `2026-08-17T13:10:06Z` نشرًا إنتاجيًا جديدًا `dpl_EG4XkUartvH2aK5dFY3XA6gyh1ax` بالحالة `READY`، أُنشئ عند `2026-08-17T13:06:23.936Z`، للـ commit `e71aa93189e016a0e18f9307e6e93662c6e74b65` بعنوان `docs: record post-audit security tests`. لم تظهر commits الأحدث `331c09d` و`3e4c7b5` و`89ccd86` في هذا السجل، ولذلك سُجلت كـ pushed وlocally verified فقط دون ادعاء أنها live.
+
