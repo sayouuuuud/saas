@@ -48,7 +48,7 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
     content = rows.length ? rows.map((item) => row(item.id, [item.workspace.name, `${item.plan.name} (${item.plan.code})`, `${item.status} · ${item.billingCycle}`, item.cancelAtPeriodEnd ? 'تلغى بنهاية الفترة' : `ينتهي ${formatDate(item.currentPeriodEnd)}`])) : emptyState()
   } else if (section === 'billing') {
     const rows = await prisma.invoice.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, number: true, status: true, amountCents: true, currency: true, createdAt: true, workspace: { select: { name: true } } } })
-    content = rows.length ? rows.map((item) => row(item.id, [item.number, item.workspace.name, `${(item.amountCents / 100).toFixed(2)} ${item.currency}`, item.status, formatDate(item.createdAt)])) : emptyState()
+    content = rows.length ? rows.map((item) => row(item.id, [<Link key="invoice" href={`/admin/billing/${item.id}`}>{item.number}</Link>, item.workspace.name, `${(item.amountCents / 100).toFixed(2)} ${item.currency}`, item.status, formatDate(item.createdAt)])) : emptyState()
   } else if (section === 'lms-links' || section === 'integrations') {
     const rows = await prisma.lmsLink.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, displayName: true, publicUrl: true, status: true, lastCheckedAt: true, createdAt: true, workspace: { select: { name: true } } } })
     content = rows.length ? rows.map((item) => row(item.id, [<span key="name"><Link2 size={14} /> {item.displayName}</span>, <a key="url" href={item.publicUrl} target="_blank" rel="noreferrer">فتح الرابط <ExternalLink size={13} /></a>, item.workspace.name, `${item.status} · ${formatDate(item.lastCheckedAt || item.createdAt)}`])) : emptyState()
