@@ -76,6 +76,12 @@ test "$(printf '%s' "$invoices" | grep -c '"limit":50')" -eq 1
 test "$(printf '%s' "$invoices" | grep -c '"offset":1')" -eq 1
 invoices_first_page="$(json_request "$BASE_URL/api/invoices?limit=1&offset=0")"
 test "$(printf '%s' "$invoices_first_page" | grep -c 'PAID')" -ge 1
+export_status="$(status_and_headers_request "$BASE_URL/api/export")"
+test "$export_status" = "200"
+grep -Eiq '^content-disposition:.*centralia-workspace-export' /tmp/saas-smoke-headers.txt
+export_body="$(cat /tmp/saas-smoke-response.json)"
+test "$(printf '%s' "$export_body" | grep -c 'saas_only')" -ge 1
+test "$(printf '%s' "$export_body" | grep -c 'educationalData')" -ge 1
 reports_status="$(status_and_headers_request "$BASE_URL/api/reports")"
 test "$reports_status" = "200"
 grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt

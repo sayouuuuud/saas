@@ -28,6 +28,9 @@ printf '%s' "$login2" | grep -q '"user"'
 reports_after="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/reports")"
 after_count="$(printf '%s' "$reports_after" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(Number(JSON.parse(s).summary.auditEventCount||0)))')"
 [ "$after_count" -ge $((before_count + 2)) ] || { echo "logout/login audit events missing" >&2; exit 1; }
-printf '%s' "$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" -X POST "$BASE_URL/api/auth/logout")" | grep -q '"ok":true'
+sessions="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/auth/logout-all")"
+printf '%s' "$sessions" | grep -q 'activeSessions'
+revoked="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" -c "$COOKIES" -X POST "$BASE_URL/api/auth/logout-all")"
+printf '%s' "$revoked" | grep -q 'revoked'
 [ "$(curl -s -o /dev/null -w '%{http_code}' -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/auth/me")" = "401" ]
 printf 'Auth security smoke passed for %s\n' "$EMAIL"

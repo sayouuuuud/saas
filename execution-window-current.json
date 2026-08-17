@@ -1,0 +1,10 @@
+{
+  "started_at_utc": "2026-08-17T20:55:13Z",
+  "started_at_epoch": 1787000113,
+  "required_duration_seconds": 43200,
+  "required_completion_epoch": 1787043313,
+  "required_completion_utc": "2026-08-18T08:55:13Z",
+  "measurement": "system clock seconds",
+  "status": "active",
+  "scope": "implementation of remaining Centralia SaaS specification gaps"
+}

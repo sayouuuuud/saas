@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, CreditCard, ExternalLink, Link2, ShieldCheck, Users } from 'lucide-react'
+import { ArrowRight, BarChart3, Bell, CreditCard, ExternalLink, FileText, Link2, LifeBuoy, PlugZap, ScrollText, Settings, ShieldCheck, UserCog, Users } from 'lucide-react'
 import { getCurrentUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import type { ReactNode } from 'react'
@@ -10,6 +10,14 @@ const sections = {
   subscriptions: { title: 'الاشتراكات', description: 'حالات الاشتراك ومواعيدها دون بيانات دفع حساسة.', icon: CreditCard },
   billing: { title: 'الفوترة', description: 'الفواتير المملوكة لـ SaaS وحالاتها التجارية.', icon: CreditCard },
   'lms-links': { title: 'روابط المنصات', description: 'مراجع الروابط المحفوظة، لا محتوى LMS.', icon: Link2 },
+  integrations: { title: 'التكاملات', description: 'طلبات التكامل وحالة الروابط المرجعية.', icon: PlugZap },
+  usage: { title: 'الاستخدام', description: 'مقاييس تشغيل SaaS الفعلية دون اختلاق بيانات تعليمية.', icon: BarChart3 },
+  reports: { title: 'التقارير', description: 'ملخصات تشغيلية قابلة للمراجعة.', icon: FileText },
+  support: { title: 'الدعم', description: 'تذاكر العملاء وحالات المتابعة.', icon: LifeBuoy },
+  staff: { title: 'الموظفون', description: 'حسابات Staff المصرح لها بالتشغيل.', icon: UserCog },
+  audit: { title: 'سجل التدقيق', description: 'الأحداث الحساسة المسجلة داخل SaaS.', icon: ScrollText },
+  notifications: { title: 'الإشعارات', description: 'إشعارات الحساب المحفوظة وحالتها.', icon: Bell },
+  settings: { title: 'إعدادات النظام', description: 'حدود النظام وبيانات التشغيل الحالية.', icon: Settings },
 } as const
 
 type SectionKey = keyof typeof sections
@@ -19,6 +27,7 @@ function formatDate(value: Date | string | null | undefined) {
 }
 
 function emptyState() { return <div className="invoice-empty">لا توجد سجلات في هذا القسم.</div> }
+function row(key: string, values: ReactNode[]) { return <div className="invoice-row" key={key}>{values.map((value, index) => <span key={`${key}-${index}`}>{value}</span>)}</div> }
 
 export default async function AdminSectionPage({ params }: { params: Promise<{ section: string }> }) {
   const { section } = await params
@@ -30,19 +39,40 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
   let content: ReactNode
   if (section === 'teachers') {
     const rows = await prisma.workspaceMember.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, role: true, createdAt: true, user: { select: { name: true, email: true } }, workspace: { select: { name: true } } } })
-    content = rows.length ? rows.map((row) => <div className="invoice-row" key={row.id}><span>{row.user.name}</span><span>{row.user.email}</span><span>{row.workspace.name}</span><span>{row.role}</span></div>) : emptyState()
+    content = rows.length ? rows.map((item) => row(item.id, [item.user.name, item.user.email, item.workspace.name, item.role, formatDate(item.createdAt)])) : emptyState()
   } else if (section === 'plans') {
     const rows = await prisma.plan.findMany({ take: 50, orderBy: { monthlyCents: 'asc' }, select: { id: true, code: true, name: true, monthlyCents: true, yearlyCents: true, trialDays: true, supportTier: true, active: true } })
-    content = rows.length ? rows.map((row) => <div className="invoice-row" key={row.id}><span>{row.name} ({row.code})</span><span>{(row.monthlyCents / 100).toFixed(2)} شهريًا</span><span>{(row.yearlyCents / 100).toFixed(2)} سنويًا</span><span>{row.active ? 'نشطة' : 'متوقفة'} · تجربة {row.trialDays} يوم · {row.supportTier}</span></div>) : emptyState()
+    content = rows.length ? rows.map((item) => row(item.id, [`${item.name} (${item.code})`, `${(item.monthlyCents / 100).toFixed(2)} شهريًا`, `${(item.yearlyCents / 100).toFixed(2)} سنويًا`, `${item.active ? 'نشطة' : 'متوقفة'} · تجربة ${item.trialDays} يوم`, item.supportTier])) : emptyState()
   } else if (section === 'subscriptions') {
     const rows = await prisma.subscription.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, status: true, billingCycle: true, currentPeriodEnd: true, cancelAtPeriodEnd: true, workspace: { select: { name: true } }, plan: { select: { code: true, name: true } } } })
-    content = rows.length ? rows.map((row) => <div className="invoice-row" key={row.id}><span>{row.workspace.name}</span><span>{row.plan.name} ({row.plan.code})</span><span>{row.status} · {row.billingCycle}</span><span>{row.cancelAtPeriodEnd ? 'تلغى بنهاية الفترة' : formatDate(row.currentPeriodEnd)}</span></div>) : emptyState()
+    content = rows.length ? rows.map((item) => row(item.id, [item.workspace.name, `${item.plan.name} (${item.plan.code})`, `${item.status} · ${item.billingCycle}`, item.cancelAtPeriodEnd ? 'تلغى بنهاية الفترة' : `ينتهي ${formatDate(item.currentPeriodEnd)}`])) : emptyState()
   } else if (section === 'billing') {
     const rows = await prisma.invoice.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, number: true, status: true, amountCents: true, currency: true, createdAt: true, workspace: { select: { name: true } } } })
-    content = rows.length ? rows.map((row) => <div className="invoice-row" key={row.id}><span>{row.number}</span><span>{row.workspace.name}</span><span>{(row.amountCents / 100).toFixed(2)} {row.currency}</span><span>{row.status} · {formatDate(row.createdAt)}</span></div>) : emptyState()
-  } else {
+    content = rows.length ? rows.map((item) => row(item.id, [item.number, item.workspace.name, `${(item.amountCents / 100).toFixed(2)} ${item.currency}`, item.status, formatDate(item.createdAt)])) : emptyState()
+  } else if (section === 'lms-links' || section === 'integrations') {
     const rows = await prisma.lmsLink.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, displayName: true, publicUrl: true, status: true, lastCheckedAt: true, createdAt: true, workspace: { select: { name: true } } } })
-    content = rows.length ? rows.map((row) => <div className="invoice-row" key={row.id}><span><Link2 size={14} /> {row.displayName}</span><a href={row.publicUrl} target="_blank" rel="noreferrer">فتح الرابط <ExternalLink size={13} /></a><span>{row.workspace.name}</span><span>{row.status} · {formatDate(row.lastCheckedAt || row.createdAt)}</span></div>) : emptyState()
+    content = rows.length ? rows.map((item) => row(item.id, [<span key="name"><Link2 size={14} /> {item.displayName}</span>, <a key="url" href={item.publicUrl} target="_blank" rel="noreferrer">فتح الرابط <ExternalLink size={13} /></a>, item.workspace.name, `${item.status} · ${formatDate(item.lastCheckedAt || item.createdAt)}`])) : emptyState()
+  } else if (section === 'usage') {
+    const [workspaces, members, invoices, tickets, links, auditEvents] = await Promise.all([prisma.workspace.count(), prisma.workspaceMember.count(), prisma.invoice.count(), prisma.supportTicket.count(), prisma.lmsLink.count(), prisma.auditLog.count()])
+    content = <div className="dashboard-metrics usage-metrics"><article className="dash-card"><span>مساحات العمل</span><strong>{workspaces}</strong><small>عدد مساحات SaaS المسجلة</small></article><article className="dash-card"><span>العضويات</span><strong>{members}</strong><small>أعضاء عبر المساحات</small></article><article className="dash-card"><span>الفواتير</span><strong>{invoices}</strong><small>سجلات فوترة</small></article><article className="dash-card"><span>التذاكر</span><strong>{tickets}</strong><small>طلبات دعم</small></article><article className="dash-card"><span>الروابط</span><strong>{links}</strong><small>مراجع LMS فقط</small></article><article className="dash-card"><span>التدقيق</span><strong>{auditEvents}</strong><small>أحداث مسجلة</small></article></div>
+  } else if (section === 'reports') {
+    const [activeSubscriptions, paidInvoices, openTickets, reachableLinks] = await Promise.all([prisma.subscription.count({ where: { status: { in: ['TRIAL', 'ACTIVE', 'GRACE_PERIOD'] } } }), prisma.invoice.count({ where: { status: 'PAID' } }), prisma.supportTicket.count({ where: { status: { in: ['OPEN', 'IN_PROGRESS', 'WAITING_ON_CUSTOMER'] } } }), prisma.lmsLink.count({ where: { status: 'REACHABLE' } })])
+    content = <div className="dashboard-metrics usage-metrics"><article className="dash-card"><span>اشتراكات فعالة</span><strong>{activeSubscriptions}</strong><small>تشمل التجربة والفترات النشطة</small></article><article className="dash-card"><span>فواتير مدفوعة</span><strong>{paidInvoices}</strong><small>بدون كشف بيانات دفع حساسة</small></article><article className="dash-card"><span>تذاكر تحتاج متابعة</span><strong>{openTickets}</strong><small>الحالات المفتوحة حاليًا</small></article><article className="dash-card"><span>روابط قابلة للوصول</span><strong>{reachableLinks}</strong><small>آخر فحص مسجل</small></article></div>
+  } else if (section === 'support') {
+    const rows = await prisma.supportTicket.findMany({ take: 50, orderBy: { updatedAt: 'desc' }, select: { id: true, number: true, subject: true, status: true, priority: true, updatedAt: true, workspace: { select: { name: true } } } })
+    content = rows.length ? rows.map((item) => row(item.id, [<Link key="ticket" href={`/support/${item.id}`}>{item.number}</Link>, item.subject, item.workspace.name, `${item.status} · ${item.priority}`, formatDate(item.updatedAt)])) : emptyState()
+  } else if (section === 'staff') {
+    const rows = await prisma.user.findMany({ where: { isStaff: true }, take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, name: true, email: true, emailVerifiedAt: true, createdAt: true } })
+    content = rows.length ? rows.map((item) => row(item.id, [item.name, item.email, item.emailVerifiedAt ? 'بريد موثق' : 'بريد غير موثق', formatDate(item.createdAt)])) : emptyState()
+  } else if (section === 'audit') {
+    const rows = await prisma.auditLog.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, action: true, entity: true, entityId: true, reason: true, createdAt: true, actor: { select: { name: true, email: true } }, workspace: { select: { name: true } } } })
+    content = rows.length ? rows.map((item) => row(item.id, [`${item.action} · ${item.entity}`, item.actor?.name || item.actor?.email || 'نظام', item.workspace?.name || 'عام', item.reason || '—', formatDate(item.createdAt)])) : emptyState()
+  } else if (section === 'notifications') {
+    const rows = await prisma.notification.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, type: true, title: true, readAt: true, createdAt: true, user: { select: { name: true, email: true } }, workspace: { select: { name: true } } } })
+    content = rows.length ? rows.map((item) => row(item.id, [item.title, item.user.name || item.user.email, item.workspace?.name || 'عام', item.readAt ? 'مقروء' : 'غير مقروء', formatDate(item.createdAt)])) : emptyState()
+  } else {
+    const [workspaces, staff, plans, lastAudit] = await Promise.all([prisma.workspace.count(), prisma.user.count({ where: { isStaff: true } }), prisma.plan.count({ where: { active: true } }), prisma.auditLog.findFirst({ orderBy: { createdAt: 'desc' }, select: { createdAt: true } })])
+    content = <div className="dashboard-metrics usage-metrics"><article className="dash-card"><span>مساحات العمل</span><strong>{workspaces}</strong><small>نطاق SaaS الحالي</small></article><article className="dash-card"><span>Staff</span><strong>{staff}</strong><small>حسابات تشغيل مصرح بها</small></article><article className="dash-card"><span>خطط نشطة</span><strong>{plans}</strong><small>خطط معروضة للبيع</small></article><article className="dash-card"><span>آخر تدقيق</span><strong>{formatDate(lastAudit?.createdAt)}</strong><small>وقت آخر حدث مسجل</small></article></div>
   }
 
   const Icon = config.icon
