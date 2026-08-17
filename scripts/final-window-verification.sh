@@ -23,6 +23,10 @@ done
   pnpm test:subscription
   pnpm test:production-config
   pnpm audit --prod
+  WINDOW_TMP="${WINDOW_FILE}.tmp"
+  sed 's/"status": "active"/"status": "window_complete"/' "$WINDOW_FILE" > "$WINDOW_TMP"
+  mv "$WINDOW_TMP" "$WINDOW_FILE"
+  printf 'execution_window_status=window_complete\n'
   printf 'final_verification_status=passed\n'
   printf 'final_verification_finished_at=%s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 } > "$REPORT_FILE" 2>&1
