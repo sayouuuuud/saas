@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PORT="${PORT:-$((3010 + ($$ % 1000)))}"
+PORT="${PORT:-$((41000 + ($$ % 1000)))}"
 BASE_URL="http://127.0.0.1:${PORT}"
 DB_PATH="${TMPDIR:-/tmp}/centralia-plans-degraded-${$}.db"
 LOG_PATH="${TMPDIR:-/tmp}/centralia-plans-degraded-${$}.log"

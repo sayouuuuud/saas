@@ -1424,3 +1424,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Added `/app/team` as a dedicated private account route, using only the SaaS workspace API’s bounded member projection and role metadata; LMS data and health claims remain explicitly out of scope.
 - Wired the route into dashboard navigation and expanded account smoke coverage for team content, all-account noindex metadata, and the protected no-store workspace API.
 - Lint, strict TypeScript, the SQLite production build (53 routes), and a clean local account-pages smoke all passed.
+
+## 2026-08-17 — Reserved-port regression recovery
+
+- The first post-team full regression exposed a real nondeterministic failure: `plans-degraded-smoke.sh` selected port 3659, which Next.js rejects as an OS-reserved service port.
+- Hardened the smoke default from the 3010–4009 range to the 41000–41999 high-port range. The focused smoke passed on port 41234, and the complete 53-route regression matrix then passed, including account, admin, security, LMS-independence, collection-bounds, and dependency audits.
