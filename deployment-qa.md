@@ -932,3 +932,11 @@ Added `test:lms-independence`, a deterministic source audit that scans the Centr
 اكتمل حارس استقلال SaaS عن LMS في 2026-08-17T14:18:21Z (epoch 1786976301):
 
 أضيف الأمر `test:lms-independence` كتدقيق مصدر حتمي يبحث داخل حدود Centralia عن إعدادات أو identifiers محظورة لقاعدة LMS، ويرفض إنشاء `PrismaClient` وقت التشغيل خارج `lib/prisma.ts`. تم تصحيح فشل الاقتباس الأول في السكربت، ثم نجح الاختبار مع lint وstrict TypeScript. لا يقرأ الحارس أي قاعدة LMS ولا يعدلها.
+
+Full regression matrix completed at 2026-08-17T14:18:59Z (epoch 1786976339):
+
+Both SQLite and PostgreSQL Prisma schemas validated. Lint, strict TypeScript, the 33-route production build, API, security, authentication, edge-case, tenant-isolation, subscription-lifecycle, production-config, final-window-status, safeAuthError-boundary, and SaaS/LMS-independence suites all passed. `pnpm audit --prod` reported no known vulnerabilities. The execution window remained active and was not treated as complete.
+
+اكتملت مصفوفة regression الكاملة في 2026-08-17T14:18:59Z (epoch 1786976339):
+
+تم التحقق من مخططي Prisma لـ SQLite وPostgreSQL. نجحت lint وstrict TypeScript وproduction build بعدد 33 route واختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة النافذة وتدقيق safeAuthError وتدقيق استقلال SaaS عن LMS. أبلغ `pnpm audit --prod` عن عدم وجود ثغرات معروفة. ظلت نافذة التنفيذ نشطة ولم تُعتبر مكتملة.
