@@ -8,7 +8,11 @@ function isPrivateIpv4(ip: string) {
 }
 
 function isPrivateIp(ip: string) {
-  return net.isIPv4(ip) ? isPrivateIpv4(ip) : net.isIPv6(ip) && (ip === "::1" || ip.startsWith("fc") || ip.startsWith("fd") || ip.startsWith("fe80:"));
+  const normalized = ip.toLowerCase();
+  if (net.isIPv4(normalized)) return isPrivateIpv4(normalized);
+  if (!net.isIPv6(normalized)) return false;
+  if (normalized.startsWith("::ffff:")) return isPrivateIpv4(normalized.slice("::ffff:".length));
+  return normalized === "::" || normalized === "::1" || normalized.startsWith("fc") || normalized.startsWith("fd") || normalized.startsWith("fe80:");
 }
 
 export async function validateExternalHttpsUrl(value: string) {

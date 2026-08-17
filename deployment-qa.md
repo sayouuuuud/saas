@@ -102,3 +102,8 @@ Support-ticket action validation:
 
 Ticket close/reopen/message actions now use a bounded Zod schema that rejects unsupported actions, malformed payloads, and oversized messages before database mutation. API smoke coverage now asserts an unsupported action returns HTTP 400. After correcting the smoke test to extract the top-level ticket ID, the full lint, production build, API, security, authentication, edge-case, and tenant-isolation suite passed at 2026-08-17T11:27:21Z.
 
+
+SSRF hardening:
+
+LMS URL safety now normalizes IP addresses and rejects IPv4-mapped IPv6 private addresses, IPv6 unspecified/loopback addresses, and existing private/link-local ranges. Security smoke coverage now explicitly rejects an HTTPS localhost LMS URL. Security, lint, production build, API, authentication, edge-case, and tenant-isolation tests passed at 2026-08-17T11:28:52Z.
+
