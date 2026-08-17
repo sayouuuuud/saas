@@ -704,3 +704,11 @@ At 2026-08-17T13:37:26Z, ticket-message creation received a top-level `safeAuthE
 
 عند `2026-08-17T13:37:26Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى إنشاء رسالة التذكرة، مع الحفاظ على lookup الخاص بالتذكرة داخل الـ workspace، والتحقق، والمعاملة الذرية للرسالة والحالة وaudit، وعقد استجابة 201. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `90c4515`.
 
+Ticket-close hardening:
+
+At 2026-08-17T13:38:24Z, the dedicated ticket-close endpoint was changed to persist status transition and audit logging in one Prisma transaction and to use the shared `safeAuthError` boundary for unexpected failures. Lint, strict TypeScript, production build, API smoke, security smoke, edge-case smoke, diff checks, and compiler-artifact cleanup passed before commit `292a6cb` was pushed.
+
+تقوية إغلاق التذاكر:
+
+عند `2026-08-17T13:38:24Z` تم تعديل endpoint إغلاق التذكرة لحفظ تغيير الحالة وaudit logging داخل Prisma transaction واحدة، مع استخدام boundary `safeAuthError` المشتركة للأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `292a6cb`.
+
