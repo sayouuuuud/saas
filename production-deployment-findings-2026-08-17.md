@@ -76,3 +76,7 @@ Vercel now reports a production deployment for commit `142ef260842c3ca52f665ff9b
 ## Deployment rate-limit checkpoint — 2026-08-17T17:35Z
 
 GitHub reports the Vercel status for commit `9735af8` as `failure` with the provider message `Deployment rate limited — retry in 24 hours`. The canonical alias remains independently green under `pnpm test:canonical-production`, and all local production/regression gates pass on the latest source. This is an external Vercel propagation constraint, not an application build or test failure; the exact final gate records both facts.
+
+## Runtime-error reconfirmation — 2026-08-17T17:36Z
+
+The Vercel grouped runtime-error query for the last hour returned one error group only: `/api/plans` with `PrismaClientInitializationError`, count 8 across 4 users, last seen at 17:34:23Z on deployment `dpl_HcqgwTCFe3Z8kynRfdPd9sf1P1F5`. This matches the intentionally handled degraded plans contract; no unexpected application route error group was reported.
