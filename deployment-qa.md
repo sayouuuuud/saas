@@ -921,9 +921,6 @@ The Vercel connector reported no runtime errors for the Centralia project in the
 أبلغ موصل Vercel عن عدم وجود أخطاء تشغيل لمشروع Centralia خلال نطاق الـ24 ساعة المحدد. سُجلت هذه النتيجة منفصلة عن جاهزية deployment: أحدث build مرصود بحالة READY هو deployment الخاص بـ `a34e9f5`، بينما قد تكون commits التوثيق اللاحقة بانتظار حد البناء الخاص بها.
 
 Team workspace member visibility completed at 2026-08-17T14:16:03Z (epoch 1786976163):
-
-The existing  route now renders a read-only member panel from the SaaS  relation only. The first page is bounded to 25 records, roles are localized in Arabic, and an abortable accessible load-more control consumes the existing   contract. Error and empty states are explicit, and mobile CSS plus reduced-motion handling were added. The production build, API smoke, safeAuthError boundary audit, and edge-case smoke suite all passed.
-
+The existing `/app/team` route now renders a read-only member panel from the SaaS `WorkspaceMember` relation only. The first page is bounded to 25 records, roles are localized in Arabic, and an abortable accessible load-more control consumes the existing `/api/workspace` `nextOffset` contract. Error and empty states are explicit, and mobile CSS plus reduced-motion handling were added. The production build, API smoke, safeAuthError boundary audit, and edge-case smoke suite all passed.
 اكتمل تحسين عرض أعضاء الفريق في 2026-08-17T14:16:03Z (epoch 1786976163):
-
-يعرض route  الآن لوحة قراءة فقط لأعضاء SaaS من علاقة  فقط. الصفحة الأولى محدودة بـ25 سجلًا، والأدوار مترجمة للعربية، ويوجد زر تحميل إضافي قابل للإلغاء ويستخدم عقد  الحالي في . حالات الخطأ والفراغ صريحة، وأضيف CSS متجاوب ودعم للحركة المخفضة. نجح production build واختبار API وتدقيق safeAuthError واختبار الحالات الطرفية.
+يعرض route `/app/team` الآن لوحة قراءة فقط لأعضاء SaaS من علاقة `WorkspaceMember` فقط. الصفحة الأولى محدودة بـ25 سجلًا، والأدوار مترجمة للعربية، ويوجد زر تحميل إضافي قابل للإلغاء ويستخدم عقد `nextOffset` الحالي في `/api/workspace`. حالات الخطأ والفراغ صريحة، وأضيف CSS متجاوب ودعم للحركة المخفضة. نجح production build واختبار API وتدقيق safeAuthError واختبار الحالات الطرفية.
