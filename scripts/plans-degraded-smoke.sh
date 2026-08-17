@@ -9,10 +9,10 @@ HEADERS_PATH="${TMPDIR:-/tmp}/centralia-plans-degraded-${$}.headers"
 BODY_PATH="${TMPDIR:-/tmp}/centralia-plans-degraded-${$}.body"
 
 rm -f "$DB_PATH" "$LOG_PATH" "$HEADERS_PATH" "$BODY_PATH"
-DATABASE_URL="file:${DB_PATH}" pnpm exec next start -H 127.0.0.1 -p "$PORT" >"$LOG_PATH" 2>&1 &
+setsid env DATABASE_URL="file:${DB_PATH}" pnpm exec next start -H 127.0.0.1 -p "$PORT" >"$LOG_PATH" 2>&1 &
 SERVER_PID=$!
 cleanup() {
-  kill "$SERVER_PID" 2>/dev/null || true
+  kill -TERM -- -"$SERVER_PID" 2>/dev/null || kill "$SERVER_PID" 2>/dev/null || true
   wait "$SERVER_PID" 2>/dev/null || true
   rm -f "$DB_PATH" "$LOG_PATH" "$HEADERS_PATH" "$BODY_PATH"
 }

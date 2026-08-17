@@ -1429,3 +1429,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - The first post-team full regression exposed a real nondeterministic failure: `plans-degraded-smoke.sh` selected port 3659, which Next.js rejects as an OS-reserved service port.
 - Hardened the smoke default from the 3010–4009 range to the 41000–41999 high-port range. The focused smoke passed on port 41234, and the complete 53-route regression matrix then passed, including account, admin, security, LMS-independence, collection-bounds, and dependency audits.
+
+## 2026-08-17 — Degraded smoke process-group cleanup
+
+- Hardened `plans-degraded-smoke.sh` to launch its Next.js process in a separate session and terminate the complete process group on exit, matching the full regression matrix cleanup contract.
+- The focused smoke passed on port 41235 and an `ss` check confirmed no listener remained after cleanup.
