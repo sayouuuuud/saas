@@ -39,9 +39,12 @@ TICKET_ID="$(printf '%s' "$ticket" | sed -n 's/.*"ticket":{"id":"\([^"]*\)".*/\1
 test -n "$TICKET_ID"
 bad_ticket_action="$(status_request -X POST -d '{"action":"archive"}' "$BASE_URL/api/tickets/$TICKET_ID")"
 test "$bad_ticket_action" = "400"
-tickets="$(json_request "$BASE_URL/api/tickets?limit=999")"
+tickets="$(json_request "$BASE_URL/api/tickets?limit=999&offset=1")"
 test "$(printf '%s' "$tickets" | grep -c '"limit":50')" -eq 1
-test "$(printf '%s' "$tickets" | grep -c "$TICKET_ID")" -ge 1
+test "$(printf '%s' "$tickets" | grep -c '"offset":1')" -eq 1
+tickets_first_page="$(json_request "$BASE_URL/api/tickets?limit=1&offset=0")"
+test "$(printf '%s' "$tickets_first_page" | grep -c '"limit":1')" -eq 1
+test "$(printf '%s' "$tickets_first_page" | grep -c '"offset":0')" -eq 1
 usage_history="$(json_request "$BASE_URL/api/usage/history")"
 test "$(printf '%s' "$usage_history" | grep -c 'saas_audit_log')" -eq 1
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"

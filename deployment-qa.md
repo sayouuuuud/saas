@@ -778,3 +778,9 @@ Dashboard control honesty improvement completed at 2026-08-17T13:58:00Z:
 The dashboard no longer presents unavailable features as active controls. Account settings and notifications are explicitly disabled with Arabic explanatory titles, while the fixed 30-day activity period is rendered as a labeled non-interactive value rather than a button. Existing link-add, retry, navigation, and billing actions remain functional. Lint and strict TypeScript passed.
 
 تم تحسين صدق واجهة لوحة التحكم: لم تعد إعدادات الحساب والإشعارات تظهر كإجراءات قابلة للتنفيذ وهي غير متاحة؛ أصبحت disabled مع شرح عربي، كما تحولت فترة النشاط الثابتة إلى قيمة موسومة غير تفاعلية بدل زر وهمي. بقيت إجراءات إضافة الرابط وإعادة المحاولة والتنقل والفوترة فعّالة. نجحت lint وstrict TypeScript.
+
+Ticket pagination contract fix completed at 2026-08-17T14:00:04Z:
+
+A newly strengthened API smoke assertion exposed that `/api/tickets` accepted `limit` but omitted `offset` metadata and did not apply `skip`. The collection GET now uses the bounded 50-row limit and 10,000-row offset contract, reads `limit + 1` for lookahead, and returns `pagination.limit`, `offset`, `hasMore`, and `nextOffset` with the existing limited projection. The initial smoke run failed exactly at the missing offset assertion; after the fix, API smoke and edge-case smoke passed, followed by clean lint, strict TypeScript, and the 33-route production build.
+
+كشفت إضافة assertion أقوى لاختبار API أن GET الخاص بـ `/api/tickets` كان يقبل limit لكنه لا يعيد offset ولا يطبّق skip. تم إصلاح ذلك باستخدام حد 50 صفًا وحد أقصى للإزاحة 10,000، وقراءة limit + 1 لاكتشاف الصفحة التالية، وإرجاع `pagination.limit` و`offset` و`hasMore` و`nextOffset` مع projection المحدود السابق. فشل التشغيل الأول عند assertion الخاصة بـ offset تحديدًا، وبعد الإصلاح نجحت اختبارات API وedge-case ثم lint وstrict TypeScript وproduction build الذي ولّد 33 route.

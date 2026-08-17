@@ -4,6 +4,20 @@ import { z } from "zod";
 import { getCurrentUser, safeAuthError } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+const DEFAULT_LIMIT = 50;
+const MAX_LIMIT = 50;
+const MAX_OFFSET = 10_000;
+
+function parsePage(request: Request) {
+  const params = new URL(request.url).searchParams;
+  const requestedLimit = Number(params.get("limit") || DEFAULT_LIMIT);
+  const requestedOffset = Number(params.get("offset") || "0");
+  return {
+    limit: Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, MAX_LIMIT) : DEFAULT_LIMIT,
+    offset: Number.isInteger(requestedOffset) && requestedOffset >= 0 ? Math.min(requestedOffset, MAX_OFFSET) : 0,
+  };
+}
+
 const schema = z.object({
   category: z.enum(["BILLING", "SUBSCRIPTION", "ACCOUNT", "LMS_LINK", "INTEGRATION", "USAGE", "SECURITY", "FEATURE_REQUEST", "GENERAL"]).default("GENERAL"),
   subject: z.string().trim().min(3).max(120),
@@ -15,12 +29,12 @@ export async function GET(request: Request) {
   try {
     const user = await getCurrentUser();
     if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
-    const requestedLimit = Number(new URL(request.url).searchParams.get("limit") || "25");
-    const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 50) : 25;
+    const { limit, offset } = parsePage(request);
     const tickets = await prisma.supportTicket.findMany({
       where: { workspaceId: user.workspace.id },
       orderBy: { updatedAt: "desc" },
-      take: limit,
+      skip: offset,
+      take: limit + 1,
       select: {
         id: true,
         number: true,
@@ -36,7 +50,8 @@ export async function GET(request: Request) {
         _count: { select: { messages: true } },
       },
     });
-    return NextResponse.json({ tickets, limit });
+    const hasMore = tickets.length > limit;
+    return NextResponse.json({ tickets: tickets.slice(0, limit), pagination: { limit, offset, hasMore, nextOffset: hasMore ? offset + limit : null } });
   } catch (error) {
     return safeAuthError(error);
   }
