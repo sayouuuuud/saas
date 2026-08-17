@@ -860,3 +860,11 @@ The repository scan found no remaining app/lib findMany collection query without
 اكتمل تدقيق استعلامات Prisma غير المحدودة في 2026-08-17T14:08:33Z:
 
 لم يجد الفحص أي استعلام findMany متبقٍ في app/lib دون حماية قريبة عبر take أو limit أو pagination. يحدد projection الخاص بالمستخدم الحالي روابط LMS بخمسة، بينما تعرض الفواتير والتذاكر وروابط LMS وأعضاء مساحة العمل عقود pagination محدودة. لم تكن هناك حاجة لتعديل برمجي في هذه الدورة.
+
+API error-boundary regression guard completed at 2026-08-17T14:09:16Z:
+
+Added , a deterministic source audit that scans all 28  files and requires both the shared  reference and a returned boundary response. The audit, lint, and strict TypeScript checks passed. This prevents future collection or nested-route additions from silently bypassing the bounded authentication/database error contract.
+
+اكتملت إضافة حارس regression لحدود أخطاء API في 2026-08-17T14:09:16Z:
+
+تمت إضافة ، وهو تدقيق مصدر حتمي يفحص ملفات  الثمانية والعشرين ويتطلب وجود مرجع  وإرجاع استجابة boundary منه. نجح التدقيق وlint وstrict TypeScript، مما يمنع إضافة مسارات جديدة تتجاوز عقد أخطاء المصادقة/قاعدة البيانات المحدود دون اكتشاف ذلك.
