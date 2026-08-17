@@ -720,3 +720,11 @@ At 2026-08-17T13:39:31Z, generic ticket GET, PATCH, and action POST handlers rec
 
 عند `2026-08-17T13:39:31Z` تمت إضافة boundaries حتمية باستخدام `safeAuthError` إلى GET وPATCH وPOST الخاصة بالتذاكر العامة، مع الحفاظ على عزل الـ workspace والمعاملة الذرية المشتركة لتحديث التذكرة والرسالة وaudit. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `d5f474f`.
 
+Complete regression matrix:
+
+At 2026-08-17T13:42:00Z on pushed commit `2103143`, both SQLite and PostgreSQL Prisma schemas validated; lint, strict TypeScript, production build, API, security, authentication, edge-case, tenant-isolation, subscription-lifecycle, production-configuration, final-window-status, and production dependency audit all passed. The working tree was clean after compiler-artifact cleanup. The real-time window remained active: elapsed 17,660 seconds of 43,200, required completion epoch `1786999623` / 2026-08-17T20:47:03Z.
+
+مصفوفة الاختبارات الكاملة:
+
+عند `2026-08-17T13:42:00Z` وعلى commit المدفوع `2103143`، نجح تحقق مخططي Prisma لـ SQLite وPostgreSQL، وlint وstrict TypeScript وproduction build واختبارات API وsecurity وauth وedge cases وtenant isolation وsubscription lifecycle وproduction configuration وfinal-window status، إضافة إلى تدقيق dependencies في الإنتاج. بقي working tree نظيفًا بعد تنظيف compiler artifact. ظلت نافذة التشغيل الحقيقية active: تم تنفيذ 17,660 ثانية من أصل 43,200، وepoch الإكمال المطلوب هو `1786999623` الموافق `2026-08-17T20:47:03Z`.
+
