@@ -1394,3 +1394,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Expanded `account-pages-smoke.sh` to assert noindex metadata on every dedicated account page: profile, subscription, usage, reports, settings, security, notifications, and LMS connection.
 - Clean local-server verification passed for all account pages, protected APIs, and the inherited private metadata boundary.
+
+## 2026-08-17 — Latest full regression on a6cb0e7
+
+- `pnpm test:regression-matrix` passed on the latest published branch. The 52-route build, migrations, seed, API/public/degraded-catalog/security/auth/edge-case/tenant-isolation/subscription/account/admin/production-config/final-window suites, safe-error audit, LMS-independence audit, collection-bounds audit, and production dependency audit all passed.
+- The account suite now verifies noindex metadata on every dedicated account route.
