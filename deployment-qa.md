@@ -1409,3 +1409,7 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Extended `test:canonical-production` to assert HSTS on the canonical public response and `x-content-type-options: nosniff` plus `x-frame-options: DENY` on `/api/plans`.
 - The hardened live-alias smoke passed after the change, including public route status, robots/sitemap content types, and the controlled degraded catalog contract.
+
+## 2026-08-17 — Combined local and canonical verification
+
+- After the canonical security-header gate was hardened, `pnpm lint`, the complete `pnpm test:regression-matrix`, and `pnpm test:canonical-production` all passed. The local build remained at 52 routes, and the live canonical alias continued to satisfy the public, content-type, security-header, and plans-degradation contracts.
