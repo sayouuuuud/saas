@@ -568,3 +568,11 @@ At 2026-08-17T13:18:44Z, the workspace-scoped usage metrics endpoint was wrapped
 
 عند `2026-08-17T13:18:44Z` تم تغليف endpoint usage metrics المقيّد بالworkspace باستخدام `safeAuthError`، مع الحفاظ على aggregate queries المتوازية وmetrics غير المتاحة الخاصة باستقلال SaaS، وإرجاع JSON حتمي عند أخطاء القراءة غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `2d0e67d`.
 
+Reports read error handling:
+
+At 2026-08-17T13:19:41Z, the SaaS-only reports endpoint was wrapped with `safeAuthError`, preserving parallel subscription, invoice, ticket, LMS-link, and audit aggregates while returning deterministic JSON for unexpected failures. Lint, strict TypeScript, API smoke, security smoke, production-config smoke, diff checks, and compiler-artifact cleanup passed before commit `8cfee9d` was pushed.
+
+معالجة أخطاء قراءة reports:
+
+عند `2026-08-17T13:19:41Z` تم تغليف endpoint reports الخاص بـ SaaS فقط باستخدام `safeAuthError`، مع الحفاظ على aggregate queries المتوازية للاشتراك والفواتير والتذاكر وروابط LMS وسجلات التدقيق، وإرجاع JSON حتمي عند الأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وproduction-config smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `8cfee9d`.
+
