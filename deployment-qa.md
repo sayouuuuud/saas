@@ -576,3 +576,11 @@ At 2026-08-17T13:19:41Z, the SaaS-only reports endpoint was wrapped with `safeAu
 
 عند `2026-08-17T13:19:41Z` تم تغليف endpoint reports الخاص بـ SaaS فقط باستخدام `safeAuthError`، مع الحفاظ على aggregate queries المتوازية للاشتراك والفواتير والتذاكر وروابط LMS وسجلات التدقيق، وإرجاع JSON حتمي عند الأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وproduction-config smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `8cfee9d`.
 
+Usage-history error handling:
+
+At 2026-08-17T13:20:56Z, the grouped SaaS audit-history endpoint was wrapped with `safeAuthError`, preserving its workspace-scoped SQL aggregation and exact-for-SaaS accuracy declaration while returning deterministic JSON on query failures. Lint, strict TypeScript, API smoke, security smoke, diff checks, and compiler-artifact cleanup passed before commit `a0c4531` was pushed.
+
+معالجة أخطاء usage-history:
+
+عند `2026-08-17T13:20:56Z` تم تغليف endpoint سجل audit التاريخي المجمّع الخاص بـ SaaS باستخدام `safeAuthError`، مع الحفاظ على SQL aggregation المقيّد بالworkspace وتصريح الدقة الخاص بأحداث SaaS، وإرجاع JSON حتمي عند فشل الاستعلام. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `a0c4531`.
+
