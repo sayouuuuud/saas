@@ -3,14 +3,15 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { createSession } from "@/lib/auth";
+import { createSession, safeAuthError } from "@/lib/auth";
 import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 const schema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().toLowerCase().email(), password: z.string().min(8).max(72) });
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export async function POST(request: Request) {
-  const rate = checkRateLimit(request, "auth:register", 5);
+  try {
+    const rate = checkRateLimit(request, "auth:register", 5);
   if (!rate.allowed) return NextResponse.json({ error: "محاولات كثيرة، حاول مرة أخرى لاحقًا" }, { status: 429, headers: rateLimitHeaders(rate) });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "تحقق من الاسم والبريد وكلمة المرور" }, { status: 400 });
@@ -36,5 +37,8 @@ export async function POST(request: Request) {
   await prisma.auditLog.create({ data: { actorId: user.id, workspaceId, action: "LOGIN", entity: "Session", entityId: user.id, reason: "registration_session_created" } });
   const response: { user: { id: string; name: string; email: string }; verificationToken?: string } = { user: { id: user.id, name: user.name, email: user.email } };
   if (process.env.NODE_ENV !== "production") response.verificationToken = verificationToken;
-  return NextResponse.json(response, { status: 201 });
+    return NextResponse.json(response, { status: 201 });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
