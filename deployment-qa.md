@@ -448,3 +448,11 @@ The measured system epoch was `1786971535`, while the required completion epoch 
 
 كان epoch ساعة النظام المقاس `1786971535`، بينما epoch الإكمال المطلوب هو `1786999623`، وظل `execution-window.json` بالحالة `active`. بقي watchdog PID 5121 وfinal verifier PID 64081 قيد التشغيل. ولم يكن متوقعًا إنشاء final verification log قبل epoch المطلوب.
 
+Atomic profile mutation:
+
+At 2026-08-17T13:00:07Z, profile updates in `/api/me` were changed to update the user row and its workspace audit record inside one Prisma transaction. A concurrent unique-email conflict is now translated to HTTP 409 instead of a generic 500. Lint, strict TypeScript compilation, production build, and API smoke passed before commit `7d83ac4` was pushed.
+
+تعديل الملف الشخصي الذري:
+
+عند `2026-08-17T13:00:07Z` أصبحت تحديثات الملف الشخصي في `/api/me` تعدل سجل المستخدم وسجل التدقيق الخاص بمساحة العمل داخل transaction واحدة. كما أصبح تعارض البريد الإلكتروني الفريد الناتج عن التزامن يعيد HTTP 409 بدلًا من 500 عام. نجحت lint وTypeScript وproduction build وAPI smoke قبل دفع commit `7d83ac4`.
+
