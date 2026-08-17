@@ -1474,3 +1474,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Identified that the production build can regenerate tracked `next-env.d.ts` metadata after the full matrix, which would make the strengthened final verifier reject an otherwise passing run.
 - Updated the regression cleanup trap to restore `next-env.d.ts` alongside `tsconfig.tsbuildinfo`.
 - Reran `pnpm test:regression-matrix`: the complete 53-route build and every API, public, degraded, security, auth, tenant, subscription, account, client-cache, admin, boundary, independence, collection, and audit suite passed; the repository was clean after the run.
+
+## 2026-08-17 — Private admin noindex boundary
+
+- Added an `/admin` segment layout with `robots: noindex, nofollow`, inherited by the staff dashboard and all bounded admin sections.
+- Extended `admin-pages-smoke.sh` to assert noindex metadata on `/admin`, teachers, plans, subscriptions, billing, and LMS-link routes while preserving unauthenticated authorization-guard checks.
+- Lint, strict TypeScript, the SQLite production build, and the focused admin smoke passed.
