@@ -784,3 +784,9 @@ Ticket pagination contract fix completed at 2026-08-17T14:00:04Z:
 A newly strengthened API smoke assertion exposed that `/api/tickets` accepted `limit` but omitted `offset` metadata and did not apply `skip`. The collection GET now uses the bounded 50-row limit and 10,000-row offset contract, reads `limit + 1` for lookahead, and returns `pagination.limit`, `offset`, `hasMore`, and `nextOffset` with the existing limited projection. The initial smoke run failed exactly at the missing offset assertion; after the fix, API smoke and edge-case smoke passed, followed by clean lint, strict TypeScript, and the 33-route production build.
 
 كشفت إضافة assertion أقوى لاختبار API أن GET الخاص بـ `/api/tickets` كان يقبل limit لكنه لا يعيد offset ولا يطبّق skip. تم إصلاح ذلك باستخدام حد 50 صفًا وحد أقصى للإزاحة 10,000، وقراءة limit + 1 لاكتشاف الصفحة التالية، وإرجاع `pagination.limit` و`offset` و`hasMore` و`nextOffset` مع projection المحدود السابق. فشل التشغيل الأول عند assertion الخاصة بـ offset تحديدًا، وبعد الإصلاح نجحت اختبارات API وedge-case ثم lint وstrict TypeScript وproduction build الذي ولّد 33 route.
+
+Arabic ticket-status UX improvement completed at 2026-08-17T14:00:44Z:
+
+Support ticket rows now translate all known status enums into Arabic labels, including in-progress, waiting-on-customer, and closed states, while preserving the raw value only as a forward-compatible fallback for an unknown future status. Lint and strict TypeScript passed.
+
+تم تحسين عرض حالات تذاكر الدعم بالعربية: أصبحت حالات قيد المتابعة وبانتظار ردك ومغلقة مترجمة بشكل صريح، مع إبقاء القيمة الخام كحل احتياطي متوافق مع حالات مستقبلية غير معروفة. نجحت lint وstrict TypeScript.
