@@ -36,13 +36,25 @@ export async function getCurrentUser() {
   if (!rawToken) return null;
   const session = await prisma.session.findUnique({
     where: { tokenHash: hashToken(rawToken) },
-    include: { user: { include: { workspace: { select: { id: true, name: true } } } } },
+    include: {
+      user: {
+        include: {
+          workspace: { select: { id: true, name: true } },
+          memberships: {
+            orderBy: { createdAt: "asc" },
+            take: 1,
+            select: { workspace: { select: { id: true, name: true } } },
+          },
+        },
+      },
+    },
   });
   if (!session || session.expiresAt <= new Date()) {
     if (session) await prisma.session.delete({ where: { id: session.id } });
     return null;
   }
-  return session.user;
+  const { memberships, ...user } = session.user;
+  return { ...user, workspace: user.workspace ?? memberships[0]?.workspace ?? null };
 }
 
 export async function requireUser() {

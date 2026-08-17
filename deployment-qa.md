@@ -310,3 +310,10 @@ At 2026-08-17T12:29:17Z, successful password login and explicit logout now creat
 تصليب تدقيق المصادقة:
 
 في `2026-08-17T12:29:17Z` أصبحت عملية تسجيل الدخول الناجحة وتسجيل الخروج الصريح تنشئان سجلي تدقيق `LOGIN` و`LOGOUT` مرتبطين بمساحة العمل. أصبحت عملية تحقق البريد تحدّث المستخدم وتكتب سجل `SECURITY_EVENT` داخل transaction واحدة باستخدام lookup لمساحة عمل المالك المعروفة، بدل الاعتماد على relation غير محمّلة. يختبر auth smoke الآن دورتين كاملتين للدخول والخروج ويتحقق من عقد عدّاد التدقيق؛ ونجحت lint وbuild واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك دون تحذيرات lint.
+Membership session hardening:
+
+At 2026-08-17T12:30:28Z, session hydration was corrected to resolve the first authorized `WorkspaceMember` when a user is not the owner of a workspace, while retaining a narrow identity-only projection. `requireWorkspaceRole` can now enforce billing, support, and workspace permissions for member users instead of incorrectly returning `WORKSPACE_NOT_FOUND`. Lint, production build, and API, security, auth, edge, tenant-isolation, and subscription smoke suites all passed.
+
+تصليب جلسة أعضاء مساحة العمل:
+
+في `2026-08-17T12:30:28Z` تم تصحيح hydration للجلسة بحيث يحل أول `WorkspaceMember` مصرح به عندما لا يكون المستخدم مالكًا لمساحة العمل، مع الإبقاء على projection ضيق للهوية فقط. أصبح `requireWorkspaceRole` قادرًا على تطبيق صلاحيات الفوترة والدعم ومساحة العمل على الأعضاء بدل إرجاع `WORKSPACE_NOT_FOUND` خطأً. نجحت lint وproduction build واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك.
