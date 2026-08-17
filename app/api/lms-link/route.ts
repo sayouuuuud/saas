@@ -31,7 +31,10 @@ export async function POST(request: Request) {
   const publicSafe = await validateExternalHttpsUrl(parsed.data.publicUrl);
   const adminSafe = parsed.data.adminUrl ? await validateExternalHttpsUrl(parsed.data.adminUrl) : { ok: true as const };
   if (!publicSafe.ok || !adminSafe.ok) return NextResponse.json({ error: "أدخل روابط HTTPS عامة فقط. لا يمكن حفظ localhost أو العناوين الداخلية." }, { status: 400 });
-  const link = await prisma.lmsLink.create({ data: { workspaceId: user.workspace.id, addedByUserId: user.id, displayName: parsed.data.displayName, publicUrl: parsed.data.publicUrl, adminUrl: parsed.data.adminUrl || null, notes: parsed.data.notes || null } });
-  await prisma.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "CREATE", entity: "LmsLink", entityId: link.id, reason: "teacher added external LMS link" } });
+  const link = await prisma.$transaction(async (tx) => {
+    const created = await tx.lmsLink.create({ data: { workspaceId: user.workspace.id, addedByUserId: user.id, displayName: parsed.data.displayName, publicUrl: parsed.data.publicUrl, adminUrl: parsed.data.adminUrl || null, notes: parsed.data.notes || null } });
+    await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "CREATE", entity: "LmsLink", entityId: created.id, reason: "teacher added external LMS link" } });
+    return created;
+  });
   return NextResponse.json({ link }, { status: 201 });
 }

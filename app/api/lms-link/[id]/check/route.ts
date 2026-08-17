@@ -15,8 +15,9 @@ export async function POST(_request: Request, context: Context) {
   const checkedAt = new Date();
   const updated = await prisma.$transaction(async (tx) => {
     await tx.lmsLinkCheck.create({ data: { lmsLinkId: id, status: result.status, statusCode: result.statusCode, durationMs: result.durationMs, safeMessage: result.safeMessage, checkedAt } });
-    return tx.lmsLink.update({ where: { id }, data: { status: result.status, lastCheckedAt: checkedAt, lastErrorCode: result.status === "REACHABLE" ? null : result.safeMessage } });
+    const next = await tx.lmsLink.update({ where: { id }, data: { status: result.status, lastCheckedAt: checkedAt, lastErrorCode: result.status === "REACHABLE" ? null : result.safeMessage } });
+    await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "LINK_CHECK", entity: "LmsLink", entityId: id, reason: result.safeMessage } });
+    return next;
   });
-  await prisma.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "LINK_CHECK", entity: "LmsLink", entityId: id, reason: result.safeMessage } });
   return NextResponse.json({ link: updated, check: result });
 }
