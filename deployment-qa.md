@@ -107,3 +107,8 @@ SSRF hardening:
 
 LMS URL safety now normalizes IP addresses and rejects IPv4-mapped IPv6 private addresses, IPv6 unspecified/loopback addresses, and existing private/link-local ranges. Security smoke coverage now explicitly rejects an HTTPS localhost LMS URL. Security, lint, production build, API, authentication, edge-case, and tenant-isolation tests passed at 2026-08-17T11:28:52Z.
 
+
+Integrity and dependency audit:
+
+At 2026-08-17T11:29:15Z, Prisma validation passed, all three local migrations were applied with the database schema up to date, and `pnpm audit --prod` reported no known vulnerabilities.
+
