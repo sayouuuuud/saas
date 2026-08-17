@@ -67,3 +67,8 @@ Accessibility refinement verification:
 
 The dashboard, login, and billing surfaces now use explicit non-submit button types for interactive controls and Arabic `aria-label` values for icon-only actions such as sidebar, notification, settings, and payment controls. After these changes, lint, production build, API smoke, security smoke, authentication security, edge-case, and tenant-isolation suites all passed at 2026-08-17T11:17:50Z.
 
+
+Shared authentication-form hardening:
+
+The verification, forgot-password, and reset-password flows now provide browser autocomplete hints, explicit submit semantics, accessible live status and alert roles, and a user-safe network failure message. The complete lint, build, API, security, authentication, edge-case, and tenant-isolation suite passed at 2026-08-17T11:20:56Z.
+
