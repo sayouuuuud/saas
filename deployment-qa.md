@@ -151,3 +151,7 @@ Webhook audit and test determinism follow-up:
 
 At 2026-08-17T11:49:33Z, successful payment webhooks were extended to write a transactional `PAYMENT` audit record containing the provider event and invoice metadata. During retesting, the security smoke suite was corrected to generate a unique per-run test client identity, and the lifecycle suite was corrected to generate a unique webhook event ID; this prevents stale in-memory limiter buckets and prior event payloads from contaminating later local runs. The security and subscription lifecycle suites both passed after the fixes.
 
+Session query optimization:
+
+At 2026-08-17T11:51:35Z, generic session hydration was reduced to the user and workspace identity projection (`id`, `name`) only. `/api/auth/me` now retrieves the plan/subscription presentation fields and the five LMS-link summaries in parallel, preserving its response contract while avoiding unnecessary relation payloads on every authenticated request. Lint, production build, API, security, authentication, edge-case, tenant-isolation, and subscription lifecycle suites all passed.
+

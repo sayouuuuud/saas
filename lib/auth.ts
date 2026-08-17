@@ -36,7 +36,7 @@ export async function getCurrentUser() {
   if (!rawToken) return null;
   const session = await prisma.session.findUnique({
     where: { tokenHash: hashToken(rawToken) },
-    include: { user: { include: { workspace: { include: { plan: true, subscription: { include: { plan: true } } } } } } },
+    include: { user: { include: { workspace: { select: { id: true, name: true } } } } },
   });
   if (!session || session.expiresAt <= new Date()) {
     if (session) await prisma.session.delete({ where: { id: session.id } });
