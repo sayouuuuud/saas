@@ -228,8 +228,8 @@ At 2026-08-17T12:09:08Z, the security smoke suite was extended to verify that un
 
 Documentation consistency:
 
-At 2026-08-17T12:10:17Z, README.md was updated to document idempotent LMS integration-request responses and the rule that Vercel deployment claims require a matching deployment ID, commit SHA, and  state. , lint, and production build passed after the documentation update.
+At 2026-08-17T12:10:17Z, README.md was updated to document idempotent LMS integration-request responses and the rule that Vercel deployment claims require a matching deployment ID, commit SHA, and `READY` state. `git diff --check`, lint, and production build passed after the documentation update.
 
 اتساق التوثيق:
 
-في 2026-08-17T12:10:17Z تم تحديث README.md لتوثيق استجابات طلبات تكامل LMS المتكررة كعمليات idempotent، ولتأكيد أن إعلان نشر Vercel يتطلب تطابق deployment ID وcommit SHA وحالة . نجح  وlint وproduction build بعد تحديث التوثيق.
+في 2026-08-17T12:10:17Z تم تحديث README.md لتوثيق استجابات طلبات تكامل LMS المتكررة كعمليات idempotent، ولتأكيد أن إعلان نشر Vercel يتطلب تطابق deployment ID وcommit SHA وحالة `READY`. نجح `git diff --check` وlint وproduction build بعد تحديث التوثيق.
