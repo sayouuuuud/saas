@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const user = await getCurrentUser();
-    if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
+    if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "cache-control": "no-store", "content-type": "application/json" } });
     const workspaceId = user.workspace.id;
     const [members, tickets, linkChecks, auditEvents, apiCalls] = await Promise.all([
       prisma.workspaceMember.count({ where: { workspaceId } }),
@@ -27,7 +27,7 @@ export async function GET() {
         bandwidth: { value: null, source: null, accuracy: "unavailable_without_official_source" },
         cpuRam: { value: null, source: null, accuracy: "unavailable_without_official_source" },
       },
-    });
+    }, { headers: { "cache-control": "private, no-store" } });
   } catch (error) {
     return safeAuthError(error);
   }

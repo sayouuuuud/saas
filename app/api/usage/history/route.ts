@@ -6,7 +6,7 @@ type DailyAuditCount = { date: string; count: bigint | number };
 export async function GET() {
   try {
     const user = await getCurrentUser();
-    if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
+    if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "cache-control": "no-store", "content-type": "application/json" } });
     const start = new Date();
     start.setDate(start.getDate() - 30);
     const rows = await prisma.$queryRaw<DailyAuditCount[]>`
@@ -20,7 +20,7 @@ export async function GET() {
       source: "saas_audit_log",
       accuracy: "exact_for_saas_events",
       history: rows.map((row) => ({ date: row.date, count: Number(row.count) })),
-    });
+    }, { headers: { "cache-control": "private, no-store" } });
   } catch (error) {
     return safeAuthError(error);
   }

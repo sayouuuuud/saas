@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const user = await getCurrentUser();
-    if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
+    if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "cache-control": "no-store", "content-type": "application/json" } });
     const workspaceId = user.workspace.id;
     const [subscription, invoices, invoiceCount, tickets, links, auditEventCount] = await Promise.all([
       prisma.subscription.findUnique({ where: { workspaceId }, select: { status: true, plan: { select: { name: true } } } }),
@@ -20,7 +20,7 @@ export async function GET() {
       summary: { subscriptionStatus: subscription?.status || null, plan: subscription?.plan.name || null, invoiceCount, ticketCount: tickets, lmsLinkCount: links, auditEventCount },
       invoices,
       educationalMetrics: { status: "unavailable", reason: "لا يوجد مصدر رسمي أو تكامل موثق لبيانات LMS التعليمية" },
-    });
+    }, { headers: { "cache-control": "private, no-store" } });
   } catch (error) {
     return safeAuthError(error);
   }

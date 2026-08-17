@@ -1191,3 +1191,8 @@ The matrix exposed and corrected three reproducibility defects during this cycle
 ## 2026-08-17 15:25:34Z — Prisma generation failure-path hardening
 
 The Prisma client generation script was corrected to import `node:fs`, ensuring an absent `DATABASE_URL` produces the intended actionable validation message instead of a runtime `ReferenceError`. The missing-URL failure path and SQLite generation path were both exercised directly. The full `pnpm test:regression-matrix` passed again, covering both Prisma schemas, lint, strict build, migrations, seed, all API/security/auth/edge/tenant/subscription suites, production TLS configuration, final-window status, 28 safe-auth boundaries, LMS independence, collection bounds, and the production dependency audit. The real-time execution window remains active at epoch `1786980334`; required completion remains epoch `1786999623` (`2026-08-17T20:47:03Z`).
+
+
+## 2026-08-17 15:28:26Z — authenticated analytics cache isolation
+
+The authenticated `/api/reports`, `/api/usage`, and `/api/usage/history` endpoints now mark unauthorized responses `no-store` and successful workspace-scoped responses `private, no-store`. This prevents intermediary caching from replaying tenant-specific SaaS metrics across sessions while preserving the existing response contracts and LMS-independent data boundaries. The complete `pnpm test:regression-matrix` passed at epoch `1786980506`, including build, migrations, seed, all smoke suites, production configuration, final-window status, 28 auth boundaries, LMS independence, collection bounds, and dependency audit. The required real-time completion epoch remains `1786999623` (`2026-08-17T20:47:03Z`).
