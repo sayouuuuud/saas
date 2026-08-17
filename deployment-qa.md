@@ -1084,3 +1084,11 @@ Pinned `packageManager` to `pnpm@11.21.0` so Vercel and local environments use t
 اكتمل تقوية قابلية إعادة إنتاج package manager في 2026-08-17T14:34:25Z (epoch 1786977265):
 
 ثُبّت `packageManager` على `pnpm@11.21.0` لضمان استخدام Vercel والبيئة المحلية لإصدار pnpm نفسه الذي يقرأ workspace override وعقد lockfile. نجح frozen install وlint وstrict TypeScript وproduction build الذي يحتوي 33 route و`pnpm audit --prod`.
+
+Vercel boundary recheck after package-manager pin at 2026-08-17T14:35:01Z (epoch 1786977301):
+
+The latest observed READY production deployment remains `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` for commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d`. No newer READY deployment for the current pnpm pin, regression-matrix, or team-panel commits was present in the queried inventory; these commits remain pushed but not claimed as live.
+
+إعادة فحص حد Vercel بعد تثبيت package manager في 2026-08-17T14:35:01Z (epoch 1786977301):
+
+لا يزال أحدث deployment إنتاجي READY المرصود هو `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` للـ commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d`. لم يظهر deployment READY أحدث للـ commits الحالية الخاصة بتثبيت pnpm أو regression-matrix أو لوحة الفريق؛ لذلك تبقى هذه commits مدفوعة دون إعلانها live.
