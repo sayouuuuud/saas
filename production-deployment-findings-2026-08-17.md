@@ -96,3 +96,7 @@ The latest Vercel runtime-error query still returns one group only: `/api/plans`
 ## Cleanup-hardening deployment status — 2026-08-17T17:51Z
 
 GitHub currently reports commit `fb2e26b` (`fix: reap late next cleanup processes`) as `pending` with no provider status entries yet. This is an external deployment-propagation state; the source has already passed the complete local regression matrix and the canonical alias remains green on the independently confirmed READY deployment.
+
+## Rate-limit transition — 2026-08-17T17:51Z
+
+GitHub’s Vercel status for the latest clean revision `b3662f0` now reports `failure` with `Deployment rate limited — retry in 24 hours`. This confirms the pending state resolved to the known external provider limit; no local application or canonical-alias failure was introduced.
