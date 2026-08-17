@@ -92,3 +92,7 @@ GitHub reports commit `4d7e9dd` (`fix: clean regression server descendants`) wit
 ## Runtime-error recheck — 2026-08-17T17:44Z
 
 The latest Vercel runtime-error query still returns one group only: `/api/plans` with `PrismaClientInitializationError`, count 11 across 5 users, last seen at 17:43:25Z on deployment `dpl_5oBggrJy94XKtabCgB39VNu23PNs`. This remains covered by the degraded plans response contract; no unexpected route error group is present.
+
+## Cleanup-hardening deployment status — 2026-08-17T17:51Z
+
+GitHub currently reports commit `fb2e26b` (`fix: reap late next cleanup processes`) as `pending` with no provider status entries yet. This is an external deployment-propagation state; the source has already passed the complete local regression matrix and the canonical alias remains green on the independently confirmed READY deployment.
