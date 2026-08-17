@@ -20,6 +20,8 @@ done
   pnpm test:auth
   pnpm test:edge
   pnpm test:tenant
+  pnpm test:subscription
+  pnpm test:production-config
   pnpm audit --prod
   printf 'final_verification_status=passed\n'
   printf 'final_verification_finished_at=%s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
