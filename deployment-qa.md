@@ -1379,3 +1379,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 ## 2026-08-17 — Full regression after settings hardening
 
 - `pnpm test:regression-matrix` passed after the role-gated settings change. The matrix confirmed a 52-route production build and green API, public/policy, degraded-catalog, security, auth, edge-case, tenant-isolation, subscription, account, admin, production-config, final-window, safe-error, LMS-independence, collection-bounds, and dependency-audit checks.
+
+## 2026-08-17 — Private account noindex boundary
+
+- Added an `/app` segment metadata layout with `robots: { index: false, follow: false, nocache: true }` so account pages remain private even when an unauthenticated request receives an HTML shell.
+- Extended account smoke to assert `noindex` metadata on the settings route.
+- Validation passed: lint, strict TypeScript, production build with 52 routes, and account smoke for all account pages and protected APIs.

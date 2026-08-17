@@ -20,6 +20,7 @@ grep -q 'بلا تخمين' <<<"$reports_body"
 settings_body=$(curl -fsS --max-time 10 "$BASE_URL/app/settings")
 grep -q 'إعدادات بسيطة' <<<"$settings_body"
 grep -q 'حدود الإعدادات' <<<"$settings_body"
+grep -q 'noindex' <<<"$settings_body"
 security_body=$(curl -fsS --max-time 10 "$BASE_URL/app/security")
 grep -q 'حسابك محمي' <<<"$security_body"
 grep -q 'حدود أمنية صريحة' <<<"$security_body"
@@ -37,4 +38,4 @@ for endpoint in me subscription usage lms-link reports workspace; do
   rm -f "$headers" "$body"
 done
 
-printf 'Account pages smoke test passed for profile, subscription, usage, reports, settings, security, notifications, LMS connection, and protected SaaS APIs\n'
+printf 'Account pages smoke test passed for private noindex account pages, profile, subscription, usage, reports, settings, security, notifications, LMS connection, and protected SaaS APIs\n'
