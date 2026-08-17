@@ -27,6 +27,7 @@ assert_page "/features" "مزايا مركزية" "المزايا | مركزية
 assert_page "/how-it-works" "كيف تعمل المنصة" "كيف تعمل | مركزية" "تعرّف على خطوات التسجيل والاشتراك والدفع وربط رابط LMS الاختياري داخل منصة SaaS مستقلة."
 assert_page "/pricing" "أسعار واضحة" "الأسعار | مركزية" "خطط SaaS شفافة لإدارة الحساب والاشتراك والفوترة والدعم وروابط LMS الاختيارية."
 assert_page "/demo" "عرض عملي" "اطلب عرضًا | مركزية" "اطلب عرضًا عمليًا لمنصة مركزية لإدارة حساب SaaS والاشتراك والفوترة وروابط المنصة التعليمية."
+assert_page "/contact" "نحن هنا للمساعدة" "تواصل معنا | مركزية" "تواصل مع فريق مركزية بشأن الحساب والاشتراك والفوترة ورابط المنصة والدعم."
 
 robots_headers=$(curl -fsSI --max-time 10 "${BASE_URL}/robots.txt")
 grep -Eiq 'content-type:.*text/plain' <<<"$robots_headers"
@@ -41,5 +42,6 @@ grep -Fq "/features</loc>" <<<"$sitemap"
 grep -Fq "/how-it-works</loc>" <<<"$sitemap"
 grep -Fq "/pricing</loc>" <<<"$sitemap"
 grep -Fq "/demo</loc>" <<<"$sitemap"
+grep -Fq "/contact</loc>" <<<"$sitemap"
 
-printf 'Public pages smoke test passed for /features, /how-it-works, /pricing, /demo, robots.txt, and sitemap.xml\n'
+printf 'Public pages smoke test passed for /features, /how-it-works, /pricing, /demo, /contact, robots.txt, and sitemap.xml\n'

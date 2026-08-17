@@ -1297,3 +1297,10 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - `pnpm test:regression-matrix` passed end to end after the account-surface changes: Prisma validation for SQLite and PostgreSQL schemas, lint, strict TypeScript, production build, migrations, seed, API, public pages, degraded plans, security, authentication, edge cases, tenant isolation, subscription lifecycle, subscription-page, production configuration, final-window status, auth-boundary, LMS-independence, collection-bounds, and `pnpm audit --prod`.
 - The build generated 40 routes and the matrix confirmed no LMS database access or forbidden LMS persistence identifiers.
 - Vercel deployment `dpl_6bTVJJCApTya8NobjENTzKxsqzW5` for commit `526c39c198d703f8d8ce907fa488695a6895005c` reached `READY` with production target. Deployment-specific URL: `https://saas-hjkonb859-itz4kairo-5176s-projects.vercel.app/`.
+
+## 2026-08-17 — Dedicated contact surface
+
+- Added `/contact` as a dedicated public route with Arabic metadata, support-routing sections, secure ticket guidance, and explicit SaaS/LMS boundaries.
+- Added `/contact` to `app/sitemap.ts` and expanded `scripts/public-pages-smoke.sh` to assert its metadata, boundary copy, HTTP success, content type coverage, and sitemap entry.
+- Validation passed: lint, strict TypeScript, SQLite-backed production build with 41 generated routes, and isolated public-pages smoke for `/features`, `/how-it-works`, `/pricing`, `/demo`, `/contact`, `robots.txt`, and `sitemap.xml`.
+- No LMS database was accessed or modified.
