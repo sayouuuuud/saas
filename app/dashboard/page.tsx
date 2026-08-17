@@ -72,7 +72,7 @@ export default function DashboardPage() {
         <div className="workspace-switcher"><span className="workspace-avatar">{name.slice(0, 1)}</span><span><b>{workspace?.name || 'مساحة العمل'}</b><small>حساب المدرس</small></span><ChevronDown size={13} /></div>
         <small className="app-nav-label">المساحة الرئيسية</small>
         <nav className="app-nav">{nav.map(({ label, icon: Icon, href }, index) => <Link href={href} key={label} className={`app-nav-item ${index === 0 ? 'active' : ''}`}><Icon size={16} /><span>{label}</span>{index === 3 && <small>3</small>}</Link>)}</nav>
-        <div className="app-sidebar-bottom"><div className="app-user"><span className="mini-avatar">{name.slice(0, 1)}</span><span><b>{name}</b><small>المالك</small></span></div><button type="button" aria-label="إعدادات الحساب غير متاحة بعد" title="ستتوفر إعدادات الحساب في إصدار لاحق" disabled><Settings size={15} /></button></div>
+        <div className="app-sidebar-bottom"><div className="app-user"><span className="mini-avatar">{name.slice(0, 1)}</span><span><b>{name}</b><small>المالك</small></span></div><Link href="/app/profile" aria-label="فتح الملف الشخصي" title="الملف الشخصي"><Settings size={15} /></Link></div>
       </aside>
       {mobileOpen && <button type="button" className="sidebar-overlay" aria-label="إغلاق القائمة" onClick={() => setMobileOpen(false)} />}
       <section className="dashboard-main">

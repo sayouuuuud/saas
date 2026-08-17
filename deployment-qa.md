@@ -1304,3 +1304,11 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Added `/contact` to `app/sitemap.ts` and expanded `scripts/public-pages-smoke.sh` to assert its metadata, boundary copy, HTTP success, content type coverage, and sitemap entry.
 - Validation passed: lint, strict TypeScript, SQLite-backed production build with 41 generated routes, and isolated public-pages smoke for `/features`, `/how-it-works`, `/pricing`, `/demo`, `/contact`, `robots.txt`, and `sitemap.xml`.
 - No LMS database was accessed or modified.
+
+## 2026-08-17 — Dedicated profile account surface
+
+- Added `/app/profile` backed by `GET/PATCH /api/me`, with editable name and email, browser autocomplete hints, accessible status/error handling, abortable loading, no-store fetches, and explicit SaaS-only privacy boundaries.
+- Replaced the disabled dashboard settings control with an accessible link to `/app/profile`.
+- Added `scripts/account-pages-smoke.sh`, registered `test:account-pages`, and included it in `regression-matrix.sh`. The smoke passed for `/app/profile`, `/app/subscription`, unauthenticated `/api/me`, and unauthenticated `/api/subscription`, including no-store headers.
+- Focused validation passed: lint, strict TypeScript, and production build with 42 generated routes.
+- An initial smoke assertion was corrected after observing the intended profile copy; the rerun passed. No LMS database was accessed or modified.
