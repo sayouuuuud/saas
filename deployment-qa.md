@@ -1333,3 +1333,11 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - `pnpm test:regression-matrix` passed after adding profile, usage, subscription, and LMS connection routes. The matrix covered SQLite/PostgreSQL schema validation, lint, strict TypeScript, 44-route production build, migrations, seed, API, public pages, degraded plans, security, auth, edge cases, tenant isolation, subscription lifecycle, dedicated account pages, production config, final-window status, auth boundaries, LMS independence, collection bounds, and production audit.
 - The latest matrix confirmed the account pages smoke passed for `/app/profile`, `/app/subscription`, `/app/usage`, `/app/lms-connection`, `/api/me`, `/api/subscription`, `/api/usage`, and `/api/lms-link`.
 - No LMS database was accessed or modified.
+
+## 2026-08-17 — Dedicated staff administration sections
+
+- Added the staff-only `/admin/[section]` surface for `/admin/teachers`, `/admin/plans`, `/admin/subscriptions`, `/admin/billing`, and `/admin/lms-links`, with bounded 50-row projections, explicit SaaS-only descriptions, and authorization guards.
+- Corrected projections against the actual schema: workspace-member roles for teachers, plan cents fields, workspace-linked subscriptions, and invoice number/amount/createdAt fields.
+- Updated the admin dashboard quick links to the dedicated sections and added `scripts/admin-pages-smoke.sh` to the regression matrix.
+- Validation passed: lint, strict TypeScript, production build with 44 routes, and unauthenticated guard smoke for all six admin routes.
+- No LMS database was accessed or modified; LMS links remain reference metadata only.
