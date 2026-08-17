@@ -1327,3 +1327,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Expanded `scripts/account-pages-smoke.sh` to cover the page and unauthenticated `/api/lms-link` no-store behavior.
 - Validation passed: lint, strict TypeScript, production build with 44 generated routes, and account smoke for profile, subscription, usage, LMS connection, and protected APIs.
 - The page does not read or copy LMS content and does not infer LMS health from link reachability. No LMS database was accessed or modified.
+
+## 2026-08-17 — Full regression after account surfaces
+
+- `pnpm test:regression-matrix` passed after adding profile, usage, subscription, and LMS connection routes. The matrix covered SQLite/PostgreSQL schema validation, lint, strict TypeScript, 44-route production build, migrations, seed, API, public pages, degraded plans, security, auth, edge cases, tenant isolation, subscription lifecycle, dedicated account pages, production config, final-window status, auth boundaries, LMS independence, collection bounds, and production audit.
+- The latest matrix confirmed the account pages smoke passed for `/app/profile`, `/app/subscription`, `/app/usage`, `/app/lms-connection`, `/api/me`, `/api/subscription`, `/api/usage`, and `/api/lms-link`.
+- No LMS database was accessed or modified.
