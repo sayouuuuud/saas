@@ -52,6 +52,12 @@ integration_request="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/req
 test "$(printf '%s' "$integration_request" | grep -c 'recorded')" -ge 1
 integration_repeat="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/request-integration")"
 test "$(printf '%s' "$integration_repeat" | grep -c 'already_recorded')" -eq 1
+updated_link="$(json_request -X PATCH -d '{"displayName":"Updated Academy","adminUrl":"https://example.com/admin"}' "$BASE_URL/api/lms-link/$LINK_ID")"
+test "$(printf '%s' "$updated_link" | grep -c 'Updated Academy')" -ge 1
+updated_link_status="$(json_request "$BASE_URL/api/lms-link?limit=50&offset=0")"
+test "$(printf '%s' "$updated_link_status" | grep -c 'Updated Academy')" -ge 1
+deleted_link_status="$(status_request -X DELETE "$BASE_URL/api/lms-link/$LINK_ID")"
+test "$deleted_link_status" = "200"
 ticket="$(json_request -X POST -d '{"category":"GENERAL","subject":"Smoke test","description":"Reproducible support API smoke test","priority":"normal"}' "$BASE_URL/api/tickets")"
 test "$(printf '%s' "$ticket" | grep -c 'SUP-')" -ge 1
 TICKET_ID="$(printf '%s' "$ticket" | sed -n 's/.*"ticket":{"id":"\([^"]*\)".*/\1/p')"

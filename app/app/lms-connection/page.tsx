@@ -20,6 +20,7 @@ export default function LmsConnectionPage() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [checkingId, setCheckingId] = useState('')
+  const [editingId, setEditingId] = useState('')
   const errorRef = useRef<HTMLDivElement>(null)
 
   async function load(signal?: AbortSignal) {
@@ -44,11 +45,27 @@ export default function LmsConnectionPage() {
   async function addLink(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setSaving(true); setError(''); setMessage('')
     try {
-      const response = await fetch('/api/lms-link', { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ displayName, publicUrl, adminUrl }) })
+      const response = await fetch(editingId ? `/api/lms-link/${editingId}` : '/api/lms-link', { method: editingId ? 'PATCH' : 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ displayName, publicUrl, adminUrl }) })
       const body = await response.json().catch(() => ({}))
       if (!response.ok) throw new Error(body.error || 'تعذر حفظ الرابط')
-      setLinks((current) => [body.link, ...current]); setDisplayName(''); setPublicUrl(''); setAdminUrl(''); setShowForm(false); setMessage('تم حفظ الرابط المرجعي. لم يتم نسخ أو قراءة محتوى LMS.')
+      setLinks((current) => editingId ? current.map((link) => link.id === editingId ? { ...link, ...body.link } : link) : [body.link, ...current])
+      setDisplayName(''); setPublicUrl(''); setAdminUrl(''); setEditingId(''); setShowForm(false); setMessage(editingId ? 'تم تحديث الرابط المرجعي.' : 'تم حفظ الرابط المرجعي. لم يتم نسخ أو قراءة محتوى LMS.')
     } catch (saveError) { setError(saveError instanceof Error ? saveError.message : 'تعذر حفظ الرابط') } finally { setSaving(false) }
+  }
+
+  function startEdit(link: LmsLink) {
+    setEditingId(link.id); setDisplayName(link.displayName); setPublicUrl(link.publicUrl); setAdminUrl(link.adminUrl || ''); setShowForm(true); setError(''); setMessage('')
+  }
+
+  async function deleteLink(id: string) {
+    if (!window.confirm('هل تريد حذف هذا الرابط المرجعي؟')) return
+    setError(''); setMessage('')
+    try {
+      const response = await fetch(`/api/lms-link/${id}`, { method: 'DELETE', cache: 'no-store' })
+      const body = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(body.error || 'تعذر حذف الرابط')
+      setLinks((current) => current.filter((link) => link.id !== id)); setMessage('تم حذف الرابط المرجعي.')
+    } catch (deleteError) { setError(deleteError instanceof Error ? deleteError.message : 'تعذر حذف الرابط') }
   }
 
   async function checkLink(id: string) {
@@ -69,9 +86,9 @@ export default function LmsConnectionPage() {
         <div className="billing-heading"><div><span className="section-eyebrow"><span className="eyebrow-dot" />رابط المنصة</span><h1>منصتك في مكان واحد، <em>دون نقلها.</em></h1><p>احفظ روابطك العامة وروابط الإدارة كمرجع داخل SaaS. فحص الوصول محدود ولا يعني أن مركزية تراقب صحة LMS أو تقرأ قاعدة بياناته.</p></div><div className="billing-security"><ShieldCheck size={16} /><span>Link-only mode</span></div></div>
         {error && <div ref={errorRef} tabIndex={-1} className="form-error" role="alert"><span>{error}</span><button type="button" className="text-button" onClick={() => void load()} disabled={loading}><RefreshCw size={14} /> إعادة المحاولة</button></div>}
         {message && <div className="billing-help" role="status"><ShieldCheck size={16} /><span>{message}</span></div>}
-        <div className="invoice-heading"><div><h2>الروابط المحفوظة</h2><p>نحتفظ بالاسم والرابط والحالة المرجعية فقط.</p></div><button type="button" className="button button-dark" onClick={() => setShowForm((value) => !value)}><Plus size={15} /> {showForm ? 'إغلاق النموذج' : 'إضافة رابط'}</button></div>
-        {showForm && <form className="dashboard-link-form" onSubmit={addLink}><label>اسم المنصة<input required minLength={2} maxLength={80} value={displayName} onChange={(event) => setDisplayName(event.target.value)} placeholder="أكاديمية النور" /></label><label>الرابط العام HTTPS<input required type="url" value={publicUrl} onChange={(event) => setPublicUrl(event.target.value)} placeholder="https://academy.example.com" /></label><label>رابط الإدارة (اختياري)<input type="url" value={adminUrl} onChange={(event) => setAdminUrl(event.target.value)} placeholder="https://academy.example.com/admin" /></label><button type="submit" className="button button-dark" disabled={saving}>{saving ? 'جارٍ الحفظ...' : 'حفظ الرابط'}</button></form>}
-        {loading ? <div className="invoice-empty" role="status">جارٍ تحميل الروابط...</div> : links.length ? <div className="invoice-table">{links.map((link) => <article className="invoice-row" key={link.id}><span className="invoice-id"><Link2 size={15} /> {link.displayName}</span><span><a href={link.publicUrl} target="_blank" rel="noreferrer">فتح الرابط <ExternalLink size={13} /></a>{link.adminUrl && <><br /><a href={link.adminUrl} target="_blank" rel="noreferrer">فتح الإدارة <ExternalLink size={13} /></a></>}</span><span>{statusLabels[link.status] || link.status}<small>{link.lastErrorCode ? ` · ${link.lastErrorCode}` : ''}</small></span><span>{link.lastCheckedAt ? `آخر تحقق: ${new Date(link.lastCheckedAt).toLocaleString('ar-EG')}` : 'لم يُتحقق بعد'}<br /><button type="button" className="text-button" onClick={() => void checkLink(link.id)} disabled={checkingId === link.id}>{checkingId === link.id ? 'جارٍ الفحص...' : 'فحص الوصول'}</button>{link.checks?.length ? <small>آخر نتيجة: {link.checks[0].statusCode || 'بدون HTTP'} · {link.checks[0].durationMs || '—'}ms</small> : null}</span></article>)}</div> : <div className="invoice-empty"><Link2 size={20} /> لا يوجد رابط محفوظ بعد. ابدأ برابط HTTPS عام تملكه.</div>}
+        <div className="invoice-heading"><div><h2>الروابط المحفوظة</h2><p>نحتفظ بالاسم والرابط والحالة المرجعية فقط.</p></div><button type="button" className="button button-dark" onClick={() => { setShowForm((value) => !value); setEditingId(''); setDisplayName(''); setPublicUrl(''); setAdminUrl('') }}><Plus size={15} /> {showForm ? 'إغلاق النموذج' : 'إضافة رابط'}</button></div>
+        {showForm && <form className="dashboard-link-form" onSubmit={addLink}><label>اسم المنصة<input required minLength={2} maxLength={80} value={displayName} onChange={(event) => setDisplayName(event.target.value)} placeholder="أكاديمية النور" /></label><label>الرابط العام HTTPS<input required type="url" value={publicUrl} onChange={(event) => setPublicUrl(event.target.value)} placeholder="https://academy.example.com" /></label><label>رابط الإدارة (اختياري)<input type="url" value={adminUrl} onChange={(event) => setAdminUrl(event.target.value)} placeholder="https://academy.example.com/admin" /></label><button type="submit" className="button button-dark" disabled={saving}>{saving ? 'جارٍ الحفظ...' : editingId ? 'تحديث الرابط' : 'حفظ الرابط'}</button></form>}
+        {loading ? <div className="invoice-empty" role="status">جارٍ تحميل الروابط...</div> : links.length ? <div className="invoice-table">{links.map((link) => <article className="invoice-row" key={link.id}><span className="invoice-id"><Link2 size={15} /> {link.displayName}</span><span><a href={link.publicUrl} target="_blank" rel="noreferrer">فتح الرابط <ExternalLink size={13} /></a>{link.adminUrl && <><br /><a href={link.adminUrl} target="_blank" rel="noreferrer">فتح الإدارة <ExternalLink size={13} /></a></>}</span><span>{statusLabels[link.status] || link.status}<small>{link.lastErrorCode ? ` · ${link.lastErrorCode}` : ''}</small></span><span>{link.lastCheckedAt ? `آخر تحقق: ${new Date(link.lastCheckedAt).toLocaleString('ar-EG')}` : 'لم يُتحقق بعد'}<br /><button type="button" className="text-button" onClick={() => void checkLink(link.id)} disabled={checkingId === link.id}>{checkingId === link.id ? 'جارٍ الفحص...' : 'فحص الوصول'}</button> <button type="button" className="text-button" onClick={() => startEdit(link)}>تعديل</button> <button type="button" className="text-button" onClick={() => void deleteLink(link.id)}>حذف</button>{link.checks?.length ? <small>آخر نتيجة: {link.checks[0].statusCode || 'بدون HTTP'} · {link.checks[0].durationMs || '—'}ms</small> : null}</span></article>)}</div> : <div className="invoice-empty"><Link2 size={20} /> لا يوجد رابط محفوظ بعد. ابدأ برابط HTTPS عام تملكه.</div>}
         <div className="billing-help"><ShieldCheck size={16} /><div><b>حدود واضحة</b><span>حالة REACHABLE تعني نجاح فحص وصول محدود في وقت محدد فقط، ولا تعني صحة المحتوى أو توفر كل وظائف LMS.</span></div></div>
       </section>
     </main>
