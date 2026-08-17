@@ -822,3 +822,11 @@ Canonical production probe completed at 2026-08-17T14:05:47Z:
 The canonical URL https://saas-gold-seven-80.vercel.app/ returned HTTP 200 over HTTP/2. The response exposed the expected CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, and Vercel headers. The HTML probe confirmed `<html lang="ar" dir="rtl">`. The Vercel runtime-error query was not completed because the connector call timed out while retrieving server configuration; this is recorded as unavailable evidence rather than a zero-error claim.
 
 أعاد الرابط الأساسي https://saas-gold-seven-80.vercel.app/ الحالة HTTP 200 عبر HTTP/2، وظهرت رؤوس CSP وHSTS وX-Content-Type-Options وX-Frame-Options وReferrer-Policy وPermissions-Policy ورؤوس Vercel المتوقعة. أكد فحص HTML وجود `<html lang="ar" dir="rtl">`. لم يكتمل استعلام أخطاء التشغيل من Vercel بسبب انتهاء مهلة الاتصال أثناء جلب إعدادات الخادم؛ تم تسجيل ذلك كدليل غير متاح، وليس كادعاء بعدم وجود أخطاء.
+
+Honest unavailable-control improvement completed at 2026-08-17T14:06:21Z:
+
+Billing's payment-method add control and support's ticket-detail arrow are now disabled with explanatory titles because their backend/detail actions are not implemented. This removes misleading interactive affordances while preserving the existing functional checkout, export, filter, retry, and pagination controls. Lint and strict TypeScript passed.
+
+تحسين صدق عناصر التحكم غير المتاحة في 2026-08-17T14:06:21Z:
+
+أصبح زر إضافة طريقة الدفع في الفوترة وسهم فتح تفاصيل التذكرة في الدعم معطلين مع عناوين توضيحية، لأن إجراءات الخادم/صفحة التفاصيل الخاصة بهما غير منفذة بعد. أزال ذلك الإيحاءات التفاعلية المضللة مع الحفاظ على إجراءات الدفع والتصدير والتصفية وإعادة المحاولة وpagination العاملة. نجحت lint وstrict TypeScript.
