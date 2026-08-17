@@ -1399,3 +1399,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - `pnpm test:regression-matrix` passed on the latest published branch. The 52-route build, migrations, seed, API/public/degraded-catalog/security/auth/edge-case/tenant-isolation/subscription/account/admin/production-config/final-window suites, safe-error audit, LMS-independence audit, collection-bounds audit, and production dependency audit all passed.
 - The account suite now verifies noindex metadata on every dedicated account route.
+
+## 2026-08-17 — Canonical production smoke gate
+
+- Added `test:canonical-production`, a read-only live-alias smoke gate for public product and policy routes, robots/sitemap content types, and the `/api/plans` no-store contract with either a catalog or the explicit degraded response.
+- The live canonical alias passed the new gate at 16:52Z. This verifies the currently deployed public contract without making the local regression matrix dependent on external network state.

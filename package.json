@@ -31,7 +31,8 @@
     "verify:production": "node scripts/verify-production-config.mjs --strict",
     "test:production-config": "bash scripts/production-config-smoke.sh",
     "test:public-pages": "bash scripts/public-pages-smoke.sh",
-    "test:admin-pages": "bash scripts/admin-pages-smoke.sh"
+    "test:admin-pages": "bash scripts/admin-pages-smoke.sh",
+    "test:canonical-production": "bash scripts/canonical-production-smoke.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
