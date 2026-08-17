@@ -61,7 +61,7 @@ export default function DashboardPage() {
   async function addLink(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setSaving(true); setLinkError('')
     try {
-      const response = await fetch('/api/lms-link', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ displayName, publicUrl }) })
+      const response = await fetch('/api/lms-link', { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ displayName, publicUrl }) })
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.error || 'تعذر حفظ الرابط')
       setLink(payload.link); setShowForm(false); setDisplayName(''); setPublicUrl('')

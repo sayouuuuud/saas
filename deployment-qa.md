@@ -1447,3 +1447,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Audited the team page against the Prisma `WorkspaceRole` enum and found the supported `SUPPORT_CONTACT` role was falling through to a raw internal enum label.
 - Added the Arabic SaaS-owned presentation label `جهة اتصال للدعم`; lint, strict TypeScript, the 53-route SQLite build, and account-pages smoke all passed.
+
+## 2026-08-17 — Client fetch cache-policy hardening
+
+- Audited all `fetch()` calls in `app/` and `components/`; private mutations in billing, dashboard, support, login, and shared auth actions were missing explicit client-side `cache: 'no-store'` declarations.
+- Added `scripts/client-fetch-cache-audit.sh`, registered it as `test:client-fetch-cache`, and inserted it into the full regression matrix after account-page coverage.
+- Added explicit no-store options to all identified private POST requests. Lint, strict TypeScript, the 53-route SQLite production build, and the new audit passed.

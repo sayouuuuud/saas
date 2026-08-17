@@ -122,7 +122,7 @@ export default function BillingPage() {
   async function choosePlan(planCode: string) {
     setBusy(true); setMessage('')
     try {
-      const response = await fetch('/api/checkout/session', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ planCode, billingCycle: annual ? 'YEARLY' : 'MONTHLY' }) })
+      const response = await fetch('/api/checkout/session', { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ planCode, billingCycle: annual ? 'YEARLY' : 'MONTHLY' }) })
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.error || 'تعذر بدء الدفع')
       setMessage('تم تحديث الاشتراك في وضع الاختبار المحلي. اربط بوابة دفع حقيقية قبل الإنتاج.')

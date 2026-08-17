@@ -71,7 +71,7 @@ export default function SupportPage() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setLoading(true); setError('')
     try {
-      const response = await fetch('/api/tickets', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ subject, description, category }) })
+      const response = await fetch('/api/tickets', { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ subject, description, category }) })
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.error || 'تعذر إرسال التذكرة')
       setSubmitted(payload.ticket); setTickets((current) => [payload.ticket, ...current]); setSubject(''); setDescription('')

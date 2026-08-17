@@ -21,7 +21,7 @@ export default function LoginPage() {
     try {
       const endpoint = mode === 'signup' ? '/api/auth/register' : '/api/auth/login'
       const body = mode === 'signup' ? { name, email, password } : { email, password }
-      const response = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+      const response = await fetch(endpoint, { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.error || 'تعذر إتمام العملية')
       router.push('/dashboard')

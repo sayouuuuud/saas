@@ -16,7 +16,7 @@ export default function AuthActionForm({ mode }: { mode: Mode }) {
     const endpoint = mode === "verify" ? "/api/auth/verify" : mode === "forgot" ? "/api/auth/forgot-password" : "/api/auth/reset-password";
     const body = mode === "verify" ? { token } : mode === "forgot" ? { email } : { token, password };
     try {
-      const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const response = await fetch(endpoint, { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) return setStatus({ type: "error", text: data.error || "تعذر إتمام العملية" });
       if (data.resetToken && mode === "forgot") setStatus({ type: "success", text: `تم إنشاء الطلب. رمز الاختبار المحلي: ${data.resetToken}` });
