@@ -1253,3 +1253,8 @@ Added route-specific Arabic metadata to `/features`, `/how-it-works`, and `/pric
 ## 2026-08-17T16:06:08Z — public metadata smoke coverage
 
 Extended `scripts/public-pages-smoke.sh` so `/features`, `/how-it-works`, and `/pricing` now assert their route-specific Arabic `<title>` and description metadata in addition to visible content and the explicit SaaS-only/LMS boundary. The complete `pnpm test:regression-matrix` passed at the system-clock checkpoint above, including build, migration, seed, API, public-pages, degraded-plans, security, authentication, edge-case, tenant-isolation, subscription lifecycle, production configuration, final-window, auth-boundary, LMS-independence, collection-bounds, and dependency checks. The real-time execution window remains active until `2026-08-17T20:47:03Z`.
+
+
+## 2026-08-17T16:08:14Z — public discovery metadata
+
+Added static `/robots.txt` and `/sitemap.xml` routes. Robots permits the public product pages and login while excluding API, admin, app, billing, dashboard, and support surfaces from indexing; the sitemap advertises the landing page, Features, How It Works, Pricing, and login routes using the configurable `NEXT_PUBLIC_SITE_URL` with the canonical Vercel URL as a safe fallback. Extended `scripts/public-pages-smoke.sh` to assert the sitemap declaration, protected API path, and all three public product URLs. The complete `pnpm test:regression-matrix` passed at the system-clock checkpoint above, including the new route generation and smoke assertions plus all existing schema, build, API, security, authentication, edge, tenant, subscription, configuration, boundary, LMS-independence, collection-bounds, and dependency checks. The real-time execution window remains active until `2026-08-17T20:47:03Z`.
