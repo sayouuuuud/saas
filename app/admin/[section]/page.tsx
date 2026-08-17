@@ -17,6 +17,8 @@ const sections = {
   staff: { title: 'الموظفون', description: 'حسابات Staff المصرح لها بالتشغيل.', icon: UserCog },
   audit: { title: 'سجل التدقيق', description: 'الأحداث الحساسة المسجلة داخل SaaS.', icon: ScrollText },
   notifications: { title: 'الإشعارات', description: 'إشعارات الحساب المحفوظة وحالتها.', icon: Bell },
+  coupons: { title: 'أكواد الخصم', description: 'حالة الأكواد التجارية المحلية دون بيانات دفع حساسة.', icon: CreditCard },
+  webhooks: { title: 'أحداث الدفع', description: 'صحة استقبال ومعالجة Webhook دون عرض الحمولة.', icon: ShieldCheck },
   settings: { title: 'إعدادات النظام', description: 'حدود النظام وبيانات التشغيل الحالية.', icon: Settings },
 } as const
 
@@ -70,6 +72,12 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
   } else if (section === 'notifications') {
     const rows = await prisma.notification.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, type: true, title: true, readAt: true, createdAt: true, user: { select: { name: true, email: true } }, workspace: { select: { name: true } } } })
     content = rows.length ? rows.map((item) => row(item.id, [item.title, item.user.name || item.user.email, item.workspace?.name || 'عام', item.readAt ? 'مقروء' : 'غير مقروء', formatDate(item.createdAt)])) : emptyState()
+  } else if (section === 'coupons') {
+    const rows = await prisma.coupon.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, code: true, description: true, percentOff: true, active: true, maxRedemptions: true, redeemedCount: true, expiresAt: true } })
+    content = rows.length ? rows.map((item) => row(item.id, [item.code, item.description, `${item.percentOff}%`, item.active ? 'نشط' : 'متوقف', `${item.redeemedCount}${item.maxRedemptions === null ? '' : ` / ${item.maxRedemptions}`}`, item.expiresAt ? `ينتهي ${formatDate(item.expiresAt)}` : 'بلا انتهاء'])) : emptyState()
+  } else if (section === 'webhooks') {
+    const rows = await prisma.billingWebhookEvent.findMany({ take: 50, orderBy: { receivedAt: 'desc' }, select: { id: true, provider: true, eventId: true, signatureValid: true, state: true, errorCode: true, receivedAt: true, processedAt: true } })
+    content = rows.length ? rows.map((item) => row(item.id, [item.provider, item.eventId, item.signatureValid ? 'توقيع صحيح' : 'توقيع مرفوض', item.state, item.errorCode || '—', formatDate(item.processedAt || item.receivedAt)])) : emptyState()
   } else {
     const [workspaces, staff, plans, lastAudit] = await Promise.all([prisma.workspace.count(), prisma.user.count({ where: { isStaff: true } }), prisma.plan.count({ where: { active: true } }), prisma.auditLog.findFirst({ orderBy: { createdAt: 'desc' }, select: { createdAt: true } })])
     content = <div className="dashboard-metrics usage-metrics"><article className="dash-card"><span>مساحات العمل</span><strong>{workspaces}</strong><small>نطاق SaaS الحالي</small></article><article className="dash-card"><span>Staff</span><strong>{staff}</strong><small>حسابات تشغيل مصرح بها</small></article><article className="dash-card"><span>خطط نشطة</span><strong>{plans}</strong><small>خطط معروضة للبيع</small></article><article className="dash-card"><span>آخر تدقيق</span><strong>{formatDate(lastAudit?.createdAt)}</strong><small>وقت آخر حدث مسجل</small></article></div>
