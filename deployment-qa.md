@@ -1434,3 +1434,7 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Hardened `plans-degraded-smoke.sh` to launch its Next.js process in a separate session and terminate the complete process group on exit, matching the full regression matrix cleanup contract.
 - The focused smoke passed on port 41235 and an `ss` check confirmed no listener remained after cleanup.
+
+## 2026-08-17 — Final 53-route regression after cleanup hardening
+
+- The complete regression matrix passed again after the reserved-port and process-group cleanup fixes. The build generated 53 routes, all public/account/admin/API/security/LMS-isolation/collection-boundary suites passed, and `pnpm audit --prod` reported no known vulnerabilities.
