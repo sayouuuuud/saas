@@ -275,3 +275,10 @@ At 2026-08-17T12:19:45Z, API smoke coverage began asserting that a fresh paid ch
 تغطية عقد التقارير:
 
 في `2026-08-17T12:19:45Z` بدأ API smoke بالتحقق من أن checkout مدفوعًا جديدًا ينتج `summary.invoiceCount = 1` في `/api/reports` بصورة مستقلة عن حد قائمة الفواتير الأخيرة. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
+Workspace loading visual accessibility:
+
+At 2026-08-17T12:21:06Z, the workspace loading boundary received a visible RTL-compatible spinner and a `prefers-reduced-motion` fallback that removes continuous animation while retaining progress contrast. Lint, production build, and all six smoke suites passed.
+
+إتاحة مؤشر تحميل مساحة العمل بصريًا:
+
+في `2026-08-17T12:21:06Z` حصلت حالة تحميل مساحة العمل على مؤشر مرئي متوافق مع RTL، مع fallback لـ `prefers-reduced-motion` يلغي الحركة المستمرة ويحافظ على تباين حالة التقدم. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
