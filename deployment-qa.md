@@ -802,3 +802,9 @@ Support pagination UI improvement completed at 2026-08-17T14:02:39Z:
 The support page now consumes the bounded ticket pagination contract: it requests offset pages, appends older tickets through an accessible Arabic load-more control, preserves retry behavior, and uses abortable stale-response protection. The implementation resets the opposite loading flag when a retry supersedes a page request, preventing a stuck disabled state. Known ticket statuses remain localized in Arabic. Lint and strict TypeScript passed.
 
 تستهلك صفحة الدعم الآن عقد pagination المحدود للتذاكر: تطلب الصفحات عبر offset، وتضيف التذاكر الأقدم من خلال زر عربي قابل للوصول، وتحافظ على إعادة المحاولة والحماية من الاستجابات القديمة عبر AbortController. تم أيضًا منع حالة التعطيل العالقة عند استبدال طلب تحميل المزيد بإعادة محاولة، مع استمرار ترجمة الحالات المعروفة بالعربية. نجحت lint وstrict TypeScript.
+
+Billing invoice pagination UX improvement completed at 2026-08-17T14:03:24Z:
+
+The billing page now consumes bounded invoice pagination, loads 25 invoices initially, exposes an Arabic load-more control for older invoices, appends pages with AbortController protection, and localizes known invoice statuses. A refresh aborts any in-flight append and resets its loading flag so stale pages cannot overwrite the refreshed ledger. Existing CSV export remains available for all invoices currently loaded. Lint and strict TypeScript passed.
+
+تستهلك صفحة الفوترة الآن pagination المحدود للفواتير، فتُحمّل 25 فاتورة أولًا وتعرض زرًا عربيًا لتحميل الفواتير الأقدم، مع حماية AbortController وترجمة الحالات المعروفة. عند إعادة التحميل يتم إلغاء أي طلب تحميل إضافي قائم وتصفير حالته لمنع الاستجابات القديمة من الكتابة فوق السجل المحدّث. يظل تصدير CSV متاحًا لكل الفواتير المحملة حاليًا. نجحت lint وstrict TypeScript.
