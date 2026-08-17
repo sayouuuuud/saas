@@ -624,3 +624,11 @@ At 2026-08-17T13:26:34Z, the public active-plans catalog was wrapped with `safeA
 
 عند `2026-08-17T13:26:34Z` تم تغليف كتالوج الخطط النشطة العام باستخدام `safeAuthError`، مع الحفاظ على ترتيب الأسعار التصاعدي وفك JSON للميزات والحدود، وإرجاع JSON حتمي عند فشل قاعدة البيانات أو بيانات الكتالوج غير الصالحة. نجحت lint وstrict TypeScript وAPI smoke وproduction-config smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `3c29766`.
 
+LMS-link detail mutation hardening:
+
+At 2026-08-17T13:27:25Z, LMS-link PATCH and DELETE were changed to use atomic Prisma transactions that persist the link mutation and its audit event together, while unexpected authorization or database failures now use the shared deterministic error response. Lint, strict TypeScript, production build, API smoke, tenant-isolation smoke, edge-case smoke, diff checks, and compiler-artifact cleanup passed before commit `d6fc7d8` was pushed.
+
+تقوية mutations الخاصة بتفاصيل LMS-link:
+
+عند `2026-08-17T13:27:25Z` تم تعديل PATCH وDELETE الخاصين بروابط LMS لاستخدام Prisma transactions ذرية تحفظ mutation الخاصة بالرابط وaudit event معًا، وأصبحت أخطاء authorization أو قاعدة البيانات غير المتوقعة تمر عبر استجابة الأخطاء الحتمية المشتركة. نجحت lint وstrict TypeScript وproduction build وAPI smoke وtenant-isolation smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `d6fc7d8`.
+
