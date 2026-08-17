@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const controller = new AbortController()
-    fetch('/api/auth/me', { signal: controller.signal })
+    fetch('/api/auth/me', { cache: 'no-store', signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) throw new Error('تعذر تحميل بيانات الحساب')
         return response.json()

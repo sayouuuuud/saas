@@ -1226,3 +1226,8 @@ The API smoke suite now explicitly checks `cache-control` on authenticated `/api
 ## 2026-08-17 15:44:08Z — degraded plan-catalog retry contract
 
 The public `/api/plans` degraded response now includes `retry-after: 60` alongside `cache-control: no-store` and `x-centralia-degraded: plans-database-unavailable`, making the temporary empty catalog explicit and safely retryable. A new `scripts/plans-degraded-smoke.sh` boots the built application against an uninitialized SQLite database and verifies HTTP 200, the empty/degraded payload, no-store semantics, the retry hint, and the diagnostic header. The complete `pnpm test:regression-matrix` passed at epoch `1786981448`, including the new isolated degraded-catalog gate and all existing build, API, security, auth, edge, tenant, subscription, configuration, boundary, LMS-independence, collection, and dependency checks. The execution window remains active until epoch `1786999623` (`2026-08-17T20:47:03Z`).
+
+
+## 2026-08-17 15:47:02Z — client-side tenant-data cache hardening
+
+Client fetches for billing plans and invoices, dashboard session bootstrap, support tickets, and paginated workspace members now explicitly use `cache: 'no-store'` in addition to the server-side API cache boundaries. This prevents browser or framework request caching from retaining tenant-sensitive payloads during navigation and retry flows. The complete `pnpm test:regression-matrix` passed at epoch `1786981622`, including the new degraded plan-catalog smoke gate and all existing build, API, security, auth, edge, tenant, subscription, configuration, boundary, LMS-independence, collection, and dependency checks. The execution window remains active until epoch `1786999623` (`2026-08-17T20:47:03Z`).

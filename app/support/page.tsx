@@ -41,7 +41,7 @@ export default function SupportPage() {
     }
     setTicketsError('')
     try {
-      const response = await fetch(`/api/tickets?limit=25&offset=${offset}`, { signal: controller.signal })
+      const response = await fetch(`/api/tickets?limit=25&offset=${offset}`, { cache: 'no-store', signal: controller.signal })
       const payload = await response.json().catch(() => ({}))
       if (!response.ok) throw new Error(payload.error || 'تعذر تحميل التذاكر السابقة')
       if (controller.signal.aborted) return

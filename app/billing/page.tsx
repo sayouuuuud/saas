@@ -55,8 +55,8 @@ export default function BillingPage() {
     setLoadError('')
     try {
       const [plansResponse, invoicesResponse] = await Promise.all([
-        fetch('/api/plans', { signal: controller.signal }),
-        fetch('/api/invoices?limit=25&offset=0', { signal: controller.signal }),
+        fetch('/api/plans', { cache: 'no-store', signal: controller.signal }),
+        fetch('/api/invoices?limit=25&offset=0', { cache: 'no-store', signal: controller.signal }),
       ])
       if (!plansResponse.ok || !invoicesResponse.ok) throw new Error('تعذر تحميل بيانات الفوترة. تحقق من تسجيل الدخول ثم أعد المحاولة.')
       const [planPayload, invoicePayload] = await Promise.all([plansResponse.json(), invoicesResponse.json()])
@@ -83,7 +83,7 @@ export default function BillingPage() {
     setInvoicesMoreLoading(true)
     setInvoiceMoreError('')
     try {
-      const response = await fetch(`/api/invoices?limit=25&offset=${invoicesNextOffset}`, { signal: controller.signal })
+      const response = await fetch(`/api/invoices?limit=25&offset=${invoicesNextOffset}`, { cache: 'no-store', signal: controller.signal })
       const payload = await response.json().catch(() => ({}))
       if (!response.ok) throw new Error(payload.error || 'تعذر تحميل فواتير أقدم')
       if (controller.signal.aborted) return

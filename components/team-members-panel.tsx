@@ -33,7 +33,7 @@ export default function TeamMembersPanel({ initialMembers, initialNextOffset }: 
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`/api/workspace?memberLimit=25&memberOffset=${nextOffset}`, { signal: controller.signal });
+      const response = await fetch(`/api/workspace?memberLimit=25&memberOffset=${nextOffset}`, { cache: "no-store", signal: controller.signal });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || "تعذر تحميل أعضاء إضافيين");
       if (controller.signal.aborted) return;
