@@ -1068,3 +1068,11 @@ The Arabic README command table now documents `test:auth-boundaries`, `test:lms-
 اكتملت دورة توثيق regression في 2026-08-17T14:33:17Z (epoch 1786977197):
 
 يوثق جدول الأوامر العربي في README الآن أوامر `test:auth-boundaries` و`test:lms-independence` و`test:collection-bounds` والأمر الموحد `test:regression-matrix`. نجح فحص diff وlint وفحص shell syntax وتدقيقات الحدود الثلاثة.
+
+Dependency reproducibility check completed at 2026-08-17T14:33:44Z (epoch 1786977224):
+
+`pnpm install --frozen-lockfile --reporter=append-only` completed under pnpm 11.21.0 without configuration warnings, `pnpm why deepmerge-ts` resolved only `8.0.1`, `pnpm audit --prod` reported no known vulnerabilities, and the repository remained clean.
+
+اكتمل فحص قابلية إعادة تثبيت التبعيات في 2026-08-17T14:33:44Z (epoch 1786977224):
+
+اكتمل `pnpm install --frozen-lockfile --reporter=append-only` باستخدام pnpm 11.21.0 دون تحذيرات إعداد، وأعاد `pnpm why deepmerge-ts` الإصدار `8.0.1` فقط، وأعاد `pnpm audit --prod` عدم وجود ثغرات معروفة، وظل المستودع نظيفًا.
