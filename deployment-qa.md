@@ -790,3 +790,9 @@ Arabic ticket-status UX improvement completed at 2026-08-17T14:00:44Z:
 Support ticket rows now translate all known status enums into Arabic labels, including in-progress, waiting-on-customer, and closed states, while preserving the raw value only as a forward-compatible fallback for an unknown future status. Lint and strict TypeScript passed.
 
 تم تحسين عرض حالات تذاكر الدعم بالعربية: أصبحت حالات قيد المتابعة وبانتظار ردك ومغلقة مترجمة بشكل صريح، مع إبقاء القيمة الخام كحل احتياطي متوافق مع حالات مستقبلية غير معروفة. نجحت lint وstrict TypeScript.
+
+Post-ticket-fix full regression completed at 2026-08-17T14:01:36Z:
+
+The complete matrix passed after the ticket pagination repair and Arabic status-label improvement: SQLite and PostgreSQL schema validation, lint, strict TypeScript, 33-route production build, API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-config, final-window-status, and production dependency audit. No known production dependency vulnerabilities were reported, and the repository remained clean and synchronized with origin/main.
+
+نجحت المصفوفة الكاملة بعد إصلاح pagination للتذاكر وتحسين ترجمة الحالات: تحقق مخططي SQLite وPostgreSQL، وlint، وstrict TypeScript، وproduction build الذي ولّد 33 route، واختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن، إضافة إلى تدقيق الاعتماديات. لم تظهر ثغرات معروفة، وبقي المستودع نظيفًا ومتزامنًا مع origin/main.
