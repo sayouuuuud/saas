@@ -772,3 +772,9 @@ Billing invoice export improvement completed at 2026-08-17T13:56:18Z:
 Billing’s previously inert ledger controls are now functional. The page exports the bounded invoice projection as UTF-8 CSV, supports one-invoice CSV downloads with safe quoted cells, keeps actions disabled while data is loading or absent, and defers object-URL revocation to avoid interrupting browser downloads. Lint, strict TypeScript, and the 33-route production build passed after the implementation.
 
 تم تفعيل أدوات الفواتير التي كانت غير منفذة في صفحة billing. أصبح السجل يصدّر projection الفواتير المحدود إلى CSV بترميز UTF-8، ويمكن تنزيل فاتورة واحدة بخلايا مقتبسة بأمان، مع تعطيل الإجراءات أثناء التحميل أو عند غياب البيانات، وتأجيل إبطال object URL حتى لا ينقطع التنزيل في المتصفح. نجحت lint وstrict TypeScript وproduction build الذي ولّد 33 route.
+
+Dashboard control honesty improvement completed at 2026-08-17T13:58:00Z:
+
+The dashboard no longer presents unavailable features as active controls. Account settings and notifications are explicitly disabled with Arabic explanatory titles, while the fixed 30-day activity period is rendered as a labeled non-interactive value rather than a button. Existing link-add, retry, navigation, and billing actions remain functional. Lint and strict TypeScript passed.
+
+تم تحسين صدق واجهة لوحة التحكم: لم تعد إعدادات الحساب والإشعارات تظهر كإجراءات قابلة للتنفيذ وهي غير متاحة؛ أصبحت disabled مع شرح عربي، كما تحولت فترة النشاط الثابتة إلى قيمة موسومة غير تفاعلية بدل زر وهمي. بقيت إجراءات إضافة الرابط وإعادة المحاولة والتنقل والفوترة فعّالة. نجحت lint وstrict TypeScript.
