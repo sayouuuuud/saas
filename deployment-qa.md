@@ -672,3 +672,11 @@ At 2026-08-17T13:33:05Z, registration received a top-level `safeAuthError` bound
 
 عند `2026-08-17T13:33:05Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى التسجيل، مع الحفاظ على rate limiting، والتحقق، واستجابة 409 للبريد المكرر، والإنشاء الذري للمستخدم والـ workspace والعضوية والاشتراك وaudit، وإنشاء session، وLOGIN audit الخاص بالتسجيل. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `c137db9`.
 
+Password-reset request error handling:
+
+At 2026-08-17T13:34:57Z, the forgot-password route received a top-level `safeAuthError` boundary, preserving rate-limit behavior, non-enumerating accepted responses, transactional reset-token and SECURITY_EVENT persistence, and development-only token exposure. Lint, strict TypeScript, authentication smoke, security smoke, edge-case smoke, API smoke, diff checks, and compiler-artifact cleanup passed before commit `913a3cd` was pushed.
+
+معالجة أخطاء طلب إعادة تعيين كلمة المرور:
+
+عند `2026-08-17T13:34:57Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى forgot-password، مع الحفاظ على rate limiting، والاستجابات المقبولة غير الكاشفة لوجود البريد، والحفظ الذري لـ reset token وSECURITY_EVENT، وإظهار token في بيئة التطوير فقط. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `913a3cd`.
+
