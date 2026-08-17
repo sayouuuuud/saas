@@ -552,3 +552,11 @@ At 2026-08-17T13:16:39Z, the workspace-scoped subscription GET endpoint was wrap
 
 عند `2026-08-17T13:16:39Z` تم تغليف endpoint قراءة subscription المقيّد بالworkspace باستخدام `safeAuthError`، مع الحفاظ على المصادقة الحالية وprojection الخاصة بالأحداث، وإرجاع JSON حتمي عند أخطاء قاعدة البيانات غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks قبل دفع commit `bd571dc`.
 
+Invoice collection error handling:
+
+At 2026-08-17T13:17:42Z, the bounded, offset-aware invoice collection endpoint was wrapped with `safeAuthError`, retaining workspace scoping, newest-first ordering, and pagination metadata while returning deterministic JSON for unexpected failures. Lint, strict TypeScript, API smoke, security smoke, diff checks, and compiler-artifact cleanup passed before commit `14ef5cd` was pushed.
+
+معالجة أخطاء قائمة invoices:
+
+عند `2026-08-17T13:17:42Z` تم تغليف endpoint قائمة invoices المقيّد بالworkspace والداعم لـ offset باستخدام `safeAuthError`، مع الحفاظ على ترتيب الأحدث أولًا وmetadata الخاصة بالpagination، وإرجاع JSON حتمي عند الأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `14ef5cd`.
+
