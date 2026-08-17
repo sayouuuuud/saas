@@ -47,6 +47,8 @@ pnpm exec tsc --noEmit
 pnpm build
 pnpm db:migrate
 pnpm db:seed
+# Run the isolated production/degraded check before starting the shared matrix server.
+pnpm test:plans-degraded
 # Ensure no orphaned project server can mask the matrix environment on port 3000.
 terminate_project_next_processes
 sleep 1
@@ -62,7 +64,6 @@ if ! curl -fsS http://localhost:3000/ >/dev/null 2>&1; then
 fi
 pnpm test:api
 pnpm test:public-pages
-pnpm test:plans-degraded
 pnpm test:security
 pnpm test:auth
 pnpm test:edge

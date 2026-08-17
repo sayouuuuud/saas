@@ -106,6 +106,7 @@ model User {
   notifications              Notification[]
   sessions                   Session[]
   twoFactorChallenges        TwoFactorChallenge[]
+  workspaceInvitesCreated    WorkspaceInvite[] @relation("WorkspaceInviteCreator")
 }
 
 model Session {
@@ -153,6 +154,7 @@ model Workspace {
   tickets        SupportTicket[]
   auditEvents    AuditLog[]
   notifications  Notification[]
+  invites        WorkspaceInvite[]
   createdAt      DateTime                 @default(now())
   updatedAt      DateTime                 @updatedAt
 }
@@ -169,6 +171,24 @@ model WorkspaceMember {
   @@unique([workspaceId, userId])
   @@index([userId])
   @@index([userId, createdAt])
+}
+
+model WorkspaceInvite {
+  id          String        @id @default(cuid())
+  workspaceId String
+  createdById String
+  email       String
+  role        WorkspaceRole @default(VIEWER)
+  tokenHash   String        @unique
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime      @default(now())
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy   User          @relation("WorkspaceInviteCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([email, expiresAt])
 }
 
 model Plan {

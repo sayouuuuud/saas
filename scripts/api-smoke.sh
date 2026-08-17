@@ -117,4 +117,20 @@ test "$reports_status" = "200"
 grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
 reports="$(cat /tmp/saas-smoke-response.json)"
 test "$(printf '%s' "$reports" | grep -c '"invoiceCount":1')" -eq 1
+invite_email="invite-$(date +%s%N)@example.com"
+invite_payload="$(json_request -X POST -d "{\"email\":\"$invite_email\",\"role\":\"ANALYST\",\"expiresInDays\":7}" "$BASE_URL/api/workspace/invites")"
+INVITE_ID="$(printf '%s' "$invite_payload" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')"
+INVITE_URL="$(printf '%s' "$invite_payload" | sed -n 's/.*"inviteUrl":"\([^"]*\)".*/\1/p')"
+test -n "$INVITE_ID"
+test "$(printf '%s' "$INVITE_URL" | grep -c '/invite/')" -eq 1
+invites="$(json_request "$BASE_URL/api/workspace/invites?limit=50&offset=0")"
+test "$(printf '%s' "$invites" | grep -c "$invite_email")" -ge 1
+revoke_email="revoke-$(date +%s%N)@example.com"
+revoke_payload="$(json_request -X POST -d "{\"email\":\"$revoke_email\",\"role\":\"VIEWER\"}" "$BASE_URL/api/workspace/invites")"
+REVOKE_ID="$(printf '%s' "$revoke_payload" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')"
+test -n "$REVOKE_ID"
+revoke_status="$(status_request -X POST "$BASE_URL/api/workspace/invites/$REVOKE_ID")"
+test "$revoke_status" = "200"
+test "$(cat /tmp/saas-smoke-response.json | grep -c '\"ok\":true')" -eq 1
+# Invite acceptance is exercised separately because it intentionally replaces the owner session cookie.
 printf 'API smoke test passed for %s\n' "$EMAIL"
