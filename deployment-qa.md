@@ -1124,3 +1124,11 @@ Auth security, general security, all 28 safeAuthError route-boundary checks, and
 اكتملت دورة smoke المركزة للمصادقة بعد تحسين accessibility في 2026-08-17T14:37:08Z (epoch 1786977428):
 
 نجحت اختبارات auth security وsecurity العامة وجميع فحوص safeAuthError لـ 28 route واختبار إعدادات الإنتاج بعد إضافة autocomplete واعٍ بالوضع إلى نموذج تسجيل الدخول/إنشاء الحساب. لا تزال نافذة التنفيذ الإلزامية نشطة.
+
+Public plans production incident and remediation at 2026-08-17T14:40:48Z (epoch 1786977648):
+
+A direct canonical GET of `/api/plans` returned HTTP 500 on the verified READY deployment `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe`; Vercel runtime logs confirmed GET and HEAD `/api/plans` 500 responses at 14:37:44Z–14:37:45Z. The live deployment was confirmed as commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d`, whose route parsed catalog JSON without per-record protection. The current route now bounds its projection and safely normalizes malformed feature/limit JSON to empty typed values, preventing one corrupt catalog record from failing the entire public endpoint. Lint, strict TypeScript, 33-route build, and API smoke passed. The fix is pushed but not yet claimed as live until a newer READY deployment is observed.
+
+حادثة plans العامة ومعالجتها في 2026-08-17T14:40:48Z (epoch 1786977648):
+
+أعاد GET مباشر لـ `/api/plans` في canonical production الحالة HTTP 500 على READY deployment المرصود `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe`، وأكدت Vercel runtime logs أخطاء GET وHEAD للمسار نفسه في 14:37:44Z–14:37:45Z. ثبت أن deployment الحي هو commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d` الذي كان يفسر JSON الخاص بالكتالوج دون حماية لكل سجل. أصبح المسار الحالي الآن يفرض projection محدودًا ويطبع JSON غير الصالح للمزايا والحدود إلى قيم typed فارغة، لمنع سجل كتالوج واحد تالف من إسقاط endpoint العام بالكامل. نجح lint وstrict TypeScript وbuild الذي يحتوي 33 route وAPI smoke. الإصلاح مدفوع لكنه لا يُعلن live قبل رصد deployment أحدث بحالة READY.
