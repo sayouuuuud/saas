@@ -50,6 +50,28 @@ assert_content_type() {
   rm -f "$headers"
 }
 
+assert_private_page() {
+  local path="$1"
+  local headers
+  local body
+  headers=$(mktemp)
+  body=$(mktemp)
+  local status
+  status=$(curl -sS --max-time 20 -D "$headers" -o "$body" -w '%{http_code}' "$BASE_URL$path")
+  if [[ "$status" != "200" ]]; then
+    echo "canonical private-page status mismatch for $path: expected 200, got $status" >&2
+    cat "$headers" >&2
+    rm -f "$headers" "$body"
+    exit 1
+  fi
+  if ! grep -Eiq 'name="robots"[^>]*content="[^" ]*noindex|content="[^" ]*noindex[^>]*"[^>]*name="robots"' "$body"; then
+    echo "canonical private-page noindex metadata missing for $path" >&2
+    rm -f "$headers" "$body"
+    exit 1
+  fi
+  rm -f "$headers" "$body"
+}
+
 for path in / /features /how-it-works /pricing /demo /contact /terms /privacy /refund-policy /acceptable-use; do
   assert_status "$path" 200
 done
@@ -58,6 +80,10 @@ assert_status /sitemap.xml 200
 assert_content_type /robots.txt 'text/plain'
 assert_content_type /sitemap.xml 'application/xml'
 assert_header / 'strict-transport-security: max-age='
+
+for path in /app/profile /app/lms-connection /app/subscription /app/usage /app/reports /app/team /app/notifications /app/security /app/settings /admin /admin/teachers /admin/plans /admin/subscriptions /admin/billing /admin/lms-links; do
+  assert_private_page "$path"
+done
 
 plans_headers=$(mktemp)
 plans_body=$(mktemp)

@@ -1495,3 +1495,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - The complete `pnpm test:regression-matrix` passed after enforcing the real-time duration gate.
 - Evidence: 53-route build, migrations/seed, API/public/degraded/security/auth/edge/tenant/subscription/account/client-cache/admin/production-config/final-window/auth-boundary/LMS-independence/collection-bounds suites, and production audit all passed; cleanup left the repository clean.
+
+## 2026-08-17 — Canonical account/admin deployment gate
+
+- Expanded `canonical-production-smoke.sh` to probe every dedicated account route and every bounded admin section, requiring HTTP 200 plus inherited `noindex` metadata.
+- The enhanced gate passed against a clean local Next.js server; it remains intentionally strict against the canonical alias until Vercel propagates the completed account/admin source revision.
