@@ -197,3 +197,10 @@ At 2026-08-17T12:03:56Z, the staff-only admin page retained its server-side `isS
 تصلب الصلاحيات واستعلام الإدارة:
 
 في `2026-08-17T12:03:56Z` حافظت لوحة الإدارة المخصصة للموظفين على حارس `isStaff` من جهة الخادم، مع تقليل تحميل علاقات AuditLog إلى حقول البريد واسم مساحة العمل المعروضة فقط. كما يرفض مسار مساحة العمل الحسابات التي لا تملك مساحة عمل مسندة بدل عرض مؤشرات صفرية مضللة. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة، واستمر نجاح اختبار عزل المستأجرين.
+LMS integration-request idempotency:
+
+At 2026-08-17T12:05:46Z, the SaaS-only LMS-link request endpoint began returning `already_recorded` for repeated requests for the same workspace link, while preserving the initial `202 recorded` response and avoiding duplicate IntegrationRequest audit events. The lookup remains workspace-scoped and selects only the link identity. The API smoke suite now asserts both first-request and repeat-request behavior. Lint, production build, and all six smoke suites passed.
+
+عدم تكرار طلبات تكامل LMS:
+
+في `2026-08-17T12:05:46Z` بدأ مسار طلب التكامل الخاص برابط LMS داخل SaaS بإرجاع `already_recorded` عند تكرار الطلب لنفس الرابط داخل مساحة العمل، مع الحفاظ على استجابة الطلب الأول `202 recorded` ومنع تكرار أحداث IntegrationRequest في سجل التدقيق. بقي البحث معزولًا بمساحة العمل ويحدد فقط هوية الرابط. يختبر API smoke الآن سلوك الطلب الأول والتكرار، ونجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.

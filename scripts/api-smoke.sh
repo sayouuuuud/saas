@@ -21,6 +21,10 @@ me_with_link="$(json_request "$BASE_URL/api/auth/me")"
 test "$(printf '%s' "$me_with_link" | grep -c 'Demo Academy')" -ge 1
 check="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/check")"
 test "$(printf '%s' "$check" | grep -c 'check')" -ge 1
+integration_request="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/request-integration")"
+test "$(printf '%s' "$integration_request" | grep -c 'recorded')" -ge 1
+integration_repeat="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/request-integration")"
+test "$(printf '%s' "$integration_repeat" | grep -c 'already_recorded')" -eq 1
 ticket="$(json_request -X POST -d '{"category":"GENERAL","subject":"Smoke test","description":"Reproducible support API smoke test","priority":"normal"}' "$BASE_URL/api/tickets")"
 test "$(printf '%s' "$ticket" | grep -c 'SUP-')" -ge 1
 TICKET_ID="$(printf '%s' "$ticket" | sed -n 's/.*"ticket":{"id":"\([^"]*\)".*/\1/p')"
