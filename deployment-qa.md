@@ -472,3 +472,11 @@ At 2026-08-17T13:02:40Z, a bounded source scan across `app`, `lib`, `prisma`, an
 
 عند `2026-08-17T13:02:40Z` لم يجد فحص مصدر محدود داخل `app` و`lib` و`prisma` و`scripts` أي identifiers محظورة لعميل قاعدة بيانات LMS مثل `LMS_DATABASE` أو `DATABASE_URL_LMS` أو `lmsDb` أو `lmsPrisma`. يقتصر كود LMS في Centralia على metadata الخاصة بـ `LmsLink` وفحوص الوصول وحالة طلبات التكامل وسجلات التدقيق الخاصة به، ولم تتم قراءة أو تعديل قاعدة بيانات LMS.
 
+Post-audit security regression:
+
+After the LMS-independence audit, at 2026-08-17T13:06:02Z, the security, authentication-security, and edge-case smoke suites all passed on the pushed repository state. These suites covered rate limiting, SSRF and webhook validation, authorization guards, malformed authentication payloads, audit assertions, and edge-case request behavior.
+
+التحقق الأمني بعد التدقيق:
+
+بعد تدقيق استقلالية LMS، وعند `2026-08-17T13:06:02Z`، نجحت اختبارات security وauth-security وedge-cases على حالة المستودع المدفوعة. شملت هذه الاختبارات rate limiting والتحقق من SSRF وwebhook وحواجز الصلاحيات وpayloads المصادقة غير الصحيحة وتأكيدات audit وسلوك الطلبات الطرفية.
+
