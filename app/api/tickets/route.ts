@@ -10,11 +10,31 @@ const schema = z.object({
   priority: z.enum(["normal", "high"]).default("normal"),
 });
 
-export async function GET() {
+export async function GET(request: Request) {
   const user = await getCurrentUser();
   if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
-  const tickets = await prisma.supportTicket.findMany({ where: { workspaceId: user.workspace.id }, include: { messages: { orderBy: { createdAt: "asc" } } }, orderBy: { updatedAt: "desc" } });
-  return NextResponse.json({ tickets });
+  const requestedLimit = Number(new URL(request.url).searchParams.get("limit") || "25");
+  const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 50) : 25;
+  const tickets = await prisma.supportTicket.findMany({
+    where: { workspaceId: user.workspace.id },
+    orderBy: { updatedAt: "desc" },
+    take: limit,
+    select: {
+      id: true,
+      number: true,
+      category: true,
+      subject: true,
+      description: true,
+      status: true,
+      priority: true,
+      requesterId: true,
+      createdAt: true,
+      updatedAt: true,
+      messages: { orderBy: { createdAt: "desc" }, take: 1, select: { id: true, createdAt: true, isInternal: true } },
+      _count: { select: { messages: true } },
+    },
+  });
+  return NextResponse.json({ tickets, limit });
 }
 
 export async function POST(request: Request) {

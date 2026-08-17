@@ -159,3 +159,7 @@ Usage-history aggregation optimization:
 
 At 2026-08-17T11:53:25Z, `/api/usage/history` was changed from fetching every 30-day audit row and grouping in JavaScript to a workspace-scoped SQLite `GROUP BY DATE(createdAt)` query that returns only daily aggregates. The existing composite `AuditLog(workspaceId, createdAt)` index remains aligned with the filter. Lint, production build, and the complete API, security, authentication, edge-case, tenant-isolation, and subscription lifecycle suites passed.
 
+Support-ticket list performance:
+
+At 2026-08-17T11:54:31Z, `GET /api/tickets` was bounded to a default maximum of 25 and an absolute maximum of 50 records, with scalar field projection, message count, and only the latest message metadata. The detail endpoint remains responsible for the complete non-internal conversation. This prevents a growing workspace from loading every ticket and every message into a single list response. Lint, production build, and all six smoke suites passed.
+
