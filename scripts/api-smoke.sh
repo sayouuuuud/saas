@@ -40,4 +40,6 @@ checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHL
 test "$(printf '%s' "$checkout" | grep -c 'ACTIVE')" -ge 1
 invoices="$(json_request "$BASE_URL/api/invoices")"
 test "$(printf '%s' "$invoices" | grep -c 'PAID')" -ge 1
+reports="$(json_request "$BASE_URL/api/reports")"
+test "$(printf '%s' "$reports" | grep -c '"invoiceCount":1')" -eq 1
 printf 'API smoke test passed for %s\n' "$EMAIL"

@@ -268,3 +268,10 @@ At 2026-08-17T12:18:52Z, `/api/reports` now returns the total invoice count inde
 دلالات التقارير وتقليل الإسقاط:
 
 في `2026-08-17T12:18:52Z` أصبح `/api/reports` يعيد العدد الإجمالي للفواتير مستقلًا عن قائمة آخر 12 فاتورة، لمنع عرض عدد محدود باعتباره إجماليًا. كما أصبح استعلام الاشتراك يحدد الحالة واسم الباقة فقط بدل الصف الكامل. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
+Reports contract coverage:
+
+At 2026-08-17T12:19:45Z, API smoke coverage began asserting that a fresh paid checkout produces `summary.invoiceCount = 1` in `/api/reports`, independently of the recent-invoice list cap. Lint, production build, and all six smoke suites passed.
+
+تغطية عقد التقارير:
+
+في `2026-08-17T12:19:45Z` بدأ API smoke بالتحقق من أن checkout مدفوعًا جديدًا ينتج `summary.invoiceCount = 1` في `/api/reports` بصورة مستقلة عن حد قائمة الفواتير الأخيرة. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
