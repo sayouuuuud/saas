@@ -816,3 +816,9 @@ The deployment inventory returned a latest READY production deployment `dpl_7hEf
 حد النشر المرصود على Vercel في 2026-08-17T14:04:20Z:
 
 أظهر سجل النشر أن أحدث deployment بحالة READY هو `dpl_7hEfLg5H47ksyhQVE2LwooofYQ7M` للالتزام `77f207f0f2fecbbb4fa7eb995e404a3b9003c9a0` (`feat: enable billing invoice exports`). الالتزامات الأحدث `37c2e64` و`a3df497` و`cab89d4` و`f9b3b3f` و`817dd85` و`d270891` لم تظهر في السجل وقت الملاحظة، لذلك لا يتم الادعاء بأنها منشورة على Vercel بعد. يظل deployment السابق بحالة READY هو الحد الحي المتحقق منه.
+
+Canonical production probe completed at 2026-08-17T14:05:47Z:
+
+The canonical URL https://saas-gold-seven-80.vercel.app/ returned HTTP 200 over HTTP/2. The response exposed the expected CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, and Vercel headers. The HTML probe confirmed `<html lang="ar" dir="rtl">`. The Vercel runtime-error query was not completed because the connector call timed out while retrieving server configuration; this is recorded as unavailable evidence rather than a zero-error claim.
+
+أعاد الرابط الأساسي https://saas-gold-seven-80.vercel.app/ الحالة HTTP 200 عبر HTTP/2، وظهرت رؤوس CSP وHSTS وX-Content-Type-Options وX-Frame-Options وReferrer-Policy وPermissions-Policy ورؤوس Vercel المتوقعة. أكد فحص HTML وجود `<html lang="ar" dir="rtl">`. لم يكتمل استعلام أخطاء التشغيل من Vercel بسبب انتهاء مهلة الاتصال أثناء جلب إعدادات الخادم؛ تم تسجيل ذلك كدليل غير متاح، وليس كادعاء بعدم وجود أخطاء.
