@@ -17,8 +17,17 @@ grep -q 'دون نقلها' <<<"$lms_body"
 reports_body=$(curl -fsS --max-time 10 "$BASE_URL/app/reports")
 grep -q 'تقريرك في SaaS' <<<"$reports_body"
 grep -q 'بلا تخمين' <<<"$reports_body"
+settings_body=$(curl -fsS --max-time 10 "$BASE_URL/app/settings")
+grep -q 'إعدادات بسيطة' <<<"$settings_body"
+grep -q 'حدود الإعدادات' <<<"$settings_body"
+security_body=$(curl -fsS --max-time 10 "$BASE_URL/app/security")
+grep -q 'حسابك محمي' <<<"$security_body"
+grep -q 'حدود أمنية صريحة' <<<"$security_body"
+notifications_body=$(curl -fsS --max-time 10 "$BASE_URL/app/notifications")
+grep -q 'تنبيهات SaaS' <<<"$notifications_body"
+grep -q 'لا توجد إشعارات جديدة' <<<"$notifications_body"
 
-for endpoint in me subscription usage lms-link reports; do
+for endpoint in me subscription usage lms-link reports workspace; do
   headers="${TMPDIR:-/tmp}/centralia-account-${endpoint}-headers-$$"
   body="${TMPDIR:-/tmp}/centralia-account-${endpoint}-body-$$"
   status=$(curl -sS --max-time 10 -D "$headers" -o "$body" -w '%{http_code}' "$BASE_URL/api/$endpoint")
@@ -28,4 +37,4 @@ for endpoint in me subscription usage lms-link reports; do
   rm -f "$headers" "$body"
 done
 
-printf 'Account pages smoke test passed for /app/profile, /app/subscription, /app/usage, /app/reports, /app/lms-connection, /api/me, /api/subscription, /api/usage, /api/lms-link, and /api/reports\n'
+printf 'Account pages smoke test passed for profile, subscription, usage, reports, settings, security, notifications, LMS connection, and protected SaaS APIs\n'

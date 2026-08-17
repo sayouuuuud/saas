@@ -14,6 +14,9 @@ const nav = [
   { label: 'التقارير', icon: FileText, href: '/app/reports' },
   { label: 'رابط المنصة', icon: Link2, href: '/app/lms-connection' },
   { label: 'الفريق', icon: Users, href: '/dashboard#team' },
+  { label: 'الإعدادات', icon: Settings, href: '/app/settings' },
+  { label: 'الأمان', icon: ShieldCheck, href: '/app/security' },
+  { label: 'الإشعارات', icon: Bell, href: '/app/notifications' },
   { label: 'الدعم', icon: CircleHelp, href: '/support' },
 ]
 

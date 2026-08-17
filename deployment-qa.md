@@ -1362,3 +1362,11 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - `pnpm test:regression-matrix` passed after adding `/app/reports`. The matrix confirmed a 49-route production build and green API, public/policy, degraded-plans, security, auth, edge-case, tenant-isolation, subscription, account, admin, production-config, final-window, safe-error, LMS-independence, collection-bounds, and dependency-audit checks.
 - Account smoke now passes for `/app/profile`, `/app/subscription`, `/app/usage`, `/app/reports`, `/app/lms-connection` and their protected APIs.
 - No LMS database was accessed or modified.
+
+## 2026-08-17 — Remaining account surfaces: settings, security, notifications
+
+- Added `/app/settings` for supported SaaS profile and workspace-name updates through protected APIs, with private fetches, accessible errors, and explicit verification boundaries.
+- Added `/app/security` and `/app/notifications` as truthful SaaS-owned account surfaces. Security describes session, password-recovery, and email-verification controls; notifications states when no saved notification center exists and routes users to support, without inventing LMS alerts.
+- Dashboard navigation now exposes settings, security, and notifications. Account smoke covers all nine account pages and the protected SaaS API boundary.
+- Validation passed: lint, strict TypeScript, production build with 52 routes, and expanded account smoke.
+- No LMS database was accessed or modified.
