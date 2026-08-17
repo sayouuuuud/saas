@@ -616,3 +616,11 @@ At 2026-08-17T13:26:09Z, `https://saas-gold-seven-80.vercel.app/` returned HTTP 
 
 عند `2026-08-17T13:26:09Z` أعاد `https://saas-gold-seven-80.vercel.app/` رمز HTTP 200، واحتوت الاستجابة على علامات RTL العربية المتوقعة. تضمنت الاستجابة CSP وHSTS وX-Content-Type-Options: nosniff وX-Frame-Options: DENY وReferrer-Policy: strict-origin-when-cross-origin. ما زال CSP المرصود يتضمن `script-src 'self' 'unsafe-inline'`، وتم توثيق ذلك كتسوية توافق مقصودة مع Next.js بدل وصف السياسة خطأً بأنها nonce-based بالكامل.
 
+Public plans catalog error handling:
+
+At 2026-08-17T13:26:34Z, the public active-plans catalog was wrapped with `safeAuthError`, preserving ascending price ordering and JSON feature/limit decoding while returning deterministic JSON for database or malformed catalog-data failures. Lint, strict TypeScript, API smoke, production-config smoke, diff checks, and compiler-artifact cleanup passed before commit `3c29766` was pushed.
+
+معالجة أخطاء كتالوج plans العام:
+
+عند `2026-08-17T13:26:34Z` تم تغليف كتالوج الخطط النشطة العام باستخدام `safeAuthError`، مع الحفاظ على ترتيب الأسعار التصاعدي وفك JSON للميزات والحدود، وإرجاع JSON حتمي عند فشل قاعدة البيانات أو بيانات الكتالوج غير الصالحة. نجحت lint وstrict TypeScript وAPI smoke وproduction-config smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `3c29766`.
+
