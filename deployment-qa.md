@@ -155,3 +155,7 @@ Session query optimization:
 
 At 2026-08-17T11:51:35Z, generic session hydration was reduced to the user and workspace identity projection (`id`, `name`) only. `/api/auth/me` now retrieves the plan/subscription presentation fields and the five LMS-link summaries in parallel, preserving its response contract while avoiding unnecessary relation payloads on every authenticated request. Lint, production build, API, security, authentication, edge-case, tenant-isolation, and subscription lifecycle suites all passed.
 
+Usage-history aggregation optimization:
+
+At 2026-08-17T11:53:25Z, `/api/usage/history` was changed from fetching every 30-day audit row and grouping in JavaScript to a workspace-scoped SQLite `GROUP BY DATE(createdAt)` query that returns only daily aggregates. The existing composite `AuditLog(workspaceId, createdAt)` index remains aligned with the filter. Lint, production build, and the complete API, security, authentication, edge-case, tenant-isolation, and subscription lifecycle suites passed.
+
