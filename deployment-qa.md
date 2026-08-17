@@ -1463,3 +1463,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Strengthened `scripts/final-window-verification.sh` to record the tested Git revision and branch, require a clean repository before and after the final local/canonical verification, and only then mark `execution-window.json` complete.
 - `bash -n scripts/final-window-verification.sh` and `pnpm test:final-window-status` passed; the deferred verifier was restarted on the published revision `77e45b2` and remains active until the required system epoch.
+
+## 2026-08-17 — Final-window smoke provenance coverage
+
+- Extended `final-window-status-smoke.sh` with a deterministic Git fixture and assertions for tested revision, branch, clean repository state before and after tests, and canonical production smoke inclusion.
+- The first fixture run exposed a literal-newline mismatch in the Git stub; corrected it and reran successfully with `bash -n` and `pnpm test:final-window-status`.
