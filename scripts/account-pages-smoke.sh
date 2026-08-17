@@ -8,8 +8,11 @@ grep -q 'ملفك الشخصي' <<<"$profile_body"
 subscription_body=$(curl -fsS --max-time 10 "$BASE_URL/app/subscription")
 grep -q 'مركزية' <<<"$subscription_body"
 grep -q 'بيانات SaaS' <<<"$subscription_body"
+usage_body=$(curl -fsS --max-time 10 "$BASE_URL/app/usage")
+grep -q 'أرقام واضحة' <<<"$usage_body"
+grep -q 'مصدرها' <<<"$usage_body"
 
-for endpoint in me subscription; do
+for endpoint in me subscription usage; do
   headers="${TMPDIR:-/tmp}/centralia-account-${endpoint}-headers-$$"
   body="${TMPDIR:-/tmp}/centralia-account-${endpoint}-body-$$"
   status=$(curl -sS --max-time 10 -D "$headers" -o "$body" -w '%{http_code}' "$BASE_URL/api/$endpoint")
@@ -19,4 +22,4 @@ for endpoint in me subscription; do
   rm -f "$headers" "$body"
 done
 
-printf 'Account pages smoke test passed for /app/profile, /app/subscription, /api/me, and /api/subscription\n'
+printf 'Account pages smoke test passed for /app/profile, /app/subscription, /app/usage, /api/me, /api/subscription, and /api/usage\n'

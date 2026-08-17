@@ -1312,3 +1312,10 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Added `scripts/account-pages-smoke.sh`, registered `test:account-pages`, and included it in `regression-matrix.sh`. The smoke passed for `/app/profile`, `/app/subscription`, unauthenticated `/api/me`, and unauthenticated `/api/subscription`, including no-store headers.
 - Focused validation passed: lint, strict TypeScript, and production build with 42 generated routes.
 - An initial smoke assertion was corrected after observing the intended profile copy; the rerun passed. No LMS database was accessed or modified.
+
+## 2026-08-17 — Dedicated usage and reporting surface
+
+- Added `/app/usage` as an account route for SaaS-owned usage and reporting metrics. Each metric shows source, exactness, freshness, and an explicit unavailable state for LMS metrics without an official source.
+- Added the route to dashboard navigation and expanded `scripts/account-pages-smoke.sh` to cover `/app/usage` and unauthenticated `/api/usage` no-store behavior.
+- Validation passed: lint, strict TypeScript, production build with 43 generated routes, and focused account smoke for profile, subscription, usage, and protected APIs.
+- No learner, video, storage, bandwidth, CPU, or RAM values are fabricated; unsupported metrics remain unavailable. No LMS database was accessed or modified.

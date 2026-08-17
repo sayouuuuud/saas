@@ -10,6 +10,7 @@ type LmsLink = NonNullable<NonNullable<UserPayload['workspace']>['lmsLinks']>[nu
 const nav = [
   { label: 'نظرة عامة', icon: LayoutDashboard, href: '/dashboard' },
   { label: 'الاشتراك والفوترة', icon: CreditCard, href: '/app/subscription' },
+  { label: 'الاستخدام والتقارير', icon: FileText, href: '/app/usage' },
   { label: 'رابط المنصة', icon: Link2, href: '/dashboard#link' },
   { label: 'الفريق', icon: Users, href: '/dashboard#team' },
   { label: 'الدعم', icon: CircleHelp, href: '/support' },
