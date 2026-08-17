@@ -261,3 +261,10 @@ At 2026-08-17T12:17:47Z, `/app/[slug]` gained App Router loading and error bound
 مرونة مساحة العمل المصادق عليها:
 
 في `2026-08-17T12:17:47Z` أضيفت إلى `/app/[slug]` حالتا تحميل وخطأ على مستوى App Router. تعرض قراءات قاعدة البيانات البطيئة حالة تحميل عربية واضحة، بينما تعرض أخطاء العرض إجراء إعادة محاولة ولا تقدم مؤشرات مساحة عمل غير مؤكدة. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
+Reports semantics and projection:
+
+At 2026-08-17T12:18:52Z, `/api/reports` now returns the total invoice count independently from the bounded twelve-item recent-invoice list, avoiding a misleading capped count. The subscription query selects only status and plan name rather than the full plan row. Lint, production build, and all six smoke suites passed.
+
+دلالات التقارير وتقليل الإسقاط:
+
+في `2026-08-17T12:18:52Z` أصبح `/api/reports` يعيد العدد الإجمالي للفواتير مستقلًا عن قائمة آخر 12 فاتورة، لمنع عرض عدد محدود باعتباره إجماليًا. كما أصبح استعلام الاشتراك يحدد الحالة واسم الباقة فقط بدل الصف الكامل. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
