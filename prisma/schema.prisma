@@ -81,21 +81,25 @@ enum AuditAction {
 }
 
 model User {
-  id              String            @id @default(cuid())
-  email           String            @unique
-  name            String
-  passwordHash    String?
-  isStaff         Boolean           @default(false)
-  emailVerifiedAt DateTime?
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  workspace       Workspace?
-  memberships     WorkspaceMember[]
-  tickets         SupportTicket[]   @relation("TicketRequester")
-  messages        SupportMessage[]
-  auditEvents     AuditLog[]
-  notifications   Notification[]
-  sessions        Session[]
+  id                         String            @id @default(cuid())
+  email                      String            @unique
+  name                       String
+  passwordHash               String?
+  isStaff                    Boolean           @default(false)
+  emailVerifiedAt            DateTime?
+  emailVerificationTokenHash String?           @unique
+  emailVerificationExpiresAt DateTime?
+  passwordResetTokenHash     String?           @unique
+  passwordResetExpiresAt     DateTime?
+  createdAt                  DateTime          @default(now())
+  updatedAt                  DateTime          @updatedAt
+  workspace                  Workspace?
+  memberships                WorkspaceMember[]
+  tickets                    SupportTicket[]   @relation("TicketRequester")
+  messages                   SupportMessage[]
+  auditEvents                AuditLog[]
+  notifications              Notification[]
+  sessions                   Session[]
 }
 
 model Session {

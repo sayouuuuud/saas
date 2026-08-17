@@ -11,7 +11,8 @@
     "db:migrate": "prisma migrate deploy",
     "db:seed": "tsx scripts/seed.ts",
     "test:api": "bash scripts/api-smoke.sh",
-    "test:security": "bash scripts/security-smoke.sh"
+    "test:security": "bash scripts/security-smoke.sh",
+    "test:auth": "bash scripts/auth-security-smoke.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

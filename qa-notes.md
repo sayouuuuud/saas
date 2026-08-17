@@ -21,3 +21,7 @@ The `/billing` build includes the current Growth subscription, payment method, r
 The persisted SaaS API smoke test passed for registration, session inspection, logout, workspace-scoped LMS-link creation, SSRF rejection for internal HTTP addresses, external-link reachability checking, support-ticket creation, mock checkout activation, and invoice reads. The security smoke test also passed for invalid login validation, session revocation after logout, and invalid billing webhook signature rejection. The local mock provider is isolated in `.env.local`; production configuration is documented in `.env.example`.
 
 The LMS boundary audit found no provisioning, deployment, LMS database, or LMS storage routes. The only LMS-facing operations are HTTPS link storage, DNS-aware SSRF-safe reachability checks, and recording a future integration request without reading LMS content or usage data.
+
+## Authentication security QA — 2026-08-17
+
+The reproducible `scripts/auth-security-smoke.sh` flow passed. It registered a new account, consumed the local email-verification token, requested a password reset, completed the reset with a new bcrypt password, and confirmed that the pre-reset session was revoked. The test exposes tokens only in non-production local mode; production responses remain generic.
