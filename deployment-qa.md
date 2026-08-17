@@ -600,3 +600,11 @@ At 2026-08-17T13:24:23Z, the final pushed commit `a18c128` was validated with SQ
 
 عند `2026-08-17T13:24:23Z` تم التحقق من آخر commit مدفوع `a18c128` عبر SQLite schema validation وPostgreSQL schema validation باستخدام PostgreSQL URL صالح نحويًا ومعزول، وlint وstrict TypeScript وproduction build وجميع smoke suites: API وsecurity وauth وedge وtenant-isolation وsubscription-lifecycle وproduction-config وfinal-window-status، إضافة إلى `pnpm audit --prod`. نجحت جميع الأوامر، وكان working tree نظيفًا. ظلت نافذة التنفيذ الحقيقية active عند elapsed قدره `16,580` ثانية، مع بقاء required completion epoch عند `1786999623` / `2026-08-17T20:47:03Z`.
 
+Deployment and runtime health boundary:
+
+At 2026-08-17T13:25:49Z, the Vercel deployment inventory showed the latest observed READY production deployment as `dpl_EbugzFC7yGc7Bmx5BWonPaik4fn3`, created for commit `34c1cba` (`docs: record reports error hardening`). The newer regression-ledger commit `bf18c14` was pushed successfully but was not yet present in the returned deployment inventory, so live-production evidence is not being overstated. The canonical service remained independently probed as healthy in the prior checkpoint, and the grouped Vercel runtime-error query for the last 24 hours returned no runtime errors.
+
+حدود النشر وصحة التشغيل:
+
+عند `2026-08-17T13:25:49Z` أظهرت قائمة Vercel أن آخر deployment إنتاجي بحالة READY هو `dpl_EbugzFC7yGc7Bmx5BWonPaik4fn3` المبني من commit `34c1cba` (`docs: record reports error hardening`). أما commit `bf18c14` الأحدث والمدفوع بنجاح فلم يظهر بعد في نتيجة deployments، ولذلك لم يتم الخلط بين كود repository الأحدث وكود الإنتاج الحي. ظل canonical service سليمًا وفق probe السابق، كما أعاد استعلام Vercel المجمّع لأخطاء runtime خلال آخر 24 ساعة نتيجة خالية من الأخطاء.
+
