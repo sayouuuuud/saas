@@ -11,3 +11,7 @@
 ## Product route verification
 
 The `/login` route renders the Arabic signup form and successfully switches to the login mode; the full-name field disappears and the copy changes to «مرحبًا بعودتك». The `/dashboard` route renders the RTL authenticated shell with sidebar navigation, account metrics, activity chart, billing cards, and an LMS-link panel. Activating «إضافة رابط» changes the panel to the connected state with `academy.example.com`, status confirmation, and an external launch link.
+
+## Billing and support verification
+
+The `/billing` build includes the current Growth subscription, payment method, renewal date, plan switcher, annual/monthly pricing state, and invoice history. The `/support` route renders the ticket form, quick answers, existing ticket table, and a successful submitted-ticket confirmation with generated ticket number `#SUP-1027` after a sample request.
