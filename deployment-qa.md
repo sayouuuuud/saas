@@ -137,3 +137,7 @@ Deployment propagation note:
 
 At 2026-08-17T11:39:28Z, GitHub reported the Vercel status for commit `ce58cd5` as `failure` with target `upgradeToPro=build-rate-limit`. No new deployment was listed for the commit. This is an external Vercel build-quota/platform limitation, distinct from the passing local lint/build/smoke suite and the still-healthy previous canonical READY deployment. The latest commit must not be described as live until Vercel accepts a new build or an alternative deployment path is explicitly used.
 
+Subscription lifecycle hardening verification:
+
+At 2026-08-17T11:45:25Z, cancellation, reactivation, and plan-change routes were hardened. Subscription mutations now require OWNER or BILLING_MANAGER membership, execute state changes and audit/event records atomically, reject terminal `CANCELLED` transitions with HTTP 409, reject inactive plans, and return idempotent `unchanged` responses for repeated cancel/reactivate requests. The new `scripts/subscription-lifecycle-smoke.sh` passed, as did the complete API, security, authentication, edge-case, and tenant-isolation smoke matrix, `pnpm lint`, and `pnpm build`.
+
