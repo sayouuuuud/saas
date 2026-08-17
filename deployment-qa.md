@@ -836,3 +836,11 @@ Full regression matrix after honest-control changes completed at 2026-08-17T14:0
 Both SQLite and PostgreSQL Prisma schemas validated. Lint, strict TypeScript, the 33-route production build, API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-config, and final-window-status smoke suites all passed. The production dependency audit reported no known vulnerabilities. This evidence covers the billing invoice pagination/status-label changes and the support pagination/unavailable-control changes. The real execution window remained active after the run and was not treated as complete.
 
 تم التحقق من مخططي Prisma لـ SQLite وPostgreSQL. نجحت lint وstrict TypeScript وproduction build بعدد 33 route، وجميع اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن. لم يُبلغ تدقيق الاعتماديات الإنتاجية عن ثغرات معروفة. يغطي هذا الدليل تغييرات pagination وترجمة حالات الفوترة، وتغييرات pagination وعناصر التحكم غير المتاحة في الدعم. ظلت نافذة التنفيذ الحقيقية نشطة بعد التشغيل ولم تُعتبر مكتملة.
+
+Landing preview honesty improvement completed at 2026-08-17T14:07:47Z:
+
+The static dashboard mockup's add-LMS-link button is now explicitly disabled and labeled as a static product preview, eliminating a nonfunctional interactive affordance without changing the public marketing flow. Lint and strict TypeScript passed.
+
+تحسين صدق المعاينة في الصفحة الرئيسية في 2026-08-17T14:07:47Z:
+
+أصبح زر إضافة رابط LMS داخل نموذج لوحة التحكم الثابت معطلًا وموسومًا بوضوح بأنه معاينة ثابتة للمنتج، مما أزال عنصرًا تفاعليًا غير عامل دون تغيير مسار الصفحة التسويقية العامة. نجحت lint وstrict TypeScript.
