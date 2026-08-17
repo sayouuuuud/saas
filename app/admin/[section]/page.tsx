@@ -38,8 +38,8 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
 
   let content: ReactNode
   if (section === 'teachers') {
-    const rows = await prisma.workspaceMember.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, role: true, createdAt: true, user: { select: { name: true, email: true } }, workspace: { select: { name: true } } } })
-    content = rows.length ? rows.map((item) => row(item.id, [item.user.name, item.user.email, item.workspace.name, item.role, formatDate(item.createdAt)])) : emptyState()
+    const rows = await prisma.workspaceMember.findMany({ take: 50, orderBy: { createdAt: 'desc' }, select: { id: true, role: true, createdAt: true, user: { select: { id: true, name: true, email: true } }, workspace: { select: { name: true } } } })
+    content = rows.length ? rows.map((item) => row(item.id, [<Link key="teacher" href={`/admin/teachers/${item.user.id}`}>{item.user.name}</Link>, item.user.email, item.workspace.name, item.role, formatDate(item.createdAt)])) : emptyState()
   } else if (section === 'plans') {
     const rows = await prisma.plan.findMany({ take: 50, orderBy: { monthlyCents: 'asc' }, select: { id: true, code: true, name: true, monthlyCents: true, yearlyCents: true, trialDays: true, supportTier: true, active: true } })
     content = rows.length ? rows.map((item) => row(item.id, [`${item.name} (${item.code})`, `${(item.monthlyCents / 100).toFixed(2)} شهريًا`, `${(item.yearlyCents / 100).toFixed(2)} سنويًا`, `${item.active ? 'نشطة' : 'متوقفة'} · تجربة ${item.trialDays} يوم`, item.supportTier])) : emptyState()
