@@ -1453,3 +1453,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Audited all `fetch()` calls in `app/` and `components/`; private mutations in billing, dashboard, support, login, and shared auth actions were missing explicit client-side `cache: 'no-store'` declarations.
 - Added `scripts/client-fetch-cache-audit.sh`, registered it as `test:client-fetch-cache`, and inserted it into the full regression matrix after account-page coverage.
 - Added explicit no-store options to all identified private POST requests. Lint, strict TypeScript, the 53-route SQLite production build, and the new audit passed.
+
+## 2026-08-17 — Full regression after client cache hardening
+
+- The complete `pnpm test:regression-matrix` passed after the explicit no-store client-request hardening.
+- Evidence: 53-route SQLite production build, database validation and migrations, API/public/degraded/security/auth/edge/tenant/subscription/account/client-cache/admin/production-config/final-window/auth-boundary/LMS-independence/collection-bounds suites all passed; `pnpm audit --prod` reported no known vulnerabilities.
