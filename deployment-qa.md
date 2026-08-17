@@ -59,3 +59,6 @@ Webhook robustness and regression coverage:
 
 Final local verification timestamp: 2026-08-17T10:10:00Z (recorded during the active real-time execution window).
 
+
+The canonical Vercel domain was rechecked after the webhook-hardening push at approximately 2026-08-17T10:11:49Z. It returned HTTP 200, one CSP header, six configured security-header matches, and an Arabic RTL marker.
+
