@@ -7,10 +7,10 @@
   "measurement": "system clock seconds",
   "status": "active",
   "scope": "implementation of remaining Centralia SaaS specification gaps",
-  "last_checkpoint_utc": "2026-08-17T22:27:41Z",
-  "last_checkpoint_epoch": 1787005661,
-  "checkpoint_commit": "9c2aff38eced4bb4f1432f6e3a738637b2b42aaa",
-  "checkpoint_summary": "Workspace invitations, encrypted TOTP login challenges, sessions, notifications, billing profile and payment references, coupons, admin detail surfaces, operational settings with retention policy visibility, post-checkout onboarding, enriched public resources, authenticated checkout-to-onboarding smoke coverage, expanded canonical smoke coverage, active-window verifier correction, and functional legacy dashboard notifications link completed; full local regression matrix and canonical production smoke passed.",
+  "last_checkpoint_utc": "2026-08-17T22:29:39Z",
+  "last_checkpoint_epoch": 1787005779,
+  "checkpoint_commit": "16e59a972235f76286ac576bcc98e155269b7b87",
+  "checkpoint_summary": "Workspace invitations, encrypted TOTP login challenges, sessions, notifications, billing profile and payment references, coupons, admin detail surfaces, operational settings with retention policy visibility, post-checkout onboarding, enriched public resources, authenticated checkout-to-onboarding smoke coverage, expanded canonical smoke coverage, active-window verifier correction, functional legacy dashboard notifications link, and active-checkpoint smoke coverage completed; full local regression matrix and canonical production smoke passed.",
   "quality_gate": "Centralia full regression matrix passed",
   "remote_branch": "origin/main"
 }
