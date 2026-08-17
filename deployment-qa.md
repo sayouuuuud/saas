@@ -1442,3 +1442,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 ## 2026-08-17 — Compliance report refresh
 
 - Updated `spec-gap-findings.md` to remove the obsolete team-surface gap, reflect the 53-route build, and document the canonical production smoke now included in final-window verification.
+
+## 2026-08-17 — Team role-label completeness
+
+- Audited the team page against the Prisma `WorkspaceRole` enum and found the supported `SUPPORT_CONTACT` role was falling through to a raw internal enum label.
+- Added the Arabic SaaS-owned presentation label `جهة اتصال للدعم`; lint, strict TypeScript, the 53-route SQLite build, and account-pages smoke all passed.

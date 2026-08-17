@@ -12,6 +12,7 @@ const roleLabels: Record<string, string> = {
   BILLING_MANAGER: 'مدير الفوترة',
   VIEWER: 'مشاهد',
   ANALYST: 'محلل',
+  SUPPORT_CONTACT: 'جهة اتصال للدعم',
 }
 
 export default function TeamPage() {
