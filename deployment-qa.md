@@ -980,3 +980,11 @@ Public plans query hardening completed at 2026-08-17T14:22:24Z (epoch 1786976544
 اكتمل تقوية استعلام الخطط العامة في 2026-08-17T14:22:24Z (epoch 1786976544):
 
 يقيد `GET /api/plans` الآن الخطط النشطة بـ50 سجلًا ويعيد projection عامًا صريحًا بدل نشر حقول دورة الحياة الداخلية. ظلت features وlimits مفكوكة بالطريقة نفسها. نجحت lint وstrict TypeScript وproduction build بعدد 33 route واختبار API.
+
+Collection-query bounds guard completed at 2026-08-17T14:23:12Z (epoch 1786976592):
+
+Added `test:collection-bounds`, which checks every Centralia `findMany` collection surface for an explicit `take` cap and verifies the workspace member lookahead `take: memberLimit + 1`. The audit passed with lint and strict TypeScript after the public plans query was bounded.
+
+اكتمل حارس حدود استعلامات المجموعات في 2026-08-17T14:23:12Z (epoch 1786976592):
+
+أضيف الأمر `test:collection-bounds` ليتحقق من وجود `take` صريح في كل سطح `findMany` داخل Centralia، ويتحقق من lookahead لأعضاء مساحة العمل عبر `take: memberLimit + 1`. نجح التدقيق مع lint وstrict TypeScript بعد تقييد استعلام الخطط العامة.

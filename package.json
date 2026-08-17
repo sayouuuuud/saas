@@ -22,6 +22,7 @@
     "test:final-window-status": "bash scripts/final-window-status-smoke.sh",
     "test:auth-boundaries": "bash scripts/auth-error-boundary-audit.sh",
     "test:lms-independence": "bash scripts/lms-independence-audit.sh",
+    "test:collection-bounds": "bash scripts/collection-bounds-audit.sh",
     "verify:production": "node scripts/verify-production-config.mjs --strict",
     "test:production-config": "bash scripts/production-config-smoke.sh"
   },
