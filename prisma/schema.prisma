@@ -116,6 +116,13 @@ model Session {
 model Workspace {
   id             String                   @id @default(cuid())
   name           String
+  billingCompany String?
+  billingContactName  String?
+  billingContactEmail String?
+  billingTaxId   String?
+  billingAddress String?
+  billingCity    String?
+  billingCountry String?
   ownerId        String                   @unique
   owner          User                     @relation(fields: [ownerId], references: [id])
   members        WorkspaceMember[]

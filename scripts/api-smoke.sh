@@ -92,7 +92,15 @@ payment_methods_after="$(json_request "$BASE_URL/api/billing/payment-methods")"
 test "$(printf '%s' "$payment_methods_after" | grep -c "$PM_ID")" -ge 1
 payment_delete_status="$(status_request -X DELETE -d "{\"id\":\"$PM_ID\"}" "$BASE_URL/api/billing/payment-methods")"
 test "$payment_delete_status" = "200"
-test "$(cat /tmp/saas-smoke-response.json | grep -c '"ok":true')" -eq 1
+test "$(cat /tmp/saas-smoke-response.json | grep -c '\"ok\":true')" -eq 1
+billing_profile_status="$(status_and_headers_request "$BASE_URL/api/billing/profile")"
+test "$billing_profile_status" = "200"
+grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
+billing_profile="$(cat /tmp/saas-smoke-response.json)"
+test "$(printf '%s' "$billing_profile" | grep -c 'profile')" -eq 1
+billing_profile_update="$(json_request -X PATCH -d "{\"billingCompany\":\"QA Centralia\",\"billingContactName\":\"QA Billing\",\"billingContactEmail\":\"$EMAIL\"}" "$BASE_URL/api/billing/profile")"
+test "$(printf '%s' "$billing_profile_update" | grep -c 'QA Centralia')" -eq 1
+test "$(printf '%s' "$billing_profile_update" | grep -c "$EMAIL")" -eq 1
 reports_status="$(status_and_headers_request "$BASE_URL/api/reports")"
 test "$reports_status" = "200"
 grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
