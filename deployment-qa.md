@@ -211,3 +211,10 @@ At 2026-08-17T12:07:07Z, Vercel deployment `dpl_HTTVcBSfA1vi8AqkJKirv1PiaeGa` wa
 التحقق من نشر Vercel:
 
 في `2026-08-17T12:07:07Z` تم التحقق من أن deployment `dpl_HTTVcBSfA1vi8AqkJKirv1PiaeGa` بحالة `READY` للإنتاج على commit `8dc45ed80af10f3099c4e5de54ea0a14cc4b3ed2` (`fix: make integration requests idempotent`). أصبح النشر جاهزًا عند epoch `1786968386529`، وهو مرتبط بالنطاق `saas-gold-seven-80.vercel.app`، ومنفصل عن حالات فشل build-rate-limit السابقة. استمر النطاق canonical في إرجاع HTTP 200 مع ترويسات الأمان المتوقعة.
+AuditLog query coverage:
+
+At 2026-08-17T12:08:12Z, the SaaS Prisma schema gained a composite AuditLog index on `(workspaceId, entity, entityId, createdAt)` to support workspace-scoped idempotency and administrative chronology queries without touching any LMS database. `prisma validate` and `prisma db push --skip-generate` completed successfully, followed by lint, production build, all six smoke suites, and `pnpm audit --prod`; no known production vulnerabilities were reported.
+
+تغطية استعلامات AuditLog:
+
+في `2026-08-17T12:08:12Z` أضيف إلى مخطط Prisma الخاص بـ SaaS فهرس مركب على AuditLog بالحقول `(workspaceId, entity, entityId, createdAt)` لدعم idempotency المعزول بمساحة العمل واستعلامات التسلسل الإداري دون لمس أي قاعدة LMS. نجح `prisma validate` و`prisma db push --skip-generate`، ثم lint وproduction build ومصفوفة الاختبارات الست كاملة و`pnpm audit --prod` الذي أبلغ بعدم وجود ثغرات إنتاج معروفة.

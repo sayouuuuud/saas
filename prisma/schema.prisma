@@ -350,5 +350,6 @@ model AuditLog {
   workspace    Workspace?  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
   @@index([workspaceId, createdAt])
+  @@index([workspaceId, entity, entityId, createdAt])
   @@index([actorId, createdAt])
 }
