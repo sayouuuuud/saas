@@ -1370,3 +1370,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Dashboard navigation now exposes settings, security, and notifications. Account smoke covers all nine account pages and the protected SaaS API boundary.
 - Validation passed: lint, strict TypeScript, production build with 52 routes, and expanded account smoke.
 - No LMS database was accessed or modified.
+
+## 2026-08-17 — Settings permission hardening
+
+- Hardened `/app/settings` so profile changes are independent from workspace renaming. Workspace edits are disabled for members without `OWNER` or `BILLING_MANAGER` membership, preventing an avoidable partial-save attempt.
+- Validation passed: lint, strict TypeScript, production build with 52 routes, and account smoke across all account surfaces and protected APIs.
