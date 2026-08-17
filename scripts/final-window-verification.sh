@@ -13,10 +13,12 @@ done
   printf 'required_epoch=%s\n' "$REQUIRED_EPOCH"
   cd "$ROOT_DIR"
   pnpm test:regression-matrix
+  pnpm test:canonical-production
   WINDOW_TMP="${WINDOW_FILE}.tmp"
   sed 's/"status": "active"/"status": "window_complete"/' "$WINDOW_FILE" > "$WINDOW_TMP"
   mv "$WINDOW_TMP" "$WINDOW_FILE"
   printf 'execution_window_status=window_complete\n'
+  printf 'canonical_production_smoke=passed\n'
   printf 'final_verification_status=passed\n'
   printf 'final_verification_finished_at=%s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 } > "$REPORT_FILE" 2>&1

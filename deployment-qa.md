@@ -1413,3 +1413,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 ## 2026-08-17 — Combined local and canonical verification
 
 - After the canonical security-header gate was hardened, `pnpm lint`, the complete `pnpm test:regression-matrix`, and `pnpm test:canonical-production` all passed. The local build remained at 52 routes, and the live canonical alias continued to satisfy the public, content-type, security-header, and plans-degradation contracts.
+
+## 2026-08-17 — Final-window gate includes canonical production smoke
+
+- Updated `final-window-verification.sh` to run `pnpm test:canonical-production` immediately after the complete local regression matrix and to record `canonical_production_smoke=passed` before marking the execution window complete.
+- `bash -n scripts/final-window-verification.sh` and the simulated `pnpm test:final-window-status` contract both passed.
