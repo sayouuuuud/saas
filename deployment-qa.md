@@ -345,3 +345,10 @@ Vercel accepted commit `8f614518afe92df9576394bb8293aff931faaa41` (`build: selec
 نشر Vercel الإنتاجي المتحقق:
 
 قبلت Vercel commit `8f614518afe92df9576394bb8293aff931faaa41` بعنوان `build: select prisma schema by database protocol` كنشر إنتاجي رقم `dpl_AvMzen2npiaYVd4XqjbcNF1H7xnp`. وصل إلى `READY` عند epoch `1786970253169` الموافق `2026-08-17T12:37:33.169Z`، مع deployment URL وaliases تتضمن النطاق canonical `saas-gold-seven-80.vercel.app`، والمنطقة `iad1`، ودون alias error. يختلف ذلك عن محاولات `build-rate-limit` السابقة؛ فالcommit الحالي لديه build إنتاجي حي ومتحقق.
+Production runtime check:
+
+A read-only Vercel grouped-runtime-error query at 2026-08-17T12:38:34Z for the Centralia project over the previous 24 hours returned **no runtime errors**. This supports production stability for the verified READY deployment, while the separate GitHub status on the subsequent QA-only commit remains a Vercel build-rate-limit failure and does not alter the live READY deployment association.
+
+فحص أخطاء التشغيل في الإنتاج:
+
+أعاد استعلام Vercel للـ runtime errors، المنفذ للقراءة فقط عند `2026-08-17T12:38:34Z` على مشروع Centralia خلال آخر 24 ساعة، النتيجة **لا توجد أخطاء تشغيل**. يدعم ذلك استقرار النشر READY المتحقق، مع بقاء حالة GitHub المنفصلة للcommit التوثيقي اللاحق فشلًا بسبب build-rate-limit، دون تغيير ارتباط النشر الحي بالcommit READY السابق.
