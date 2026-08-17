@@ -6,8 +6,8 @@ COOKIE_B="$(mktemp)"
 trap 'rm -f "$COOKIE_A" "$COOKIE_B"' EXIT
 EMAIL_A="tenant-a-$(date +%s%N)@example.com"
 EMAIL_B="tenant-b-$(date +%s%N)@example.com"
-json_request() { curl -sS -b "$1" -c "$1" -H 'content-type: application/json' "${@:2}"; }
-status_request() { curl -sS -o /tmp/saas-tenant-response.json -w '%{http_code}' -b "$1" -c "$1" -H 'content-type: application/json' "${@:2}"; }
+json_request() { curl -sS -b "$1" -c "$1" -H 'content-type: application/json' -H 'x-test-client: tenant-smoke' "${@:2}"; }
+status_request() { curl -sS -o /tmp/saas-tenant-response.json -w '%{http_code}' -b "$1" -c "$1" -H 'content-type: application/json' -H 'x-test-client: tenant-smoke' "${@:2}"; }
 
 json_request "$COOKIE_A" -X POST -d "{\"name\":\"Tenant A\",\"email\":\"$EMAIL_A\",\"password\":\"secure-password-123\"}" "$BASE_URL/api/auth/register" >/tmp/saas-tenant-a.json
 link="$(json_request "$COOKIE_A" -X POST -d '{"displayName":"Tenant A LMS","publicUrl":"https://example.com"}' "$BASE_URL/api/lms-link")"

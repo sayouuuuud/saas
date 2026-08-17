@@ -3,10 +3,13 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/auth";
+import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 const schema = z.object({ email: z.string().trim().toLowerCase().email(), password: z.string().min(1).max(72) });
 
 export async function POST(request: Request) {
+  const rate = checkRateLimit(request, "auth:login", 10);
+  if (!rate.allowed) return NextResponse.json({ error: "محاولات كثيرة، حاول مرة أخرى لاحقًا" }, { status: 429, headers: rateLimitHeaders(rate) });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "بيانات الدخول غير صالحة" }, { status: 400 });
   const user = await prisma.user.findUnique({ where: { email: parsed.data.email } });

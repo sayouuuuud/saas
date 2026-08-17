@@ -127,3 +127,8 @@ Production observability:
 
 The Vercel grouped runtime-error query for the SaaS project returned no runtime errors in the selected 24-hour window at 2026-08-17T11:34:16Z.
 
+
+Authentication abuse-resistance hardening:
+
+Added a bounded route-scoped burst limiter for login, registration, password recovery, password reset, and email verification. Production requests use the platform client address; explicit test identities are honored only outside production to keep local smoke suites deterministic. The security suite now proves login returns HTTP 429 after the configured threshold, and the complete lint, production build, API, authentication, edge-case, and tenant-isolation suites passed at 2026-08-17T11:38:04Z.
+

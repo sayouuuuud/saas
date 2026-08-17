@@ -4,8 +4,8 @@ BASE_URL="${BASE_URL:-http://localhost:3000}"
 COOKIE_FILE="$(mktemp)"
 trap 'rm -f "$COOKIE_FILE"' EXIT
 EMAIL="qa-$(date +%s%N)@example.com"
-json_request() { curl -sS -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' "$@"; }
-status_request() { curl -sS -o /tmp/saas-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' "$@"; }
+json_request() { curl -sS -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: api-smoke' "$@"; }
+status_request() { curl -sS -o /tmp/saas-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: api-smoke' "$@"; }
 
 register="$(json_request -X POST -d "{\"name\":\"QA Teacher\",\"email\":\"$EMAIL\",\"password\":\"correct-horse-123\"}" "$BASE_URL/api/auth/register")"
 test "$(printf '%s' "$register" | grep -c 'QA Teacher')" -eq 1

@@ -1,10 +1,13 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export async function POST(request: Request) {
+  const rate = checkRateLimit(request, "auth:forgot-password", 5);
+  if (!rate.allowed) return NextResponse.json({ accepted: true }, { status: 200, headers: rateLimitHeaders(rate) });
   const body = await request.json().catch(() => ({}));
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   const response: { accepted: boolean; resetToken?: string } = { accepted: true };

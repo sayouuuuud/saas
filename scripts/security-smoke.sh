@@ -5,8 +5,10 @@ COOKIE_FILE="$(mktemp)"
 trap 'rm -f "$COOKIE_FILE"' EXIT
 EMAIL="security-$(date +%s%N)@example.com"
 
-status() { curl -sS -o /tmp/saas-security-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' "$@"; }
+status() { curl -sS -o /tmp/saas-security-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: security-smoke' "$@"; }
 status -X POST -d '{"email":"bad","password":"short"}' "$BASE_URL/api/auth/login" | grep -qx '400'
+for _ in $(seq 1 9); do status -X POST -d '{"email":"bad","password":"short"}' "$BASE_URL/api/auth/login" | grep -qx '400'; done
+status -X POST -d '{"email":"bad","password":"short"}' "$BASE_URL/api/auth/login" | grep -qx '429'
 status -X POST -d "{\"name\":\"Security QA\",\"email\":\"$EMAIL\",\"password\":\"secure-password-123\"}" "$BASE_URL/api/auth/register" | grep -qx '201'
 status -X POST -d '{"displayName":"Private HTTPS","publicUrl":"https://localhost"}' "$BASE_URL/api/lms-link" | grep -qx '400'
 status -X POST "$BASE_URL/api/auth/logout" | grep -qx '200'

@@ -4,11 +4,14 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/auth";
+import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 const schema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().toLowerCase().email(), password: z.string().min(8).max(72) });
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export async function POST(request: Request) {
+  const rate = checkRateLimit(request, "auth:register", 5);
+  if (!rate.allowed) return NextResponse.json({ error: "محاولات كثيرة، حاول مرة أخرى لاحقًا" }, { status: 429, headers: rateLimitHeaders(rate) });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "تحقق من الاسم والبريد وكلمة المرور" }, { status: 400 });
   const { name, email, password } = parsed.data;

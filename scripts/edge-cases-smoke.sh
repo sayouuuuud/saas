@@ -6,7 +6,7 @@ trap 'rm -f "$COOKIE_FILE"' EXIT
 EMAIL="edge-$(date +%s%N)@example.com"
 
 status_request() {
-  curl -sS -o /tmp/saas-edge-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' "$@"
+  curl -sS -o /tmp/saas-edge-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: edge-smoke' "$@"
 }
 
 status_request -X POST -d "{\"name\":\"Edge QA\",\"email\":\"$EMAIL\",\"password\":\"secure-password-123\"}" "$BASE_URL/api/auth/register" | grep -qx '201'
