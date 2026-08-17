@@ -40,3 +40,11 @@ Direct canonical probes returned HTTP 200 for `/app/settings`, `/app/security`, 
 ## Runtime-error grouping — 2026-08-17T16:50Z
 
 The Vercel project’s last-24-hour grouped runtime-error query returned exactly one error group: `/api/plans` with `PrismaClientInitializationError`, count 2, affecting 2 users, first seen 15:18:05Z and last seen 16:44:18Z on deployment `dpl_5ZE2e6kUSXwEU1NEUgH2ix8tWpZc`. No additional production runtime-error groups were reported.
+
+## Vercel propagation checkpoint — 2026-08-17T17:04Z
+
+The read-only Vercel deployment listing shows the newest READY production deployment is `dpl_8EMVV11D8zMzqkiBifV6N936Ykyx`, created at epoch `1786985549370`, associated with commit `b707cf7bc80701ea76d2eb80bcaefaf889a57851` (`test: add canonical production smoke gate`). The current GitHub branch has since advanced through the dedicated team surface, reserved-port/process cleanup, compliance-report refresh, and final regression documentation commits, so those later revisions are not yet represented by a newer READY deployment in the observed listing. No deployment trigger was forced because prior Vercel deployment quota behavior was already documented and the current verification remains non-destructive.
+
+## Canonical smoke reconfirmation — 2026-08-17T17:05Z
+
+The read-only `pnpm test:canonical-production` gate passed against `https://saas-gold-seven-80.vercel.app`, reconfirming public route availability, robots/sitemap response types, transport/security headers, and the controlled `/api/plans` degraded contract. This validates the live alias independently of the still-lagging latest-commit association in the Vercel deployment listing.
