@@ -80,3 +80,7 @@ GitHub reports the Vercel status for commit `9735af8` as `failure` with the prov
 ## Runtime-error reconfirmation — 2026-08-17T17:36Z
 
 The Vercel grouped runtime-error query for the last hour returned one error group only: `/api/plans` with `PrismaClientInitializationError`, count 8 across 4 users, last seen at 17:34:23Z on deployment `dpl_HcqgwTCFe3Z8kynRfdPd9sf1P1F5`. This matches the intentionally handled degraded plans contract; no unexpected application route error group was reported.
+
+## Direct READY confirmation — 2026-08-17T17:38Z
+
+A direct Vercel deployment lookup confirms `dpl_HcqgwTCFe3Z8kynRfdPd9sf1P1F5` is now `READY`, with `ready=1786987405079`, and owns the canonical alias `saas-gold-seven-80.vercel.app`. It is associated with commit `142ef260842c3ca52f665ff9ba2760a5a5a5452b`; later GitHub commits remain subject to the documented Vercel deployment rate limit.
