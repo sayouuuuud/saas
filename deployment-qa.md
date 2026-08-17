@@ -1389,3 +1389,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 ## 2026-08-17 — Full regression after private-account security boundary
 
 - `pnpm test:regression-matrix` passed after adding the `/app` noindex metadata layout. The matrix confirmed the 52-route build and green API, public/policy, degraded-catalog, security, authentication, edge-case, tenant-isolation, subscription, account, admin, production-config, final-window, safe-error, LMS-independence, collection-bounds, and dependency-audit checks.
+
+## 2026-08-17 — All-account noindex regression coverage
+
+- Expanded `account-pages-smoke.sh` to assert noindex metadata on every dedicated account page: profile, subscription, usage, reports, settings, security, notifications, and LMS connection.
+- Clean local-server verification passed for all account pages, protected APIs, and the inherited private metadata boundary.
