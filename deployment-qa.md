@@ -254,3 +254,10 @@ At 2026-08-17T12:16:29Z, the authenticated dashboard gained cancellable `/api/au
 مرونة تجربة لوحة التحكم:
 
 في `2026-08-17T12:16:29Z` أضيفت إلى لوحة التحكم المصادق عليها عملية تحميل قابلة للإلغاء لـ `/api/auth/me`، ورسالة تحميل واضحة، وحالة خطأ شبكية قابلة للوصول مع إجراء إعادة المحاولة. لم تعد بيانات مساحة العمل الوهمية تظهر قبل وصول payload الهوية. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
+Authenticated workspace resilience:
+
+At 2026-08-17T12:17:47Z, `/app/[slug]` gained App Router loading and error boundaries. Slow database reads now show an explicit Arabic loading state, while rendering failures expose a recoverable retry action and do not present unverified workspace metrics. Lint, production build, and all six smoke suites passed.
+
+مرونة مساحة العمل المصادق عليها:
+
+في `2026-08-17T12:17:47Z` أضيفت إلى `/app/[slug]` حالتا تحميل وخطأ على مستوى App Router. تعرض قراءات قاعدة البيانات البطيئة حالة تحميل عربية واضحة، بينما تعرض أخطاء العرض إجراء إعادة محاولة ولا تقدم مؤشرات مساحة عمل غير مؤكدة. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
