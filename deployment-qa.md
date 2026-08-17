@@ -956,3 +956,11 @@ The Vercel runtime-error query returned no runtime errors for the Centralia proj
 تمت إعادة فحص صحة التشغيل على Vercel في 2026-08-17T14:20:02Z (epoch 1786976402):
 
 أعاد استعلام أخطاء التشغيل في Vercel عدم وجود أخطاء لمشروع Centralia خلال نافذة الـ24 ساعة المحددة. سُجلت نتيجة المراقبة النظيفة منفصلة عن حد deployment: يظل أحدث deployment مرصود بحالة READY هو `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` للـ commit `a34e9f5`.
+
+Workspace member smoke coverage strengthened at 2026-08-17T14:20:53Z (epoch 1786976453):
+
+`test:api` now requests a bounded first workspace page and asserts `membersPagination`, the requested limit, and the seeded owner role projection in addition to the nonzero-offset cap. The updated API smoke suite passed.
+
+تم تقوية تغطية smoke لأعضاء مساحة العمل في 2026-08-17T14:20:53Z (epoch 1786976453):
+
+يطلب `test:api` الآن الصفحة الأولى المحدودة لأعضاء مساحة العمل ويتحقق من `membersPagination` والحد المطلوب وإظهار دور المالك المزروع، إضافة إلى اختبار حد offset غير الصفري. نجح اختبار API بعد التحديث.

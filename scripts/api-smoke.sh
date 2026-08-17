@@ -15,6 +15,10 @@ test "$(printf '%s' "$me" | grep -c 'Starter')" -eq 1
 workspace="$(json_request "$BASE_URL/api/workspace?memberLimit=999&memberOffset=1")"
 test "$(printf '%s' "$workspace" | grep -c '"limit":50')" -eq 1
 test "$(printf '%s' "$workspace" | grep -c '"offset":1')" -eq 1
+workspace_first_page="$(json_request "$BASE_URL/api/workspace?memberLimit=1&memberOffset=0")"
+test "$(printf '%s' "$workspace_first_page" | grep -c '"membersPagination"')" -eq 1
+test "$(printf '%s' "$workspace_first_page" | grep -c '"limit":1')" -ge 1
+test "$(printf '%s' "$workspace_first_page" | grep -c '"role":"OWNER"')" -ge 1
 bad_status="$(status_request -X POST -d '{"displayName":"Internal","publicUrl":"http://127.0.0.1:8080"}' "$BASE_URL/api/lms-link")"
 test "$bad_status" = "400"
 good="$(json_request -X POST -d '{"displayName":"Demo Academy","publicUrl":"https://example.com"}' "$BASE_URL/api/lms-link")"
