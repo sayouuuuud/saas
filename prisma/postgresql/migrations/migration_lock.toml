@@ -1,0 +1,3 @@
+# PostgreSQL production migration history for Centralia SaaS.
+# The SQLite development migration history remains under prisma/migrations.
+provider = "postgresql"

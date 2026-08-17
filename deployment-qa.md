@@ -324,3 +324,10 @@ At 2026-08-17T12:31:31Z, an additive `WorkspaceMember(userId, createdAt)` index 
 فهرس بحث أعضاء مساحة العمل:
 
 في `2026-08-17T12:31:31Z` أضيف فهرس إضافي `WorkspaceMember(userId, createdAt)` مع migration SQLite رقم `20260817123100_add_workspace_member_session_index` لدعم lookup جلسة العضو. نجح `pnpm db:validate` و`pnpm db:migrate`، ثم نجحت lint وproduction build وجميع اختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك.
+PostgreSQL production migration path:
+
+At 2026-08-17T12:34:25Z, Centralia gained a separate validated production datamodel at `prisma/postgresql/schema.prisma` and migration history at `prisma/postgresql/migrations`, generated from the SaaS-only schema with `provider = "postgresql"`. `DATABASE_URL='postgresql://...' pnpm db:validate:postgres` passed, and the deterministic production-config smoke, lint, production build, API, security, auth, edge, tenant-isolation, and subscription suites all passed. The local SQLite schema and migrations remain unchanged for development; no LMS database or tables were introduced.
+
+مسار PostgreSQL للإنتاج:
+
+في `2026-08-17T12:34:25Z` أضيف datamodel منفصل ومتحقق للإنتاج في `prisma/postgresql/schema.prisma` وسجل migrations في `prisma/postgresql/migrations`، مولّدان من schema SaaS فقط مع `provider = "postgresql"`. نجح `DATABASE_URL='postgresql://...' pnpm db:validate:postgres`، كما نجح اختبار إعدادات الإنتاج وlint وproduction build واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك. بقي schema وmigrations SQLite المحليان دون تغيير للتطوير، ولم تُنشأ أي جداول أو اتصالات بقاعدة LMS.

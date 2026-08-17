@@ -1,6 +1,6 @@
 # منصة مركزية SaaS
 
-منصة SaaS عربية مستقلة عن أنظمة LMS، مبنية باستخدام **Next.js 16.3** و**Prisma 6** و**SQLite للتطوير المحلي**، مع نشر إنتاجي على Vercel. تحتفظ المنصة ببيانات المستخدمين ومساحات العمل والاشتراكات والفوترة والدعم وروابط التكامل فقط؛ ولا تنشئ اتصالًا بقاعدة بيانات LMS خارجية.
+منصة SaaS عربية مستقلة عن أنظمة LMS، مبنية باستخدام **Next.js 16.3** و**Prisma 6**، مع **SQLite للتطوير المحلي** وschema/migrations منفصلة لـ **PostgreSQL في الإنتاج**، مع نشر إنتاجي على Vercel. تحتفظ المنصة ببيانات المستخدمين ومساحات العمل والاشتراكات والفوترة والدعم وروابط التكامل فقط؛ ولا تنشئ اتصالًا بقاعدة بيانات LMS خارجية.
 
 ## التشغيل المحلي
 
@@ -13,7 +13,9 @@ pnpm db:seed
 pnpm dev
 ```
 
-يفتح خادم التطوير على `http://localhost:3000`. يمكن تشغيل بوابة الإنتاج محليًا بعد البناء باستخدام `pnpm build && pnpm start`.
+يفتح خادم التطوير على `http://localhost:3000`. يمكن تشغيل بوابة الإنتاج محليًا بعد البناء باستخدام `pnpm build && pnpm start`. يستخدم التطوير `prisma/schema.prisma` و`prisma/migrations`، بينما يستخدم الإنتاج `prisma/postgresql/schema.prisma` و`prisma/postgresql/migrations`؛ لا تُستخدم migrations SQLite على قاعدة PostgreSQL.
+
+للتحقق من schema الإنتاج دون كشف سر في المستودع، استخدم `DATABASE_URL='postgresql://...' pnpm db:validate:postgres`، ثم شغّل `DATABASE_URL='postgresql://...' pnpm db:migrate:postgres` فقط بعد توفير قاعدة PostgreSQL فعلية وقابلة للوصول. يمنع `pnpm verify:production --strict` الإطلاق عندما تكون البيئة ما زالت على SQLite أو mock billing.
 
 ## أوامر الجودة وقاعدة البيانات
 
@@ -21,8 +23,10 @@ pnpm dev
 |---|---|
 | `pnpm lint` | فحص ESLint للمشروع كاملًا |
 | `pnpm build` | إنشاء نسخة Next.js إنتاجية والتحقق من تجميع المسارات |
-| `pnpm db:validate` | التحقق من صحة Prisma schema |
-| `pnpm db:migrate` | تطبيق migrations المحلية |
+| `pnpm db:validate` | التحقق من صحة Prisma schema المحلي لـ SQLite |
+| `pnpm db:validate:postgres` | التحقق من schema الإنتاج PostgreSQL عبر `prisma/postgresql/schema.prisma` مع `DATABASE_URL` PostgreSQL |
+| `pnpm db:migrate` | تطبيق migrations المحلية لـ SQLite |
+| `pnpm db:migrate:postgres` | تطبيق migrations الإنتاج PostgreSQL المنفصلة بعد ضبط `DATABASE_URL` الآمن |
 | `pnpm db:seed` | إنشاء خطط Starter وGrowth وAcademy |
 | `pnpm test:api` | اختبار تدفق API الأساسي |
 | `pnpm test:security` | اختبار المصادقة وWebhook ورفض عناوين LMS الخاصة |
