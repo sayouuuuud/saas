@@ -4,8 +4,9 @@ BASE_URL="${BASE_URL:-http://localhost:3000}"
 COOKIE_FILE="$(mktemp)"
 trap 'rm -f "$COOKIE_FILE"' EXIT
 EMAIL="security-$(date +%s%N)@example.com"
+TEST_CLIENT="security-smoke-$(date +%s%N)"
 
-status() { curl -sS -o /tmp/saas-security-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: security-smoke' "$@"; }
+status() { curl -sS -o /tmp/saas-security-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
 status -X POST -d '{"email":"bad","password":"short"}' "$BASE_URL/api/auth/login" | grep -qx '400'
 for _ in $(seq 1 9); do status -X POST -d '{"email":"bad","password":"short"}' "$BASE_URL/api/auth/login" | grep -qx '400'; done
 status -X POST -d '{"email":"bad","password":"short"}' "$BASE_URL/api/auth/login" | grep -qx '429'

@@ -147,3 +147,7 @@ Checkout consistency hardening:
 
 At 2026-08-17T11:46:44Z, the mock checkout mutation was aligned with the subscription lifecycle policy: only OWNER and BILLING_MANAGER members may manage billing, request fields are bounded, terminal subscriptions can only be reactivated through an explicit checkout, and invoice/payment identifiers use UUIDs rather than millisecond timestamps to avoid collision under concurrent requests. Lint, production build, and all six smoke suites passed after the change.
 
+Webhook audit and test determinism follow-up:
+
+At 2026-08-17T11:49:33Z, successful payment webhooks were extended to write a transactional `PAYMENT` audit record containing the provider event and invoice metadata. During retesting, the security smoke suite was corrected to generate a unique per-run test client identity, and the lifecycle suite was corrected to generate a unique webhook event ID; this prevents stale in-memory limiter buckets and prior event payloads from contaminating later local runs. The security and subscription lifecycle suites both passed after the fixes.
+
