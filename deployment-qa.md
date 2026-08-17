@@ -865,3 +865,9 @@ API error-boundary regression guard completed at 2026-08-17T14:09:16Z:
 Added `test:auth-boundaries`, a deterministic source audit that scans all 28 `app/api/**/route.ts` files and requires both the shared `safeAuthError` reference and a returned boundary response. The audit, lint, and strict TypeScript checks passed. This prevents future collection or nested-route additions from silently bypassing the bounded authentication/database error contract.
 اكتملت إضافة حارس regression لحدود أخطاء API في 2026-08-17T14:09:16Z:
 تمت إضافة `test:auth-boundaries`، وهو تدقيق مصدر حتمي يفحص ملفات `app/api/**/route.ts` الثمانية والعشرين ويتطلب وجود مرجع `safeAuthError` وإرجاع استجابة boundary منه. نجح التدقيق وlint وstrict TypeScript، مما يمنع إضافة مسارات جديدة تتجاوز عقد أخطاء المصادقة/قاعدة البيانات المحدود دون اكتشاف ذلك.
+
+API-boundary-inclusive smoke matrix completed at 2026-08-17T14:09:57Z (epoch 1786975797):
+
+The new `test:auth-boundaries` audit passed for all 28 API route files, followed by passing API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-config, and final-window-status suites. This confirms the static boundary guard and runtime smoke coverage coexist without regression. The real execution window remained active.
+
+نجح تدقيق `test:auth-boundaries` الجديد لجميع ملفات API البالغ عددها 28، ثم نجحت اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن. يؤكد ذلك توافق الحارس الثابت مع اختبارات التشغيل دون regression. ظلت نافذة التنفيذ الحقيقية نشطة.
