@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-WINDOW_FILE="$ROOT_DIR/execution-window.json"
+WINDOW_FILE="$ROOT_DIR/execution-window-current.json"
+if [[ ! -f "$WINDOW_FILE" ]]; then
+  WINDOW_FILE="$ROOT_DIR/execution-window.json"
+fi
 REPORT_FILE="$ROOT_DIR/final-window-verification.log"
 REQUIRED_EPOCH="$(sed -n 's/.*"required_completion_epoch": \([0-9]*\).*/\1/p' "$WINDOW_FILE")"
 START_EPOCH="$(sed -n 's/.*"started_at_epoch": \([0-9]*\).*/\1/p' "$WINDOW_FILE")"
