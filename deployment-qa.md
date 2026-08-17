@@ -560,3 +560,11 @@ At 2026-08-17T13:17:42Z, the bounded, offset-aware invoice collection endpoint w
 
 عند `2026-08-17T13:17:42Z` تم تغليف endpoint قائمة invoices المقيّد بالworkspace والداعم لـ offset باستخدام `safeAuthError`، مع الحفاظ على ترتيب الأحدث أولًا وmetadata الخاصة بالpagination، وإرجاع JSON حتمي عند الأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `14ef5cd`.
 
+Usage metrics error handling:
+
+At 2026-08-17T13:18:44Z, the workspace-scoped usage metrics endpoint was wrapped with `safeAuthError`, preserving its parallel aggregate queries and SaaS-only unavailable metrics while returning deterministic JSON for unexpected read failures. Lint, strict TypeScript, API smoke, security smoke, diff checks, and compiler-artifact cleanup passed before commit `2d0e67d` was pushed.
+
+معالجة أخطاء usage metrics:
+
+عند `2026-08-17T13:18:44Z` تم تغليف endpoint usage metrics المقيّد بالworkspace باستخدام `safeAuthError`، مع الحفاظ على aggregate queries المتوازية وmetrics غير المتاحة الخاصة باستقلال SaaS، وإرجاع JSON حتمي عند أخطاء القراءة غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `2d0e67d`.
+
