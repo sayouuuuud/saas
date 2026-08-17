@@ -584,3 +584,11 @@ At 2026-08-17T13:20:56Z, the grouped SaaS audit-history endpoint was wrapped wit
 
 عند `2026-08-17T13:20:56Z` تم تغليف endpoint سجل audit التاريخي المجمّع الخاص بـ SaaS باستخدام `safeAuthError`، مع الحفاظ على SQL aggregation المقيّد بالworkspace وتصريح الدقة الخاص بأحداث SaaS، وإرجاع JSON حتمي عند فشل الاستعلام. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `a0c4531`.
 
+Authentication-me error handling:
+
+At 2026-08-17T13:22:13Z, the session-hydration endpoint was wrapped with `safeAuthError`, preserving identity-only responses, membership-based workspace resolution, bounded LMS-link hydration, and unauthenticated 401 semantics while returning deterministic JSON for unexpected failures. Lint, strict TypeScript, authentication smoke, API smoke, security smoke, diff checks, and compiler-artifact cleanup passed before commit `7c8c2b7` was pushed.
+
+معالجة أخطاء auth/me:
+
+عند `2026-08-17T13:22:13Z` تم تغليف endpoint hydration الخاص بالجلسة باستخدام `safeAuthError`، مع الحفاظ على responses الخاصة بالهوية، وحل workspace عبر العضوية، وتحميل روابط LMS بحدود، وسلوك 401 لغير المسجلين، مع إرجاع JSON حتمي عند الأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وauth smoke وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `7c8c2b7`.
+
