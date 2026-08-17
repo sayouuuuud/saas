@@ -18,3 +18,9 @@ Security-fix verification on 2026-08-17:
 - Changes committed and pushed as `3e2a5a2` (`security: remove vulnerable dependency chain and patch transitive advisories`).
 - Vercel production deployment `dpl_54jHacHnovSTFWMwCmxfFZba2o7c` for commit `3e2a5a2c294593130f7c6940727909525e60a7e3` is `READY`.
 - Canonical domain `https://saas-gold-seven-80.vercel.app/` returns HTTP 200, `content-type: text/html`, `lang="ar"`, and `dir="rtl"`.
+
+Production security-header verification for commit `b2a9447`:
+
+- Vercel deployment `dpl_9qPnPz6oimgK4greuhArxEX43VmT` reached `READY` and aliases the canonical production domains.
+- The canonical URL returned HTTP 200 and emitted all six configured headers: CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, and HSTS.
+- The new edge-case suite passed for duplicate registration, malformed JSON, unknown checkout plan, logout, and unauthenticated workspace access.

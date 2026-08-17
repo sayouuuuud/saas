@@ -237,6 +237,8 @@ model Payment {
   paidAt        DateTime?
   createdAt     DateTime  @default(now())
   invoice       Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId, createdAt])
 }
 
 model PaymentMethodReference {
@@ -249,7 +251,9 @@ model PaymentMethodReference {
   expiryYear        Int
   isDefault         Boolean   @default(false)
   workspace         Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  createdAt         DateTime  @default(now())
+  createdAt         DateTime      @default(now())
+
+  @@index([workspaceId])
 }
 
 model LmsLink {
@@ -312,6 +316,8 @@ model SupportMessage {
   createdAt  DateTime      @default(now())
   ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   author     User          @relation(fields: [authorId], references: [id])
+
+  @@index([ticketId, createdAt])
 }
 
 model Notification {
