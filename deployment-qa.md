@@ -680,3 +680,11 @@ At 2026-08-17T13:34:57Z, the forgot-password route received a top-level `safeAut
 
 عند `2026-08-17T13:34:57Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى forgot-password، مع الحفاظ على rate limiting، والاستجابات المقبولة غير الكاشفة لوجود البريد، والحفظ الذري لـ reset token وSECURITY_EVENT، وإظهار token في بيئة التطوير فقط. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `913a3cd`.
 
+Password-reset completion error handling:
+
+At 2026-08-17T13:35:48Z, the reset-password route received a top-level `safeAuthError` boundary, preserving rate limits, invalid/expired-token responses, atomic password update and session deletion, and SECURITY_EVENT auditing. Lint, strict TypeScript, authentication smoke, security smoke, edge-case smoke, API smoke, diff checks, and compiler-artifact cleanup passed before commit `61f91f3` was pushed.
+
+معالجة أخطاء إكمال إعادة تعيين كلمة المرور:
+
+عند `2026-08-17T13:35:48Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى reset-password، مع الحفاظ على rate limiting، واستجابات token غير الصالح أو المنتهي، والتحديث الذري لكلمة المرور وحذف الجلسات، وSECURITY_EVENT audit. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `61f91f3`.
+
