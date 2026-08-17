@@ -18,5 +18,6 @@ json_request "$COOKIE_B" -X POST -d "{\"name\":\"Tenant B\",\"email\":\"$EMAIL_B
 
 test "$(status_request "$COOKIE_B" -X DELETE "$BASE_URL/api/lms-link/$LINK_ID")" = "404"
 test "$(status_request "$COOKIE_B" -X POST "$BASE_URL/api/lms-link/$LINK_ID/check")" = "404"
+test "$(status_request "$COOKIE_B" -X POST "$BASE_URL/api/lms-link/$LINK_ID/request-integration")" = "404"
 printf 'Tenant-isolation smoke test passed for link %s\n' "$LINK_ID"
 

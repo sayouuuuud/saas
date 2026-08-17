@@ -233,3 +233,10 @@ At 2026-08-17T12:10:17Z, README.md was updated to document idempotent LMS integr
 اتساق التوثيق:
 
 في 2026-08-17T12:10:17Z تم تحديث README.md لتوثيق استجابات طلبات تكامل LMS المتكررة كعمليات idempotent، ولتأكيد أن إعلان نشر Vercel يتطلب تطابق deployment ID وcommit SHA وحالة `READY`. نجح `git diff --check` وlint وproduction build بعد تحديث التوثيق.
+Cross-workspace request isolation:
+
+At 2026-08-17T12:12:09Z, tenant-isolation smoke coverage was extended to assert that a second workspace receives HTTP 404 when attempting `POST /api/lms-link/[id]/request-integration` for another workspace's link. Lint, production build, and all six smoke suites passed.
+
+عزل طلبات التكامل بين المساحات:
+
+في `2026-08-17T12:12:09Z` تم توسيع اختبار عزل المستأجر ليتحقق من أن مساحة عمل ثانية تستقبل HTTP 404 عند محاولة `POST /api/lms-link/[id]/request-integration` على رابط يخص مساحة أخرى. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
