@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { safeAuthError } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 const payloadSchema = z.object({
@@ -20,7 +21,8 @@ function validSignature(rawBody: string, signature: string | null) {
 }
 
 export async function POST(request: Request) {
-  const rawBody = await request.text();
+  try {
+    const rawBody = await request.text();
   const signature = request.headers.get("x-billing-signature");
   const eventId = request.headers.get("x-billing-event-id");
   if (!eventId || eventId.length > 160) return NextResponse.json({ error: "event id is required" }, { status: 400 });
@@ -87,5 +89,8 @@ export async function POST(request: Request) {
     if (errorCode === "invoice_amount_mismatch") return NextResponse.json({ error: "invoice amount mismatch" }, { status: 409 });
     return NextResponse.json({ error: "webhook processing failed" }, { status: 500 });
   }
-  return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
