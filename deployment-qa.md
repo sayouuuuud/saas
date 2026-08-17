@@ -1375,3 +1375,7 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Hardened `/app/settings` so profile changes are independent from workspace renaming. Workspace edits are disabled for members without `OWNER` or `BILLING_MANAGER` membership, preventing an avoidable partial-save attempt.
 - Validation passed: lint, strict TypeScript, production build with 52 routes, and account smoke across all account surfaces and protected APIs.
+
+## 2026-08-17 — Full regression after settings hardening
+
+- `pnpm test:regression-matrix` passed after the role-gated settings change. The matrix confirmed a 52-route production build and green API, public/policy, degraded-catalog, security, auth, edge-case, tenant-isolation, subscription, account, admin, production-config, final-window, safe-error, LMS-independence, collection-bounds, and dependency-audit checks.
