@@ -11,9 +11,20 @@ status_and_headers_request() { curl -sS -D /tmp/saas-smoke-headers.txt -o /tmp/s
 
 register="$(json_request -X POST -d "{\"name\":\"QA Teacher\",\"email\":\"$EMAIL\",\"password\":\"correct-horse-123\"}" "$BASE_URL/api/auth/register")"
 test "$(printf '%s' "$register" | grep -c 'QA Teacher')" -eq 1
-me="$(json_request "$BASE_URL/api/auth/me")"
+me_status="$(status_and_headers_request "$BASE_URL/api/auth/me")"
+test "$me_status" = "200"
+grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
+me="$(cat /tmp/saas-smoke-response.json)"
 test "$(printf '%s' "$me" | grep -c 'Starter')" -eq 1
-workspace="$(json_request "$BASE_URL/api/workspace?memberLimit=999&memberOffset=1")"
+profile_status="$(status_and_headers_request "$BASE_URL/api/me")"
+test "$profile_status" = "200"
+grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
+profile="$(cat /tmp/saas-smoke-response.json)"
+test "$(printf '%s' "$profile" | grep -c "$EMAIL")" -eq 1
+workspace_status="$(status_and_headers_request "$BASE_URL/api/workspace?memberLimit=999&memberOffset=1")"
+test "$workspace_status" = "200"
+grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
+workspace="$(cat /tmp/saas-smoke-response.json)"
 test "$(printf '%s' "$workspace" | grep -c '"limit":50')" -eq 1
 test "$(printf '%s' "$workspace" | grep -c '"offset":1')" -eq 1
 workspace_first_page="$(json_request "$BASE_URL/api/workspace?memberLimit=1&memberOffset=0")"
