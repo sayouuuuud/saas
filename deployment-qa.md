@@ -117,3 +117,8 @@ Performance footprint audit:
 
 At 2026-08-17T11:30:08Z, the deploy-relevant `.next/server` output measured 15 MB and `.next/static` measured 820 KB. The larger 604 MB aggregate `.next` size was dominated by local Turbopack development/cache artifacts (`.next/dev` and `.next/cache`), not production runtime assets. The largest client JavaScript chunk was approximately 229 KB before compression; no code change was required from this audit.
 
+
+Latest production deployment verification:
+
+Vercel reported deployment `dpl_5dtoLm7iZAr1SkAZLcxi13CBsWW3` for commit `87e98d6` as READY and production-targeted. The deployment-specific URL is protected by Vercel Authentication and therefore redirects unauthenticated requests to Vercel SSO; this is platform protection, not an application response. The canonical production alias was independently checked at 2026-08-17T11:31:48Z and returned HTTP 200 with the Centralia Arabic RTL marker plus CSP, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, and strict referrer policy headers.
+
