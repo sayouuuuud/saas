@@ -15,6 +15,7 @@ __v0_jsx-dev-runtime.ts
 *.db-journal
 execution-window.log
 execution-window.stdout
+final-window-verification.log
 
 # Common ignores
 node_modules

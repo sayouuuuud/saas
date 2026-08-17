@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+WINDOW_FILE="$ROOT_DIR/execution-window.json"
+REPORT_FILE="$ROOT_DIR/final-window-verification.log"
+REQUIRED_EPOCH="$(sed -n 's/.*"required_completion_epoch": \([0-9]*\).*/\1/p' "$WINDOW_FILE")"
+while [ "$(date -u +%s)" -lt "$REQUIRED_EPOCH" ]; do
+  sleep 60
+done
+{
+  printf 'final_verification_started_at=%s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+  printf 'system_epoch=%s\n' "$(date -u +%s)"
+  printf 'required_epoch=%s\n' "$REQUIRED_EPOCH"
+  cd "$ROOT_DIR"
+  pnpm db:validate
+  pnpm lint
+  pnpm build
+  pnpm test:api
+  pnpm test:security
+  pnpm test:auth
+  pnpm test:edge
+  pnpm test:tenant
+  pnpm audit --prod
+  printf 'final_verification_status=passed\n'
+  printf 'final_verification_finished_at=%s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+} > "$REPORT_FILE" 2>&1
