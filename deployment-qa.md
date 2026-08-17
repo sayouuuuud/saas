@@ -464,3 +464,11 @@ A read-only grouped Vercel runtime-error query at 2026-08-17T13:01:10Z for proje
 
 أعاد استعلام Vercel للـ runtime errors، المنفذ للقراءة فقط عند `2026-08-17T13:01:10Z` للمشروع `prj_gkITRxYVuxcZvsutoPniiwm6EmSH` خلال آخر 24 ساعة، النتيجة **No runtime errors found in the selected time range**. هذه نتيجة observability للنطاق الزمني وليست بديلًا عن حالة deployment؛ إذ حدد سجل النشر بشكل منفصل `dpl_Bbu3biS4JadAx76ZEwhYprFj6ZT` للـ commit `7d70390` كحالة READY.
 
+LMS-independence audit:
+
+At 2026-08-17T13:02:40Z, a bounded source scan across `app`, `lib`, `prisma`, and `scripts` found no forbidden LMS database-client identifiers (`LMS_DATABASE`, `DATABASE_URL_LMS`, `lmsDb`, `lmsPrisma`, or equivalent). Centralia’s LMS-related code is limited to its own `LmsLink` metadata, reachability checks, integration-request state, and audit records; no LMS database was read or modified.
+
+تدقيق استقلالية LMS:
+
+عند `2026-08-17T13:02:40Z` لم يجد فحص مصدر محدود داخل `app` و`lib` و`prisma` و`scripts` أي identifiers محظورة لعميل قاعدة بيانات LMS مثل `LMS_DATABASE` أو `DATABASE_URL_LMS` أو `lmsDb` أو `lmsPrisma`. يقتصر كود LMS في Centralia على metadata الخاصة بـ `LmsLink` وفحوص الوصول وحالة طلبات التكامل وسجلات التدقيق الخاصة به، ولم تتم قراءة أو تعديل قاعدة بيانات LMS.
+
