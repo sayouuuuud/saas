@@ -656,3 +656,11 @@ At 2026-08-17T13:30:53Z, the password-login route received a top-level `safeAuth
 
 عند `2026-08-17T13:30:53Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى مسار تسجيل الدخول بكلمة المرور، مع الحفاظ على rate limiter، واستجابة 400 للـ body غير الصالح، واستجابة 401 المحايدة للبيانات الخاطئة، وإنشاء session، وLOGIN audit event المرتبط بالـ workspace. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `325145d`.
 
+Logout error handling:
+
+At 2026-08-17T13:32:04Z, the logout route received a top-level `safeAuthError` boundary, preserving workspace-scoped LOGOUT auditing, session-cookie clearing, and the idempotent success response while making unexpected persistence or session failures deterministic. Lint, strict TypeScript, authentication smoke, security smoke, edge-case smoke, API smoke, diff checks, and compiler-artifact cleanup passed before commit `fdc8b83` was pushed.
+
+معالجة أخطاء تسجيل الخروج:
+
+عند `2026-08-17T13:32:04Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى مسار تسجيل الخروج، مع الحفاظ على LOGOUT audit المرتبط بالـ workspace، ومسح session cookie، واستجابة النجاح idempotent، مع جعل أخطاء persistence أو session غير المتوقعة حتمية. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `fdc8b83`.
+
