@@ -282,3 +282,10 @@ At 2026-08-17T12:21:06Z, the workspace loading boundary received a visible RTL-c
 إتاحة مؤشر تحميل مساحة العمل بصريًا:
 
 في `2026-08-17T12:21:06Z` حصلت حالة تحميل مساحة العمل على مؤشر مرئي متوافق مع RTL، مع fallback لـ `prefers-reduced-motion` يلغي الحركة المستمرة ويحافظ على تباين حالة التقدم. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
+Verified production deployment:
+
+Vercel deployment `dpl_J9HFj96iYKt2g9bRZ6amGhJEspSs` reached `READY` for commit `95b0c89ccd9205d48332b68c226356470f442d76` (`style: support reduced motion in loading state`) at `2026-08-17T12:21:48.064Z`. It is production-targeted, aliased to `https://saas-gold-seven-80.vercel.app`, and uses the Next.js framework in `iad1`. The canonical health probe at `2026-08-17T12:21:54Z` returned HTTP 200 with CSP, HSTS, X-Content-Type-Options, X-Frame-Options, and Referrer-Policy headers. The required real-time execution window remains active; this deployment record does not constitute final-window completion.
+
+نشر إنتاجي تم التحقق منه:
+
+وصل نشر Vercel `dpl_J9HFj96iYKt2g9bRZ6amGhJEspSs` إلى `READY` للـ commit `95b0c89ccd9205d48332b68c226356470f442d76` (`style: support reduced motion in loading state`) في `2026-08-17T12:21:48.064Z`. النشر موجّه للإنتاج وله alias على `https://saas-gold-seven-80.vercel.app` ويستخدم Next.js في `iad1`. أعاد فحص النطاق canonical في `2026-08-17T12:21:54Z` HTTP 200 مع CSP وHSTS وX-Content-Type-Options وX-Frame-Options وReferrer-Policy. تبقى نافذة التشغيل الحقيقية المطلوبة نشطة؛ ولا يمثل هذا السجل اكتمال النافذة النهائية.
