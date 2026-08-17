@@ -696,3 +696,11 @@ At 2026-08-17T13:36:35Z, the email-verification route received a top-level `safe
 
 عند `2026-08-17T13:36:35Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى مسار التحقق من البريد، مع الحفاظ على rate limiting، واستجابات token غير الصالح أو المنتهي، والتنظيف الذري لـ verification token، وSECURITY_EVENT audit. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `4fc3b22`.
 
+Ticket-message error handling:
+
+At 2026-08-17T13:37:26Z, ticket-message creation received a top-level `safeAuthError` boundary, preserving workspace-scoped ticket lookup, validation, atomic message/status/audit transaction, and the 201 response contract. Lint, strict TypeScript, production build, API smoke, security smoke, edge-case smoke, diff checks, and compiler-artifact cleanup passed before commit `90c4515` was pushed.
+
+معالجة أخطاء رسائل التذاكر:
+
+عند `2026-08-17T13:37:26Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى إنشاء رسالة التذكرة، مع الحفاظ على lookup الخاص بالتذكرة داخل الـ workspace، والتحقق، والمعاملة الذرية للرسالة والحالة وaudit، وعقد استجابة 201. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `90c4515`.
+
