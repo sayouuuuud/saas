@@ -60,3 +60,7 @@ The read-only `pnpm test:canonical-production` gate passed after deployment `dpl
 ## Runtime-error check after cache deployment — 2026-08-17T17:10Z
 
 The read-only grouped runtime-error query for the recent one-hour window returned exactly one group: `/api/plans` database-backed catalog unavailable (`PrismaClientInitializationError`), count 6 across 4 users, first seen 15:18:05Z and last seen 17:10:13Z, with last deployment `dpl_CB2LTcaiRDhgxJA5enV7rzNVSqfP`. No new runtime-error group was observed for the cache-hardening deployment or any other route.
+
+## Propagation checkpoint after private admin noindex — 2026-08-17T17:17Z
+
+The Vercel deployment listing remains capped at READY commit `f8376381085c65f98edf39968396bf7845985c25` (`security: audit client fetch caching`, deployment `dpl_CB2LTcaiRDhgxJA5enV7rzNVSqfP`). The local repository has since advanced through the private-admin noindex implementation and subsequent QA commits, including `7148025`; no READY deployment for that revision was present in this read-only listing. Local source and regression evidence are therefore current, while live verification must continue to distinguish the deployed cutoff from unpropagated source changes.
