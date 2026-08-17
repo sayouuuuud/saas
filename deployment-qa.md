@@ -632,3 +632,11 @@ At 2026-08-17T13:27:25Z, LMS-link PATCH and DELETE were changed to use atomic Pr
 
 عند `2026-08-17T13:27:25Z` تم تعديل PATCH وDELETE الخاصين بروابط LMS لاستخدام Prisma transactions ذرية تحفظ mutation الخاصة بالرابط وaudit event معًا، وأصبحت أخطاء authorization أو قاعدة البيانات غير المتوقعة تمر عبر استجابة الأخطاء الحتمية المشتركة. نجحت lint وstrict TypeScript وproduction build وAPI smoke وtenant-isolation smoke وedge-case smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `d6fc7d8`.
 
+Checkout-session error handling:
+
+At 2026-08-17T13:28:36Z, checkout-session creation was wrapped with `safeAuthError`, preserving workspace billing-role checks, mock-provider gating, UUID payment identifiers, and the existing atomic subscription/invoice/payment/audit transaction while making unexpected failures deterministic. Lint, strict TypeScript, production build, API smoke, security smoke, subscription-lifecycle smoke, diff checks, and compiler-artifact cleanup passed before commit `a0ea73e` was pushed.
+
+معالجة أخطاء checkout-session:
+
+عند `2026-08-17T13:28:36Z` تم تغليف إنشاء checkout-session باستخدام `safeAuthError`، مع الحفاظ على فحص صلاحية دور الفوترة داخل workspace، وحاجز mock provider، ومعرّفات الدفع UUID، والمعاملة الذرية الحالية للاشتراك والفاتورة والدفع وaudit، مع جعل الأخطاء غير المتوقعة حتمية. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وsubscription-lifecycle smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `a0ea73e`.
+
