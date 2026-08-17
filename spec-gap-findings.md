@@ -10,7 +10,7 @@ The required public discovery routes are now dedicated Next.js pages: `/features
 
 The required account surfaces are available through dedicated routes: `/app/profile`, `/app/lms-connection`, `/app/subscription`, `/app/usage`, `/app/reports`, `/app/team`, `/app/notifications`, `/app/security`, and `/app/settings`. The team route exposes only the bounded SaaS workspace-member projection, while the settings page uses role-gated workspace editing so ordinary members can update their own profile without attempting an unauthorized workspace mutation.
 
-The administration surface includes `/admin` and bounded staff routes for `/admin/teachers`, `/admin/plans`, `/admin/subscriptions`, `/admin/billing`, and `/admin/lms-links`. These routes use SaaS-owned projections, require the existing staff guard, and do not expose LMS operational data.
+The administration surface includes `/admin` and bounded staff routes for `/admin/teachers`, `/admin/plans`, `/admin/subscriptions`, `/admin/billing`, and `/admin/lms-links`. These routes use SaaS-owned projections, require the existing staff guard, do not expose LMS operational data, and inherit a private `noindex, nofollow` metadata boundary.
 
 ## Contract and safety evidence
 
@@ -22,4 +22,4 @@ The complete regression matrix currently passes a 53-route production build, API
 
 The canonical Vercel deployment has historically returned a controlled degraded `/api/plans` response when its configured PostgreSQL endpoint is unavailable. This is intentional fail-closed behavior: HTTP 200 with an empty catalog, `degraded: true`, `retry-after: 60`, `x-centralia-degraded`, and `cache-control: no-store`. Restoring the live catalog requires valid production database connectivity and must not involve an LMS database.
 
-Vercel propagation is asynchronous. The canonical alias currently passes a read-only production smoke for all public product and policy routes, robots/sitemap content types, HSTS, response security headers, and the controlled plans contract. Final verification must still check the canonical deployment’s commit association and route responses after the platform has built the latest pushed revision; the end-of-window verifier now runs this canonical smoke after the full local matrix.
+Vercel propagation is asynchronous. The canonical alias currently passes a read-only production smoke for all public product and policy routes, robots/sitemap content types, HSTS, response security headers, and the controlled plans contract. Final verification must still check the canonical deployment’s commit association and route responses after the platform has built the latest pushed revision; the end-of-window verifier now runs this canonical smoke after the full local matrix. The verifier also records the tested Git revision, requires a clean repository after testing, and independently confirms both the configured completion epoch and at least 43,200 elapsed system-clock seconds.
