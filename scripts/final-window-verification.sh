@@ -41,8 +41,28 @@ done
   WINDOW_TMP="${WINDOW_FILE}.tmp"
   sed 's/"status": "active"/"status": "window_complete"/' "$WINDOW_FILE" > "$WINDOW_TMP"
   mv "$WINDOW_TMP" "$WINDOW_FILE"
+  git add "$WINDOW_FILE"
+  git commit -m "chore: close exact execution window"
+  for push_attempt in 1 2 3; do
+    if git push origin "$(git branch --show-current)"; then
+      break
+    fi
+    if (( push_attempt == 3 )); then
+      printf 'completion_push=false\n'
+      exit 1
+    fi
+    sleep 2
+  done
+  printf 'completion_push=true\n'
   printf 'execution_window_status=window_complete\n'
   printf 'canonical_production_smoke=passed\n'
+  printf 'completion_git_revision=%s\n' "$(git rev-parse HEAD)"
+  if [[ -n "$(git status --porcelain)" ]]; then
+    printf 'repository_clean_at_completion=false\n'
+    git status --short
+    exit 1
+  fi
+  printf 'repository_clean_at_completion=true\n'
   printf 'final_verification_status=passed\n'
   printf 'final_verification_finished_at=%s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 } > "$REPORT_FILE" 2>&1

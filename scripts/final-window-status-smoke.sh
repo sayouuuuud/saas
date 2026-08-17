@@ -14,6 +14,9 @@ case "$*" in
   "rev-parse HEAD") printf 'test-revision\n' ;;
   "branch --show-current") printf 'main\n' ;;
   "status --porcelain") ;;
+  "add "*) ;;
+  "commit -m chore: close exact execution window") ;;
+  "push origin main") ;;
   *) printf 'unexpected git args: %s\n' "$*" >&2; exit 1 ;;
 esac
 EOF
@@ -28,5 +31,8 @@ grep -q '^repository_clean=true$' "$TMP_DIR/final-window-verification.log"
 grep -q '^repository_clean_after_tests=true$' "$TMP_DIR/final-window-verification.log"
 grep -q '^canonical_production_smoke=passed$' "$TMP_DIR/final-window-verification.log"
 grep -q '^execution_window_status=window_complete$' "$TMP_DIR/final-window-verification.log"
+grep -q '^completion_push=true$' "$TMP_DIR/final-window-verification.log"
+grep -q '^completion_git_revision=test-revision$' "$TMP_DIR/final-window-verification.log"
+grep -q '^repository_clean_at_completion=true$' "$TMP_DIR/final-window-verification.log"
 grep -q '^final_verification_status=passed$' "$TMP_DIR/final-window-verification.log"
 printf 'Final-window status smoke test passed\n'
