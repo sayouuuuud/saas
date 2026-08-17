@@ -12,6 +12,10 @@ status_request() { curl -sS -o /tmp/saas-subscription-smoke-response.json -w '%{
 json_request -X POST -d "{\"name\":\"Subscription QA\",\"email\":\"$EMAIL\",\"password\":\"correct-horse-123\"}" "$BASE_URL/api/auth/register" | grep -q 'Subscription QA'
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"
 printf '%s' "$checkout" | grep -q 'ACTIVE'
+onboarding_body="$(curl -fsS --max-time 10 -b "$COOKIE_FILE" -c "$COOKIE_FILE" "$BASE_URL/onboarding?checkout=success")"
+grep -q 'اكتمل الإعداد الأولي' <<<"$onboarding_body"
+grep -q 'حالة الاشتراك' <<<"$onboarding_body"
+grep -q 'ثلاث خطوات للبدء' <<<"$onboarding_body"
 
 cancelled="$(json_request -X POST "$BASE_URL/api/subscription/cancel")"
 printf '%s' "$cancelled" | grep -q '"cancelAtPeriodEnd":true'
@@ -55,4 +59,4 @@ if [ -n "$WEBHOOK_SECRET" ] && command -v openssl >/dev/null 2>&1; then
   printf '%s' "$subscription" | grep -q '"cancelAtPeriodEnd":false'
 fi
 
-printf 'Subscription lifecycle smoke test passed for %s\n' "$EMAIL"
+printf 'Subscription lifecycle smoke test passed for %s, including authenticated checkout-to-onboarding flow\n' "$EMAIL"
