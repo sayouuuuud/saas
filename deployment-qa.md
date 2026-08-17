@@ -830,3 +830,9 @@ Billing's payment-method add control and support's ticket-detail arrow are now d
 تحسين صدق عناصر التحكم غير المتاحة في 2026-08-17T14:06:21Z:
 
 أصبح زر إضافة طريقة الدفع في الفوترة وسهم فتح تفاصيل التذكرة في الدعم معطلين مع عناوين توضيحية، لأن إجراءات الخادم/صفحة التفاصيل الخاصة بهما غير منفذة بعد. أزال ذلك الإيحاءات التفاعلية المضللة مع الحفاظ على إجراءات الدفع والتصدير والتصفية وإعادة المحاولة وpagination العاملة. نجحت lint وstrict TypeScript.
+
+Full regression matrix after honest-control changes completed at 2026-08-17T14:07:07Z (epoch 1786975627):
+
+Both SQLite and PostgreSQL Prisma schemas validated. Lint, strict TypeScript, the 33-route production build, API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-config, and final-window-status smoke suites all passed. The production dependency audit reported no known vulnerabilities. This evidence covers the billing invoice pagination/status-label changes and the support pagination/unavailable-control changes. The real execution window remained active after the run and was not treated as complete.
+
+تم التحقق من مخططي Prisma لـ SQLite وPostgreSQL. نجحت lint وstrict TypeScript وproduction build بعدد 33 route، وجميع اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن. لم يُبلغ تدقيق الاعتماديات الإنتاجية عن ثغرات معروفة. يغطي هذا الدليل تغييرات pagination وترجمة حالات الفوترة، وتغييرات pagination وعناصر التحكم غير المتاحة في الدعم. ظلت نافذة التنفيذ الحقيقية نشطة بعد التشغيل ولم تُعتبر مكتملة.
