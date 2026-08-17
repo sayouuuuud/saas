@@ -352,3 +352,59 @@ A read-only Vercel grouped-runtime-error query at 2026-08-17T12:38:34Z for the C
 فحص أخطاء التشغيل في الإنتاج:
 
 أعاد استعلام Vercel للـ runtime errors، المنفذ للقراءة فقط عند `2026-08-17T12:38:34Z` على مشروع Centralia خلال آخر 24 ساعة، النتيجة **لا توجد أخطاء تشغيل**. يدعم ذلك استقرار النشر READY المتحقق، مع بقاء حالة GitHub المنفصلة للcommit التوثيقي اللاحق فشلًا بسبب build-rate-limit، دون تغيير ارتباط النشر الحي بالcommit READY السابق.
+Strict compiler and accessibility hardening:
+
+At 2026-08-17T12:49:20Z, Centralia passed `pnpm lint`, explicit `pnpm exec tsc --noEmit`, and `pnpm build` after removing `ignoreBuildErrors` from `next.config.mjs`. The dashboard LMS-link state and readonly public content types were corrected; workspace-shell landmarks, `aria-current`, status semantics, and keyboard focus behavior were improved; dashboard load failures now move focus to the retry alert. The change was committed as `4cdb580` and pushed to `sayouuuuud/saas`.
+
+API integrity and bounded hydration:
+
+The same cycle made ticket creation and its audit event atomic with collision-resistant ticket numbers, bounded `/api/workspace` member hydration with `memberLimit` capped at 50 and explicit `membersPagination`, and idempotent expired-session deletion. API, auth, security, and tenant-isolation smoke suites passed. The API smoke suite now asserts that an oversized workspace member request is capped at 50.
+
+LMS mutation atomicity:
+
+At 2026-08-17T12:51:56Z, commit `7d70390` was pushed after successful strict build and API, tenant-isolation, and edge-case smoke validation. LMS-link creation, reachability checks with check-history writes, and integration-request existence checks plus audit creation now use transaction boundaries. This prevents partial audit state and closes the concurrent integration-request idempotency window.
+
+Authentication error mapping:
+
+Commit `b44ab9f` added explicit `WORKSPACE_NOT_FOUND` to the shared safe authentication error mapping, returning 404 rather than misclassifying a missing workspace as an internal error. Strict lint, TypeScript, production build, security smoke, and tenant-isolation smoke all passed before push.
+
+Final-window regression gate:
+
+Commit `e68f35e` updated `scripts/final-window-verification.sh` to include `test:subscription` and `test:production-config` in addition to the existing database, lint, build, API, security, auth, edge, tenant, and dependency-audit checks. The verifier was restarted as PID 64081 at 2026-08-17T12:54:22Z and remains active until the system-clock completion epoch `1786999623`.
+
+Complete regression matrix:
+
+The full matrix passed during this execution cycle: lint, explicit TypeScript compilation, production build, API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-configuration smoke, and `pnpm audit --prod` with no known vulnerabilities. The repository was clean after each pushed commit.
+
+Current deployment boundary:
+
+The latest verified READY production deployment remains `dpl_AvMzen2npiaYVd4XqjbcNF1H7xnp` for commit `8f61451`. The newer hardening commits are pushed to GitHub and verified locally, but must not be described as live until Vercel reports a READY deployment for their SHA. A current canonical-domain probe returned HTTP 200 with Arabic RTL markup and the configured CSP, HSTS, X-Content-Type-Options, X-Frame-Options, and Referrer-Policy headers.
+
+التدقيق الصارم وتحسين الوصول:
+
+في `2026-08-17T12:49:20Z` نجح `pnpm lint` و`pnpm exec tsc --noEmit` و`pnpm build` بعد إزالة `ignoreBuildErrors` من `next.config.mjs`. أُصلحت أنواع حالة رابط LMS والمحتوى readonly، وحُسنت landmarks و`aria-current` ودلالات الحالة والتركيز في `workspace-shell`، وأصبح فشل تحميل Dashboard ينقل التركيز إلى تنبيه إعادة المحاولة. سُجل ذلك في commit `4cdb580` ودُفع إلى GitHub.
+
+سلامة API والتحميل المحدود:
+
+أصبح إنشاء التذكرة وسجل التدقيق ذريًا مع أرقام تذاكر مقاومة للتصادم، وأصبح تحميل أعضاء مساحة العمل محدودًا بحد أقصى 50 مع metadata صريحة، كما أصبح حذف الجلسات المنتهية idempotent. نجحت اختبارات API وauth وsecurity وعزل المستأجر، وأصبح اختبار API يثبت سقف أعضاء مساحة العمل عند 50.
+
+ذرية عمليات LMS:
+
+في `2026-08-17T12:51:56Z` دُفع commit `7d70390` بعد نجاح build الصارم واختبارات API وعزل المستأجر وedge. أصبحت عمليات إنشاء الرابط وفحص الوصول وتسجيل تاريخ الفحص وطلبات التكامل ذات حدود معاملات تمنع السجلات الجزئية وتغلق نافذة التزامن في idempotency.
+
+بوابة التحقق النهائية:
+
+سُجل commit `e68f35e` لتوسيع `final-window-verification.sh` بإضافة اختبارات دورة الاشتراك وإعدادات الإنتاج إلى مصفوفة الاختبارات النهائية. أُعيد تشغيل verifier بالمعرّف PID 64081 عند `2026-08-17T12:54:22Z`، وما زال نشطًا حتى epoch `1786999623`.
+
+حدود النشر الحالية:
+
+يبقى آخر نشر إنتاجي READY متحقق هو `dpl_AvMzen2npiaYVd4XqjbcNF1H7xnp` للcommit `8f61451`. الـ commits الأحدث دُفعت إلى GitHub ونجحت محليًا، لكن لن تُوصف بأنها live قبل أن تعلن Vercel عن نشر READY للـ SHA الخاص بها. أعاد فحص النطاق canonical HTTP 200 مع RTL عربي ورؤوس CSP وHSTS وX-Content-Type-Options وX-Frame-Options وReferrer-Policy الصحيحة.
+
+Window checkpoint:
+
+At the checkpoint recorded at 2026-08-17T12:54:22Z, the system clock measured epoch `1786971262`, elapsed `14839` seconds from `1786956423`, with `28361` seconds remaining. The watchdog remained active and `execution-window.json` remained `status: active`; no completion claim is made before `1786999623`.
+
+نقطة تحقق النافذة الزمنية:
+
+عند نقطة التحقق `2026-08-17T12:54:22Z` كان epoch ساعة النظام `1786971262`، والمنقضي `14839` ثانية من `1786956423`، والمتبقي `28361` ثانية. بقي watchdog نشطًا وظل `execution-window.json` بالحالة `active`، ولا يُعلن الاكتمال قبل `1786999623`.
+
