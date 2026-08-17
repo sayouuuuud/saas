@@ -1268,3 +1268,15 @@ Extended `scripts/public-pages-smoke.sh` to fetch the landing page and assert th
 ## 2026-08-17T16:12:04Z — public discovery response-type hardening
 
 Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robots.txt` and XML content type for `/sitemap.xml`, preventing a stale landing-page HTML response from being accepted as a valid discovery artifact. The complete `pnpm test:regression-matrix` passed at the system-clock checkpoint above, including route generation, content-type checks, all public and API smoke suites, degraded plans, security, authentication, edge, tenant, subscription, production configuration, final-window, auth-boundary, LMS-independence, collection-bounds, and dependency checks. A same-minute canonical probe confirmed `/features`, `/how-it-works`, and `/pricing` are live with their expected titles, while the canonical `/robots.txt` and `/sitemap.xml` still return the older landing HTML until the latest Git deployment propagates. The real-time execution window remains active until `2026-08-17T20:47:03Z`.
+
+## 2026-08-17 — Public demo route and sitemap coverage
+
+- Added dedicated `/demo` route using the shared public information layout, with Arabic metadata, honest SaaS-only scope, CTA, and explicit Link-only LMS boundaries.
+- Added `/demo` to `app/sitemap.ts` and extended `scripts/public-pages-smoke.sh` with route metadata, body, and sitemap assertions.
+- Validation: `pnpm lint` passed; `pnpm exec tsc --noEmit` passed; `DATABASE_URL=file:./prisma/dev.db pnpm build` passed with 39 generated routes; isolated dev-server smoke passed for `/`, `/features`, `/how-it-works`, `/pricing`, `/demo`, `robots.txt`, and `sitemap.xml`.
+- A first build attempt correctly failed because the ambient `DATABASE_URL` was not one of the repository-supported PostgreSQL/SQLite URL forms. The retry explicitly used the supported local SQLite URL; no production database was accessed or modified.
+- No LMS database was created, read, copied, or modified.
+
+## 2026-08-17 — Content-type discovery hardening
+
+- Commit `f82089c` pushed to `main` with response `Content-Type` assertions for `robots.txt` and `sitemap.xml`, plus persisted production findings.
