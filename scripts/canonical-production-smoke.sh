@@ -20,6 +20,21 @@ assert_status() {
   rm -f "$headers"
 }
 
+assert_header() {
+  local path="$1"
+  local pattern="$2"
+  local headers
+  headers=$(mktemp)
+  curl -sS --max-time 20 -D "$headers" -o /dev/null "$BASE_URL$path" >/dev/null
+  if ! grep -Eiq "$pattern" "$headers"; then
+    echo "canonical production security header mismatch for $path: $pattern" >&2
+    cat "$headers" >&2
+    rm -f "$headers"
+    exit 1
+  fi
+  rm -f "$headers"
+}
+
 assert_content_type() {
   local path="$1"
   local expected="$2"
@@ -42,6 +57,7 @@ assert_status /robots.txt 200
 assert_status /sitemap.xml 200
 assert_content_type /robots.txt 'text/plain'
 assert_content_type /sitemap.xml 'application/xml'
+assert_header / 'strict-transport-security: max-age='
 
 plans_headers=$(mktemp)
 plans_body=$(mktemp)
@@ -54,6 +70,8 @@ if [[ "$plans_status" != "200" ]]; then
   exit 1
 fi
 grep -Eiq '^cache-control: .*no-store' "$plans_headers"
+grep -Eiq '^x-content-type-options: nosniff' "$plans_headers"
+grep -Eiq '^x-frame-options: DENY' "$plans_headers"
 if grep -q '"degraded":true' "$plans_body"; then
   grep -Eiq '^retry-after: [0-9]+' "$plans_headers"
   grep -Eiq '^x-centralia-degraded: plans-database-unavailable' "$plans_headers"
