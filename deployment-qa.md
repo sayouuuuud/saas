@@ -544,3 +544,11 @@ At 2026-08-17T13:15:57Z, both LMS-link check and integration-request mutations w
 
 عند `2026-08-17T13:15:57Z` تم تغليف mutation فحص رابط LMS وطلب التكامل باستخدام boundary المشتركة `safeAuthError`. يحافظ ذلك على السلوك الحالي المقيّد بالworkspace والمعاملات الذرية، مع تحويل أخطاء Prisma أو الصلاحيات غير المتوقعة إلى JSON contract حتمي للمشروع. نجحت lint وstrict TypeScript وAPI smoke وtenant-isolation وedge-case وdiff checks قبل دفع commit `5121efe`.
 
+Subscription read error handling:
+
+At 2026-08-17T13:16:39Z, the workspace-scoped subscription GET endpoint was wrapped with `safeAuthError`, preserving its existing authentication and event projection while returning a deterministic JSON response for unexpected database failures. Lint, strict TypeScript, API smoke, security smoke, and diff checks passed before commit `bd571dc` was pushed.
+
+معالجة أخطاء قراءة subscription:
+
+عند `2026-08-17T13:16:39Z` تم تغليف endpoint قراءة subscription المقيّد بالworkspace باستخدام `safeAuthError`، مع الحفاظ على المصادقة الحالية وprojection الخاصة بالأحداث، وإرجاع JSON حتمي عند أخطاء قاعدة البيانات غير المتوقعة. نجحت lint وstrict TypeScript وAPI smoke وsecurity smoke وdiff checks قبل دفع commit `bd571dc`.
+
