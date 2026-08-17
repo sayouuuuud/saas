@@ -924,3 +924,11 @@ Team workspace member visibility completed at 2026-08-17T14:16:03Z (epoch 178697
 The existing `/app/team` route now renders a read-only member panel from the SaaS `WorkspaceMember` relation only. The first page is bounded to 25 records, roles are localized in Arabic, and an abortable accessible load-more control consumes the existing `/api/workspace` `nextOffset` contract. Error and empty states are explicit, and mobile CSS plus reduced-motion handling were added. The production build, API smoke, safeAuthError boundary audit, and edge-case smoke suite all passed.
 اكتمل تحسين عرض أعضاء الفريق في 2026-08-17T14:16:03Z (epoch 1786976163):
 يعرض route `/app/team` الآن لوحة قراءة فقط لأعضاء SaaS من علاقة `WorkspaceMember` فقط. الصفحة الأولى محدودة بـ25 سجلًا، والأدوار مترجمة للعربية، ويوجد زر تحميل إضافي قابل للإلغاء ويستخدم عقد `nextOffset` الحالي في `/api/workspace`. حالات الخطأ والفراغ صريحة، وأضيف CSS متجاوب ودعم للحركة المخفضة. نجح production build واختبار API وتدقيق safeAuthError واختبار الحالات الطرفية.
+
+SaaS/LMS independence guard completed at 2026-08-17T14:18:21Z (epoch 1786976301):
+
+Added `test:lms-independence`, a deterministic source audit that scans the Centralia source boundary for forbidden LMS database configuration/client identifiers and rejects runtime `PrismaClient` instantiation outside `lib/prisma.ts`. The audit was corrected after its first shell-quoting failure, then passed together with lint and strict TypeScript. The guard does not inspect or modify any LMS database.
+
+اكتمل حارس استقلال SaaS عن LMS في 2026-08-17T14:18:21Z (epoch 1786976301):
+
+أضيف الأمر `test:lms-independence` كتدقيق مصدر حتمي يبحث داخل حدود Centralia عن إعدادات أو identifiers محظورة لقاعدة LMS، ويرفض إنشاء `PrismaClient` وقت التشغيل خارج `lib/prisma.ts`. تم تصحيح فشل الاقتباس الأول في السكربت، ثم نجح الاختبار مع lint وstrict TypeScript. لا يقرأ الحارس أي قاعدة LMS ولا يعدلها.
