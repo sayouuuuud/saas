@@ -1505,3 +1505,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - The complete `pnpm test:regression-matrix` passed after the canonical smoke was expanded to require all dedicated account and staff routes with noindex metadata.
 - Evidence: 53-route build, all local functional/security/isolation/account/admin/final-window audits, and production dependency audit passed; cleanup left the repository clean.
+
+## 2026-08-17 — Final repository cleanliness recheck
+
+- A focused local canonical smoke wrapper removed tracked `next-env.d.ts` during its ad-hoc cleanup, which surfaced as a deleted file in the repository check.
+- Restored the tracked metadata with Git, confirmed no repository script performs that unsafe deletion, and rechecked a clean branch before the final verifier. The standard regression cleanup already restores the generated file after every build.
