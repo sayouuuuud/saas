@@ -1,0 +1,9 @@
+{
+  "started_at_utc": "2026-08-17T08:47:03Z",
+  "started_at_epoch": 1786956423,
+  "required_duration_seconds": 43200,
+  "required_completion_epoch": 1786999623,
+  "required_completion_utc": "2026-08-17T20:47:03Z",
+  "measurement": "system clock seconds",
+  "status": "active"
+}

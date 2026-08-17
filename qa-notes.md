@@ -15,3 +15,9 @@ The `/login` route renders the Arabic signup form and successfully switches to t
 ## Billing and support verification
 
 The `/billing` build includes the current Growth subscription, payment method, renewal date, plan switcher, annual/monthly pricing state, and invoice history. The `/support` route renders the ticket form, quick answers, existing ticket table, and a successful submitted-ticket confirmation with generated ticket number `#SUP-1027` after a sample request.
+
+## Full-stack QA update
+
+The persisted SaaS API smoke test passed for registration, session inspection, logout, workspace-scoped LMS-link creation, SSRF rejection for internal HTTP addresses, external-link reachability checking, support-ticket creation, mock checkout activation, and invoice reads. The security smoke test also passed for invalid login validation, session revocation after logout, and invalid billing webhook signature rejection. The local mock provider is isolated in `.env.local`; production configuration is documented in `.env.example`.
+
+The LMS boundary audit found no provisioning, deployment, LMS database, or LMS storage routes. The only LMS-facing operations are HTTPS link storage, DNS-aware SSRF-safe reachability checks, and recording a future integration request without reading LMS content or usage data.

@@ -1,0 +1,344 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkspaceRole {
+  OWNER
+  BILLING_MANAGER
+  ANALYST
+  SUPPORT_CONTACT
+  VIEWER
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  GRACE_PERIOD
+  SUSPENDED
+  CANCELLED
+  PAYMENT_REVIEW
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PAID
+  VOID
+  UNCOLLECTIBLE
+}
+
+enum LmsLinkStatus {
+  NOT_CHECKED
+  REACHABLE
+  UNREACHABLE
+  NEEDS_ATTENTION
+  DISABLED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_ON_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketCategory {
+  BILLING
+  SUBSCRIPTION
+  ACCOUNT
+  LMS_LINK
+  INTEGRATION
+  USAGE
+  SECURITY
+  FEATURE_REQUEST
+  GENERAL
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  PAYMENT
+  SUBSCRIPTION_CHANGE
+  LINK_CHECK
+  EXPORT
+  ROLE_CHANGE
+  SECURITY_EVENT
+}
+
+model User {
+  id              String            @id @default(cuid())
+  email           String            @unique
+  name            String
+  passwordHash    String?
+  isStaff         Boolean           @default(false)
+  emailVerifiedAt DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  workspace       Workspace?
+  memberships     WorkspaceMember[]
+  tickets         SupportTicket[]   @relation("TicketRequester")
+  messages        SupportMessage[]
+  auditEvents     AuditLog[]
+  notifications   Notification[]
+  sessions        Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Workspace {
+  id             String                   @id @default(cuid())
+  name           String
+  ownerId        String                   @unique
+  owner          User                     @relation(fields: [ownerId], references: [id])
+  members        WorkspaceMember[]
+  planId         String?
+  plan           Plan?                    @relation(fields: [planId], references: [id])
+  subscription   Subscription?
+  invoices       Invoice[]
+  paymentMethods PaymentMethodReference[]
+  lmsLinks       LmsLink[]
+  tickets        SupportTicket[]
+  auditEvents    AuditLog[]
+  notifications  Notification[]
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        WorkspaceRole @default(VIEWER)
+  createdAt   DateTime      @default(now())
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+}
+
+model Plan {
+  id            String         @id @default(cuid())
+  code          String         @unique
+  name          String
+  description   String
+  monthlyCents  Int
+  yearlyCents   Int
+  trialDays     Int            @default(0)
+  supportTier   String         @default("standard")
+  featuresJson  String
+  limitsJson    String
+  active        Boolean        @default(true)
+  workspaces    Workspace[]
+  subscriptions Subscription[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Subscription {
+  id                 String              @id @default(cuid())
+  workspaceId        String              @unique
+  planId             String
+  status             SubscriptionStatus  @default(TRIAL)
+  billingCycle       BillingCycle        @default(MONTHLY)
+  providerReference  String?             @unique
+  startedAt          DateTime            @default(now())
+  currentPeriodStart DateTime            @default(now())
+  currentPeriodEnd   DateTime
+  cancelAtPeriodEnd  Boolean             @default(false)
+  cancelledAt        DateTime?
+  workspace          Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  plan               Plan                @relation(fields: [planId], references: [id])
+  invoices           Invoice[]
+  events             SubscriptionEvent[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+model SubscriptionEvent {
+  id             String       @id @default(cuid())
+  subscriptionId String
+  type           String
+  fromStatus     String?
+  toStatus       String?
+  metadataJson   String?
+  createdAt      DateTime     @default(now())
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId, createdAt])
+}
+
+model Invoice {
+  id             String        @id @default(cuid())
+  number         String        @unique
+  workspaceId    String
+  subscriptionId String?
+  periodStart    DateTime
+  periodEnd      DateTime
+  amountCents    Int
+  currency       String        @default("USD")
+  status         InvoiceStatus @default(OPEN)
+  paidAt         DateTime?
+  lineItemsJson  String
+  workspace      Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  payments       Payment[]
+  createdAt      DateTime      @default(now())
+
+  @@index([workspaceId, createdAt])
+}
+
+model BillingWebhookEvent {
+  id             String    @id @default(cuid())
+  provider       String
+  eventId        String    @unique
+  signatureValid Boolean
+  state          String
+  errorCode      String?
+  receivedAt     DateTime  @default(now())
+  processedAt    DateTime?
+  payloadHash    String?
+}
+
+model Payment {
+  id            String    @id @default(cuid())
+  invoiceId     String
+  providerEvent String    @unique
+  amountCents   Int
+  status        String
+  paidAt        DateTime?
+  createdAt     DateTime  @default(now())
+  invoice       Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+model PaymentMethodReference {
+  id                String    @id @default(cuid())
+  workspaceId       String
+  providerReference String    @unique
+  brand             String
+  last4             String
+  expiryMonth       Int
+  expiryYear        Int
+  isDefault         Boolean   @default(false)
+  workspace         Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt         DateTime  @default(now())
+}
+
+model LmsLink {
+  id            String         @id @default(cuid())
+  workspaceId   String
+  displayName   String
+  publicUrl     String
+  adminUrl      String?
+  notes         String?
+  status        LmsLinkStatus  @default(NOT_CHECKED)
+  lastCheckedAt DateTime?
+  lastErrorCode String?
+  addedByUserId String
+  workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  checks        LmsLinkCheck[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([workspaceId, status])
+}
+
+model LmsLinkCheck {
+  id          String        @id @default(cuid())
+  lmsLinkId   String
+  status      LmsLinkStatus
+  statusCode  Int?
+  durationMs  Int?
+  safeMessage String?
+  checkedAt   DateTime      @default(now())
+  lmsLink     LmsLink       @relation(fields: [lmsLinkId], references: [id], onDelete: Cascade)
+
+  @@index([lmsLinkId, checkedAt])
+}
+
+model SupportTicket {
+  id          String           @id @default(cuid())
+  number      String           @unique
+  workspaceId String
+  requesterId String
+  category    TicketCategory   @default(GENERAL)
+  subject     String
+  description String
+  status      TicketStatus     @default(OPEN)
+  priority    String           @default("normal")
+  workspace   Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  requester   User             @relation("TicketRequester", fields: [requesterId], references: [id])
+  messages    SupportMessage[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([workspaceId, status])
+}
+
+model SupportMessage {
+  id         String        @id @default(cuid())
+  ticketId   String
+  authorId   String
+  body       String
+  isInternal Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author     User          @relation(fields: [authorId], references: [id])
+}
+
+model Notification {
+  id          String     @id @default(cuid())
+  userId      String
+  workspaceId String?
+  type        String
+  title       String
+  body        String
+  readAt      DateTime?
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now())
+
+  @@index([userId, readAt])
+}
+
+model AuditLog {
+  id           String      @id @default(cuid())
+  actorId      String?
+  workspaceId  String?
+  action       AuditAction
+  entity       String
+  entityId     String?
+  reason       String?
+  requestId    String?
+  metadataJson String?
+  createdAt    DateTime    @default(now())
+  actor        User?       @relation(fields: [actorId], references: [id])
+  workspace    Workspace?  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([actorId, createdAt])
+}

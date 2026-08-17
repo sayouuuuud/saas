@@ -7,7 +7,14 @@ __v0_jsx-dev-runtime.ts
 .vercel/
 
 # Environment variables
+.env
 .env*.local
+
+# Local persistence and execution artifacts
+*.db
+*.db-journal
+execution-window.log
+execution-window.stdout
 
 # Common ignores
 node_modules
