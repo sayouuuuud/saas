@@ -1076,3 +1076,11 @@ Dependency reproducibility check completed at 2026-08-17T14:33:44Z (epoch 178697
 اكتمل فحص قابلية إعادة تثبيت التبعيات في 2026-08-17T14:33:44Z (epoch 1786977224):
 
 اكتمل `pnpm install --frozen-lockfile --reporter=append-only` باستخدام pnpm 11.21.0 دون تحذيرات إعداد، وأعاد `pnpm why deepmerge-ts` الإصدار `8.0.1` فقط، وأعاد `pnpm audit --prod` عدم وجود ثغرات معروفة، وظل المستودع نظيفًا.
+
+Package-manager reproducibility hardening completed at 2026-08-17T14:34:25Z (epoch 1786977265):
+
+Pinned `packageManager` to `pnpm@11.21.0` so Vercel and local environments use the same pnpm version that reads the workspace override and lockfile contract. Frozen install, lint, strict TypeScript, the 33-route production build, and `pnpm audit --prod` all passed.
+
+اكتمل تقوية قابلية إعادة إنتاج package manager في 2026-08-17T14:34:25Z (epoch 1786977265):
+
+ثُبّت `packageManager` على `pnpm@11.21.0` لضمان استخدام Vercel والبيئة المحلية لإصدار pnpm نفسه الذي يقرأ workspace override وعقد lockfile. نجح frozen install وlint وstrict TypeScript وproduction build الذي يحتوي 33 route و`pnpm audit --prod`.
