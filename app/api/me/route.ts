@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser, safeAuthError } from "@/lib/auth";
 
@@ -22,10 +23,14 @@ export async function PATCH(request: NextRequest) {
       const existing = await prisma.user.findUnique({ where: { email } });
       if (existing) return new Response(JSON.stringify({ error: "البريد الإلكتروني مستخدم بالفعل" }), { status: 409 });
     }
-    const updated = await prisma.user.update({ where: { id: user.id }, data: { ...(name !== undefined ? { name } : {}), ...(email !== undefined ? { email, emailVerifiedAt: null } : {}) } });
-    if (user.workspace) await prisma.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "UPDATE", entity: "User", entityId: user.id, reason: "profile_update" } });
+    const updated = await prisma.$transaction(async (tx) => {
+      const updatedUser = await tx.user.update({ where: { id: user.id }, data: { ...(name !== undefined ? { name } : {}), ...(email !== undefined ? { email, emailVerifiedAt: null } : {}) } });
+      if (user.workspace) await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "UPDATE", entity: "User", entityId: user.id, reason: "profile_update" } });
+      return updatedUser;
+    });
     return Response.json({ user: { id: updated.id, name: updated.name, email: updated.email, emailVerifiedAt: updated.emailVerifiedAt } });
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") return new Response(JSON.stringify({ error: "البريد الإلكتروني مستخدم بالفعل" }), { status: 409, headers: { "content-type": "application/json" } });
     return safeAuthError(error);
   }
 }
