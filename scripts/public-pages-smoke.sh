@@ -3,6 +3,13 @@ set -euo pipefail
 
 BASE_URL="${BASE_URL:-http://localhost:3000}"
 
+landing=$(curl -fsSL --max-time 10 "${BASE_URL}/")
+grep -Fq 'href="/contact"' <<<"$landing"
+grep -Fq 'href="/resources/status"' <<<"$landing"
+grep -Fq 'href="/privacy"' <<<"$landing"
+grep -Fq 'href="/terms"' <<<"$landing"
+grep -Fq 'href="/refund-policy"' <<<"$landing"
+
 assert_page() {
   local path="$1"
   local marker="$2"
