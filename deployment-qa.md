@@ -608,3 +608,11 @@ At 2026-08-17T13:25:49Z, the Vercel deployment inventory showed the latest obser
 
 عند `2026-08-17T13:25:49Z` أظهرت قائمة Vercel أن آخر deployment إنتاجي بحالة READY هو `dpl_EbugzFC7yGc7Bmx5BWonPaik4fn3` المبني من commit `34c1cba` (`docs: record reports error hardening`). أما commit `bf18c14` الأحدث والمدفوع بنجاح فلم يظهر بعد في نتيجة deployments، ولذلك لم يتم الخلط بين كود repository الأحدث وكود الإنتاج الحي. ظل canonical service سليمًا وفق probe السابق، كما أعاد استعلام Vercel المجمّع لأخطاء runtime خلال آخر 24 ساعة نتيجة خالية من الأخطاء.
 
+Canonical production reprobe:
+
+At 2026-08-17T13:26:09Z, `https://saas-gold-seven-80.vercel.app/` returned HTTP 200 and the response contained the expected Arabic RTL markers. The response included CSP, HSTS, X-Content-Type-Options: nosniff, X-Frame-Options: DENY, and Referrer-Policy: strict-origin-when-cross-origin. The observed CSP still contains `script-src 'self' 'unsafe-inline'`, which remains documented as an intentional Next.js compatibility trade-off rather than being misreported as a fully nonce-based policy.
+
+إعادة فحص الإنتاج canonical:
+
+عند `2026-08-17T13:26:09Z` أعاد `https://saas-gold-seven-80.vercel.app/` رمز HTTP 200، واحتوت الاستجابة على علامات RTL العربية المتوقعة. تضمنت الاستجابة CSP وHSTS وX-Content-Type-Options: nosniff وX-Frame-Options: DENY وReferrer-Policy: strict-origin-when-cross-origin. ما زال CSP المرصود يتضمن `script-src 'self' 'unsafe-inline'`، وتم توثيق ذلك كتسوية توافق مقصودة مع Next.js بدل وصف السياسة خطأً بأنها nonce-based بالكامل.
+
