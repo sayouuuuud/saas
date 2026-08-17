@@ -190,3 +190,10 @@ At 2026-08-17T11:58:35Z, the support page gained cancellable loading, explicit n
 تحسينات تجربة الدعم:
 
 في `2026-08-17T11:58:35Z` أضيفت حالات تحميل قابلة للإلغاء، ورسالة خطأ شبكة واضحة، والتحقق من الاستجابة، وحالة فارغة ميسّرة للتذاكر. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة قبل رفع commit `af359ae`.
+Authorization and admin query hardening:
+
+At 2026-08-17T12:03:56Z, the staff-only admin page retained its server-side `isStaff` guard while reducing audit-log relation loading to only the rendered email and workspace-name fields. The authenticated workspace route now rejects users without an assigned workspace instead of rendering a misleading zero-count tenant view. Lint, production build, and all six smoke suites passed; the tenant-isolation suite continued to pass.
+
+تصلب الصلاحيات واستعلام الإدارة:
+
+في `2026-08-17T12:03:56Z` حافظت لوحة الإدارة المخصصة للموظفين على حارس `isStaff` من جهة الخادم، مع تقليل تحميل علاقات AuditLog إلى حقول البريد واسم مساحة العمل المعروضة فقط. كما يرفض مسار مساحة العمل الحسابات التي لا تملك مساحة عمل مسندة بدل عرض مؤشرات صفرية مضللة. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة، واستمر نجاح اختبار عزل المستأجرين.
