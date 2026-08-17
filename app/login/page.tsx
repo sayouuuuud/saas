@@ -13,6 +13,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [challengeToken, setChallengeToken] = useState('')
+  const [twoFactorCode, setTwoFactorCode] = useState('')
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -20,10 +22,16 @@ export default function LoginPage() {
     setLoading(true)
     try {
       const endpoint = mode === 'signup' ? '/api/auth/register' : '/api/auth/login'
-      const body = mode === 'signup' ? { name, email, password } : { email, password }
+      const body = mode === 'signup' ? { name, email, password } : challengeToken ? { email, password, challengeToken, code: twoFactorCode } : { email, password }
       const response = await fetch(endpoint, { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.error || 'تعذر إتمام العملية')
+      if (mode === 'login' && payload.twoFactorRequired) {
+        setChallengeToken(payload.challengeToken)
+        setTwoFactorCode('')
+        setError('تم التحقق من كلمة المرور. أدخل رمز تطبيق المصادقة للمتابعة.')
+        return
+      }
       router.push('/dashboard')
       router.refresh()
     } catch (submitError) {
@@ -59,12 +67,14 @@ export default function LoginPage() {
           </div>
           <form className="auth-form" onSubmit={submit}>
             {mode === 'signup' && <label>الاسم الكامل<input required minLength={2} value={name} onChange={(event) => setName(event.target.value)} type="text" autoComplete="name" placeholder="أحمد علي" /></label>}
-            <label>البريد الإلكتروني<div className="input-with-icon"><Mail size={15} /><input required value={email} onChange={(event) => setEmail(event.target.value)} type="email" autoComplete="email" placeholder="you@example.com" /></div></label>
-            <label>كلمة المرور<div className="input-with-icon"><LockKeyhole size={15} /><input required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} placeholder="8 أحرف على الأقل" /></div></label>
+            {!challengeToken && <><label>البريد الإلكتروني<div className="input-with-icon"><Mail size={15} /><input required value={email} onChange={(event) => setEmail(event.target.value)} type="email" autoComplete="email" placeholder="you@example.com" /></div></label>
+            <label>كلمة المرور<div className="input-with-icon"><LockKeyhole size={15} /><input required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} placeholder="8 أحرف على الأقل" /></div></label></>}
+            {challengeToken && <label>رمز تطبيق المصادقة<input required inputMode="numeric" pattern="[0-9]{6}" minLength={6} maxLength={6} value={twoFactorCode} onChange={(event) => setTwoFactorCode(event.target.value)} type="text" autoComplete="one-time-code" placeholder="123456" /></label>}
             {error && <p className="form-error" role="alert">{error}</p>}
-            <button disabled={loading} type="submit" className="button button-dark button-large">{loading ? 'جارٍ التنفيذ...' : mode === 'signup' ? 'أنشئ حسابك' : 'تسجيل الدخول'} <ArrowLeft size={15} /></button>
+            <button disabled={loading} type="submit" className="button button-dark button-large">{loading ? 'جارٍ التنفيذ...' : challengeToken ? 'تأكيد الرمز' : mode === 'signup' ? 'أنشئ حسابك' : 'تسجيل الدخول'} <ArrowLeft size={15} /></button>
+            {challengeToken && <button type="button" className="text-button" onClick={() => { setChallengeToken(''); setTwoFactorCode(''); setError('') }}>العودة إلى كلمة المرور</button>}
           </form>
-          <div className="auth-switch">{mode === 'signup' ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟'} <button type="button" onClick={() => { setError(''); setMode(mode === 'signup' ? 'login' : 'signup') }}>{mode === 'signup' ? 'تسجيل الدخول' : 'ابدأ مجانًا'}</button></div>
+          <div className="auth-switch">{mode === 'signup' ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟'} <button type="button" onClick={() => { setError(''); setChallengeToken(''); setTwoFactorCode(''); setMode(mode === 'signup' ? 'login' : 'signup') }}>{mode === 'signup' ? 'تسجيل الدخول' : 'ابدأ مجانًا'}</button></div>
           <small className="auth-legal">بالمتابعة، أنت توافق على الشروط وسياسة الخصوصية الخاصة بمركزية.</small>
         </div>
       </section>

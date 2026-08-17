@@ -47,6 +47,9 @@ pnpm exec tsc --noEmit
 pnpm build
 pnpm db:migrate
 pnpm db:seed
+# Ensure no orphaned project server can mask the matrix environment on port 3000.
+terminate_project_next_processes
+sleep 1
 setsid env NODE_ENV=development pnpm dev > /tmp/centralia-regression-server.log 2>&1 &
 SERVER_PID=$!
 for _ in $(seq 1 30); do
