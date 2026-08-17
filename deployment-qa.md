@@ -204,3 +204,10 @@ At 2026-08-17T12:05:46Z, the SaaS-only LMS-link request endpoint began returning
 عدم تكرار طلبات تكامل LMS:
 
 في `2026-08-17T12:05:46Z` بدأ مسار طلب التكامل الخاص برابط LMS داخل SaaS بإرجاع `already_recorded` عند تكرار الطلب لنفس الرابط داخل مساحة العمل، مع الحفاظ على استجابة الطلب الأول `202 recorded` ومنع تكرار أحداث IntegrationRequest في سجل التدقيق. بقي البحث معزولًا بمساحة العمل ويحدد فقط هوية الرابط. يختبر API smoke الآن سلوك الطلب الأول والتكرار، ونجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
+Vercel production verification:
+
+At 2026-08-17T12:07:07Z, Vercel deployment `dpl_HTTVcBSfA1vi8AqkJKirv1PiaeGa` was verified as `READY` for production commit `8dc45ed80af10f3099c4e5de54ea0a14cc4b3ed2` (`fix: make integration requests idempotent`). The deployment became ready at epoch `1786968386529`, is aliased to `saas-gold-seven-80.vercel.app`, and is distinct from the earlier build-rate-limit failures. The canonical domain continued to return HTTP 200 with the expected security headers.
+
+التحقق من نشر Vercel:
+
+في `2026-08-17T12:07:07Z` تم التحقق من أن deployment `dpl_HTTVcBSfA1vi8AqkJKirv1PiaeGa` بحالة `READY` للإنتاج على commit `8dc45ed80af10f3099c4e5de54ea0a14cc4b3ed2` (`fix: make integration requests idempotent`). أصبح النشر جاهزًا عند epoch `1786968386529`، وهو مرتبط بالنطاق `saas-gold-seven-80.vercel.app`، ومنفصل عن حالات فشل build-rate-limit السابقة. استمر النطاق canonical في إرجاع HTTP 200 مع ترويسات الأمان المتوقعة.
