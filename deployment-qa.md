@@ -940,3 +940,11 @@ Both SQLite and PostgreSQL Prisma schemas validated. Lint, strict TypeScript, th
 اكتملت مصفوفة regression الكاملة في 2026-08-17T14:18:59Z (epoch 1786976339):
 
 تم التحقق من مخططي Prisma لـ SQLite وPostgreSQL. نجحت lint وstrict TypeScript وproduction build بعدد 33 route واختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة النافذة وتدقيق safeAuthError وتدقيق استقلال SaaS عن LMS. أبلغ `pnpm audit --prod` عن عدم وجود ثغرات معروفة. ظلت نافذة التنفيذ نشطة ولم تُعتبر مكتملة.
+
+Vercel deployment boundary rechecked at 2026-08-17T14:19:42Z (epoch 1786976382):
+
+The latest deployment inventory contains no deployment newer than `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf`, which is `READY` for commit `a34e9f5` (`docs: record disabled-style regression`). The team-members feature commit `4a98ec0`, QA repair `4793c3e`, LMS-independence guard `a1469d3`, and regression-ledger commit `4cd0443` are pushed to GitHub and verified locally, but are not claimed as live production code because no newer Vercel deployment is present in the queried interval.
+
+تمت إعادة مراجعة حد Vercel في 2026-08-17T14:19:42Z (epoch 1786976382):
+
+لا يحتوي سجل deployments الأخير على deployment أحدث من `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf`، وهو `READY` للـ commit `a34e9f5` بعنوان `docs: record disabled-style regression`. إن commit ميزة أعضاء الفريق `4a98ec0` وإصلاح سجل QA `4793c3e` وحارس استقلال LMS `a1469d3` وcommit سجل regression `4cd0443` مدفوعة إلى GitHub ومتحقق منها محليًا، لكن لم تُعلن ككود إنتاج حي لعدم وجود deployment أحدث في النطاق المفحوص.
