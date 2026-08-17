@@ -72,3 +72,7 @@ A second read-only Vercel deployment listing returned the same newest READY prod
 ## Live propagation transition — 2026-08-17T17:23Z
 
 Vercel now reports a production deployment for commit `142ef260842c3ca52f665ff9ba2760a5a5a5452b` (`test: document final repository cleanliness recheck`) in `BUILDING` state (`dpl_HcqgwTCFe3Z8kynRfdPd9sf1P1F5`). The strengthened canonical smoke was run read-only during this transition and exited nonzero only because the current alias lacked the newly required `/admin` noindex metadata; no source or local-regression failure was observed. The final verifier must continue waiting for a READY deployment before its strict canonical gate can pass.
+
+## Deployment rate-limit checkpoint — 2026-08-17T17:35Z
+
+GitHub reports the Vercel status for commit `9735af8` as `failure` with the provider message `Deployment rate limited — retry in 24 hours`. The canonical alias remains independently green under `pnpm test:canonical-production`, and all local production/regression gates pass on the latest source. This is an external Vercel propagation constraint, not an application build or test failure; the exact final gate records both facts.
