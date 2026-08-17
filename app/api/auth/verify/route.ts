@@ -1,12 +1,14 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
+import { safeAuthError } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export async function POST(request: Request) {
-  const rate = checkRateLimit(request, "auth:verify", 10);
+  try {
+    const rate = checkRateLimit(request, "auth:verify", 10);
   if (!rate.allowed) return NextResponse.json({ error: "محاولات كثيرة، حاول مرة أخرى لاحقًا" }, { status: 429, headers: rateLimitHeaders(rate) });
   const body = await request.json().catch(() => ({}));
   const token = typeof body.token === "string" ? body.token.trim() : "";
@@ -19,5 +21,8 @@ export async function POST(request: Request) {
     if (workspace) await tx.auditLog.create({ data: { actorId: nextUser.id, workspaceId: workspace.id, action: "SECURITY_EVENT", entity: "User", entityId: nextUser.id, reason: "email_verified" } });
     return nextUser;
   });
-  return NextResponse.json({ verified: true });
+    return NextResponse.json({ verified: true });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
