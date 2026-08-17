@@ -41,10 +41,8 @@ def main() -> None:
         elapsed = max(0, epoch - start)
         write_log({"pid": pid, "observed_at_utc": iso, "observed_epoch": epoch, "elapsed_seconds": elapsed, "required_duration_seconds": int(window["required_duration_seconds"]), "status": "active" if epoch < required else "window_complete"})
         if epoch >= required:
-            window["status"] = "window_complete"
-            window["completed_at_utc"] = iso
-            window["completed_at_epoch"] = epoch
-            write_window(window)
+            # Keep the tracked status file stable while the final verifier owns
+            # the atomic status transition, commit, and push after all gates pass.
             return
         time.sleep(60)
 
