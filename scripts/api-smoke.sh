@@ -16,6 +16,8 @@ test "$bad_status" = "400"
 good="$(json_request -X POST -d '{"displayName":"Demo Academy","publicUrl":"https://example.com"}' "$BASE_URL/api/lms-link")"
 LINK_ID="$(printf '%s' "$good" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')"
 test -n "$LINK_ID"
+me_with_link="$(json_request "$BASE_URL/api/auth/me")"
+test "$(printf '%s' "$me_with_link" | grep -c 'Demo Academy')" -ge 1
 check="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/check")"
 test "$(printf '%s' "$check" | grep -c 'check')" -ge 1
 ticket="$(json_request -X POST -d '{"category":"GENERAL","subject":"Smoke test","description":"Reproducible support API smoke test","priority":"normal"}' "$BASE_URL/api/tickets")"
