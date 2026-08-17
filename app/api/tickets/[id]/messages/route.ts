@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, safeAuthError } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 type Context = { params: Promise<{ id: string }> };
 const schema = z.object({ body: z.string().trim().min(2).max(5000) });
 
 export async function POST(request: Request, context: Context) {
-  const user = await getCurrentUser();
+  try {
+    const user = await getCurrentUser();
   const { id } = await context.params;
   if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
   const ticket = await prisma.supportTicket.findFirst({ where: { id, workspaceId: user.workspace.id } });
@@ -20,5 +21,8 @@ export async function POST(request: Request, context: Context) {
     await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "UPDATE", entity: "SupportTicket", entityId: id, reason: "message_added" } });
     return created;
   });
-  return NextResponse.json({ message }, { status: 201 });
+    return NextResponse.json({ message }, { status: 201 });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
