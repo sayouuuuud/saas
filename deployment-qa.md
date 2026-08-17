@@ -1248,3 +1248,8 @@ Validation completed at the system-clock checkpoint above: `pnpm lint`, strict T
 ## 2026-08-17T16:04:17Z — public-page metadata completion
 
 Added route-specific Arabic metadata to `/features`, `/how-it-works`, and `/pricing`, giving each public surface an accurate browser title and description while preserving the shared responsive layout and explicit SaaS-only/LMS boundary messaging. The complete validation cycle passed: `pnpm lint`, strict TypeScript validation with the documented SQLite URL, production build, and `pnpm test:regression-matrix`. The matrix again passed schema validation, migration and seed setup, API smoke, public-pages smoke, degraded plans smoke, security, authentication, edge-case, tenant-isolation, subscription lifecycle, production configuration, final-window status, auth-boundary, LMS-independence, collection-bounds, and dependency audit checks. The real-time execution window remains active until `2026-08-17T20:47:03Z`.
+
+
+## 2026-08-17T16:06:08Z — public metadata smoke coverage
+
+Extended `scripts/public-pages-smoke.sh` so `/features`, `/how-it-works`, and `/pricing` now assert their route-specific Arabic `<title>` and description metadata in addition to visible content and the explicit SaaS-only/LMS boundary. The complete `pnpm test:regression-matrix` passed at the system-clock checkpoint above, including build, migration, seed, API, public-pages, degraded-plans, security, authentication, edge-case, tenant-isolation, subscription lifecycle, production configuration, final-window, auth-boundary, LMS-independence, collection-bounds, and dependency checks. The real-time execution window remains active until `2026-08-17T20:47:03Z`.
