@@ -5,6 +5,8 @@ EMAIL="auth-$(date +%s%N)@example.com"
 TEST_CLIENT="auth-security-smoke-$(date +%s%N)"
 COOKIES="$(mktemp)"
 trap 'rm -f "$COOKIES"' EXIT
+[ "$(curl -s -o /dev/null -w '%{http_code}' -H "x-test-client: $TEST_CLIENT" -H 'Content-Type: application/json' --data '{not-json' "$BASE_URL/api/auth/verify")" = "400" ]
+[ "$(curl -s -o /dev/null -w '%{http_code}' -H "x-test-client: $TEST_CLIENT" -H 'Content-Type: application/json' --data '{not-json' "$BASE_URL/api/auth/reset-password")" = "400" ]
 register="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -c "$COOKIES" -H 'Content-Type: application/json' -d "{\"name\":\"Auth QA\",\"email\":\"$EMAIL\",\"password\":\"StrongPass123!\"}" "$BASE_URL/api/auth/register")"
 token="$(printf '%s' "$register" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).verificationToken||""))')"
 [ -n "$token" ] || { echo "missing local verification token" >&2; exit 1; }

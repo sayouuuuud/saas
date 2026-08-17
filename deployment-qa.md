@@ -240,3 +240,10 @@ At 2026-08-17T12:12:09Z, tenant-isolation smoke coverage was extended to assert 
 عزل طلبات التكامل بين المساحات:
 
 في `2026-08-17T12:12:09Z` تم توسيع اختبار عزل المستأجر ليتحقق من أن مساحة عمل ثانية تستقبل HTTP 404 عند محاولة `POST /api/lms-link/[id]/request-integration` على رابط يخص مساحة أخرى. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
+Malformed authentication-body coverage:
+
+At 2026-08-17T12:13:15Z, auth-security smoke coverage was extended to assert HTTP 400 for malformed JSON sent to email verification and password-reset endpoints. Lint, production build, and all six smoke suites passed, confirming the recovery handlers reject malformed payloads without uncaught exceptions.
+
+تغطية payloads المصادقة غير الصالحة:
+
+في `2026-08-17T12:13:15Z` تم توسيع auth-security smoke للتحقق من إرجاع HTTP 400 عند إرسال JSON غير صالح إلى مساري تحقق البريد وإعادة ضبط كلمة المرور. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة، بما يؤكد رفض payloads غير الصالحة دون استثناءات غير معالجة.
