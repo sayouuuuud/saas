@@ -895,3 +895,11 @@ Added a shared `button:disabled` visual and interaction state: reduced opacity, 
 اكتمل تحسين تنسيق عناصر التحكم المعطلة في 2026-08-17T14:11:59Z:
 
 تمت إضافة حالة مشتركة لـ `button:disabled` تشمل خفض الشفافية ومؤشر عدم السماح وإلغاء تأثيرات hover/active. يجعل ذلك العناصر غير المتاحة في معاينة الصفحة الرئيسية والفوترة والدعم واضحة بصريًا لمستخدمي الفأرة ولوحة المفاتيح. نجحت lint وstrict TypeScript.
+
+Post-disabled-style regression completed at 2026-08-17T14:12:24Z (epoch 1786975944):
+
+The 33-route production build passed after the shared disabled-control CSS change. The 28-route safeAuthError boundary audit, API smoke suite, and final-window-status smoke suite also passed. No runtime behavior or route contract changed. The real execution window remained active.
+
+اكتملت regression بعد تنسيق عناصر التحكم المعطلة في 2026-08-17T14:12:24Z (epoch 1786975944):
+
+نجح production build بعدد 33 route بعد تغيير CSS المشترك لعناصر التحكم المعطلة. كما نجح تدقيق safeAuthError لمسارات API الثمانية والعشرين واختبار API واختبار حالة نافذة الزمن. لم يتغير أي سلوك تشغيلي أو عقد route. ظلت نافذة التنفيذ الحقيقية نشطة.
