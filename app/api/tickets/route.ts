@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, safeAuthError } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 const schema = z.object({
@@ -12,42 +12,50 @@ const schema = z.object({
 });
 
 export async function GET(request: Request) {
-  const user = await getCurrentUser();
-  if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
-  const requestedLimit = Number(new URL(request.url).searchParams.get("limit") || "25");
-  const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 50) : 25;
-  const tickets = await prisma.supportTicket.findMany({
-    where: { workspaceId: user.workspace.id },
-    orderBy: { updatedAt: "desc" },
-    take: limit,
-    select: {
-      id: true,
-      number: true,
-      category: true,
-      subject: true,
-      description: true,
-      status: true,
-      priority: true,
-      requesterId: true,
-      createdAt: true,
-      updatedAt: true,
-      messages: { orderBy: { createdAt: "desc" }, take: 1, select: { id: true, createdAt: true, isInternal: true } },
-      _count: { select: { messages: true } },
-    },
-  });
-  return NextResponse.json({ tickets, limit });
+  try {
+    const user = await getCurrentUser();
+    if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
+    const requestedLimit = Number(new URL(request.url).searchParams.get("limit") || "25");
+    const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 50) : 25;
+    const tickets = await prisma.supportTicket.findMany({
+      where: { workspaceId: user.workspace.id },
+      orderBy: { updatedAt: "desc" },
+      take: limit,
+      select: {
+        id: true,
+        number: true,
+        category: true,
+        subject: true,
+        description: true,
+        status: true,
+        priority: true,
+        requesterId: true,
+        createdAt: true,
+        updatedAt: true,
+        messages: { orderBy: { createdAt: "desc" }, take: 1, select: { id: true, createdAt: true, isInternal: true } },
+        _count: { select: { messages: true } },
+      },
+    });
+    return NextResponse.json({ tickets, limit });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
 
 export async function POST(request: Request) {
-  const user = await getCurrentUser();
-  if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
-  const parsed = schema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) return NextResponse.json({ error: "أكمل موضوع الطلب وتفاصيله" }, { status: 400 });
-  const number = `SUP-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
-  const ticket = await prisma.$transaction(async (tx) => {
-    const created = await tx.supportTicket.create({ data: { number, workspaceId: user.workspace.id, requesterId: user.id, ...parsed.data, messages: { create: { authorId: user.id, body: parsed.data.description } } }, include: { messages: true } });
-    await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "CREATE", entity: "SupportTicket", entityId: created.id, reason: "ticket created" } });
-    return created;
-  });
-  return NextResponse.json({ ticket }, { status: 201 });
+  try {
+    const user = await getCurrentUser();
+    if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
+    const parsed = schema.safeParse(await request.json().catch(() => null));
+    if (!parsed.success) return NextResponse.json({ error: "أكمل موضوع الطلب وتفاصيله" }, { status: 400 });
+    const number = `SUP-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+    const ticket = await prisma.$transaction(async (tx) => {
+      const created = await tx.supportTicket.create({ data: { number, workspaceId: user.workspace.id, requesterId: user.id, ...parsed.data, messages: { create: { authorId: user.id, body: parsed.data.description } } }, include: { messages: true } });
+      await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "CREATE", entity: "SupportTicket", entityId: created.id, reason: "ticket created" } });
+      return created;
+    });
+    return NextResponse.json({ ticket }, { status: 201 });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }

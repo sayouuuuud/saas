@@ -17,13 +17,17 @@ function parseMemberPage(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const user = await getCurrentUser();
-  if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
-  const { limit: memberLimit, offset: memberOffset } = parseMemberPage(request);
-  const workspace = await prisma.workspace.findUnique({ where: { id: user.workspace.id }, include: { plan: true, subscription: { include: { plan: true } }, members: { orderBy: { createdAt: "asc" }, skip: memberOffset, take: memberLimit + 1, include: { user: { select: { id: true, name: true, email: true } } } } } });
-  if (!workspace) return new Response(JSON.stringify({ error: "مساحة العمل غير موجودة" }), { status: 404, headers: { "content-type": "application/json" } });
-  const hasMoreMembers = workspace.members.length > memberLimit;
-  return Response.json({ workspace: { ...workspace, members: workspace.members.slice(0, memberLimit) }, membersPagination: { limit: memberLimit, offset: memberOffset, hasMore: hasMoreMembers, nextOffset: hasMoreMembers ? memberOffset + memberLimit : null } });
+  try {
+    const user = await getCurrentUser();
+    if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
+    const { limit: memberLimit, offset: memberOffset } = parseMemberPage(request);
+    const workspace = await prisma.workspace.findUnique({ where: { id: user.workspace.id }, include: { plan: true, subscription: { include: { plan: true } }, members: { orderBy: { createdAt: "asc" }, skip: memberOffset, take: memberLimit + 1, include: { user: { select: { id: true, name: true, email: true } } } } } });
+    if (!workspace) return new Response(JSON.stringify({ error: "مساحة العمل غير موجودة" }), { status: 404, headers: { "content-type": "application/json" } });
+    const hasMoreMembers = workspace.members.length > memberLimit;
+    return Response.json({ workspace: { ...workspace, members: workspace.members.slice(0, memberLimit) }, membersPagination: { limit: memberLimit, offset: memberOffset, hasMore: hasMoreMembers, nextOffset: hasMoreMembers ? memberOffset + memberLimit : null } });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
 
 export async function PATCH(request: NextRequest) {

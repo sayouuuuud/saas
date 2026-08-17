@@ -4,9 +4,13 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser, safeAuthError } from "@/lib/auth";
 
 export async function GET() {
-  const user = await getCurrentUser();
-  if (!user) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
-  return Response.json({ user: { id: user.id, name: user.name, email: user.email, emailVerifiedAt: user.emailVerifiedAt, createdAt: user.createdAt } });
+  try {
+    const user = await getCurrentUser();
+    if (!user) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
+    return Response.json({ user: { id: user.id, name: user.name, email: user.email, emailVerifiedAt: user.emailVerifiedAt, createdAt: user.createdAt } });
+  } catch (error) {
+    return safeAuthError(error);
+  }
 }
 
 export async function PATCH(request: NextRequest) {

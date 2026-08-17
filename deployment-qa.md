@@ -728,3 +728,19 @@ At 2026-08-17T13:42:00Z on pushed commit `2103143`, both SQLite and PostgreSQL P
 
 عند `2026-08-17T13:42:00Z` وعلى commit المدفوع `2103143`، نجح تحقق مخططي Prisma لـ SQLite وPostgreSQL، وlint وstrict TypeScript وproduction build واختبارات API وsecurity وauth وedge cases وtenant isolation وsubscription lifecycle وproduction configuration وfinal-window status، إضافة إلى تدقيق dependencies في الإنتاج. بقي working tree نظيفًا بعد تنظيف compiler artifact. ظلت نافذة التشغيل الحقيقية active: تم تنفيذ 17,660 ثانية من أصل 43,200، وepoch الإكمال المطلوب هو `1786999623` الموافق `2026-08-17T20:47:03Z`.
 
+Vercel deployment and runtime health recheck:
+
+At 2026-08-17T13:43:29Z, the deployment inventory showed the latest observed READY production deployment `dpl_DgjUGS4o1kWJX2x77eeux1MxKXhh` for commit `913a3cde` (`fix: harden password reset errors`). Later repository commits, including the current regression-ledger commit `9cb6c85`, were pushed and locally verified but were not yet represented as READY in this deployment inventory. The canonical production service therefore remains verified at the previously observed live boundary. The Vercel grouped runtime-error query for the last 24 hours returned no runtime errors.
+
+إعادة التحقق من النشر وصحة التشغيل:
+
+عند `2026-08-17T13:43:29Z` أظهرت قائمة النشرات أن أحدث نشر إنتاجي READY تمت مشاهدته هو `dpl_DgjUGS4o1kWJX2x77eeux1MxKXhh` للـ commit `913a3cde` (`fix: harden password reset errors`). أما commits الأحدث، بما فيها commit سجل الاختبارات الحالي `9cb6c85`، فقد تم دفعها والتحقق منها محليًا لكنها لم تظهر بعد كنشر READY في القائمة. لذلك يظل الحد الحي canonical production boundary هو آخر نشر موثق سابقًا. كما أعاد استعلام Vercel المجمع لأخطاء التشغيل خلال آخر 24 ساعة نتيجة عدم وجود أخطاء تشغيل.
+
+
+API boundary hardening cycle completed at 2026-08-17T13:48:51Z:
+
+The remaining collection handlers were hardened with the shared `safeAuthError` boundary: `app/api/tickets/route.ts` GET and POST, `app/api/lms-link/route.ts` GET and POST, `app/api/workspace/route.ts` GET, and `app/api/me/route.ts` GET. Existing transactional writes, bounded pagination, validation responses, and limited profile/member projections were preserved. Strict lint, TypeScript, API smoke, and security smoke all passed. A repository-wide route scan found no `app/api/**/route.ts` file without a `safeAuthError` import/use.
+
+دورة تقوية حدود API اكتملت عند `2026-08-17T13:48:51Z`:
+
+تمت إضافة حد `safeAuthError` المشترك إلى handlers المتبقية: GET وPOST في `tickets`، وGET وPOST في `lms-link`، وGET في `workspace`، وGET في `me`. تم الحفاظ على المعاملات الذرية، pagination المحدودة، ردود التحقق، وحقول الإسقاط المحدودة. نجحت lint الصارمة، وTypeScript، واختبار API، واختبار الأمان. كما أكد مسح شامل للمستودع عدم وجود route ضمن `app/api/**/route.ts` بدون استخدام `safeAuthError`.
