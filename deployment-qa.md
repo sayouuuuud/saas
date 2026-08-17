@@ -72,3 +72,8 @@ Shared authentication-form hardening:
 
 The verification, forgot-password, and reset-password flows now provide browser autocomplete hints, explicit submit semantics, accessible live status and alert roles, and a user-safe network failure message. The complete lint, build, API, security, authentication, edge-case, and tenant-isolation suite passed at 2026-08-17T11:20:56Z.
 
+
+Support-page accessibility hardening:
+
+The support flow now uses explicit button types, names form controls, exposes success and error feedback to assistive technology, and labels ticket/filter controls. Lint, production build, API, security, authentication, edge-case, and tenant-isolation smoke tests all passed at 2026-08-17T11:21:58Z.
+
