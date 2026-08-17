@@ -5,12 +5,22 @@ import { prisma } from "@/lib/prisma";
 import { validateExternalHttpsUrl } from "@/lib/url-safety";
 
 const schema = z.object({ displayName: z.string().trim().min(2).max(80), publicUrl: z.string().url(), adminUrl: z.string().url().optional().or(z.literal("")), notes: z.string().max(500).optional() });
+const DEFAULT_LIMIT = 50;
+const MAX_LIMIT = 50;
 
-export async function GET() {
+function parseLimit(request: Request) {
+  const raw = new URL(request.url).searchParams.get("limit");
+  const requested = raw ? Number(raw) : DEFAULT_LIMIT;
+  return Number.isInteger(requested) && requested > 0 ? Math.min(requested, MAX_LIMIT) : DEFAULT_LIMIT;
+}
+
+export async function GET(request: Request) {
   const user = await getCurrentUser();
   if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
-  const links = await prisma.lmsLink.findMany({ where: { workspaceId: user.workspace.id }, include: { checks: { orderBy: { checkedAt: "desc" }, take: 5 } }, orderBy: { createdAt: "desc" } });
-  return NextResponse.json({ links });
+  const limit = parseLimit(request);
+  const rows = await prisma.lmsLink.findMany({ where: { workspaceId: user.workspace.id }, include: { checks: { orderBy: { checkedAt: "desc" }, take: 5 } }, orderBy: { createdAt: "desc" }, take: limit + 1 });
+  const hasMore = rows.length > limit;
+  return NextResponse.json({ links: rows.slice(0, limit), pagination: { limit, hasMore } });
 }
 
 export async function POST(request: Request) {

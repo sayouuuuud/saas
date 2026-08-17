@@ -18,7 +18,8 @@ export async function POST(request: Request) {
   await prisma.$transaction(async (tx) => {
     await tx.user.update({ where: { id: user.id }, data: { passwordHash: await bcrypt.hash(password, 12), passwordResetTokenHash: null, passwordResetExpiresAt: null } });
     await tx.session.deleteMany({ where: { userId: user.id } });
-    if (user.workspace) await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "SECURITY_EVENT", entity: "User", entityId: user.id, reason: "password_reset" } });
+    const membership = await tx.workspaceMember.findFirst({ where: { userId: user.id }, orderBy: { createdAt: "asc" }, select: { workspaceId: true } });
+    if (membership) await tx.auditLog.create({ data: { actorId: user.id, workspaceId: membership.workspaceId, action: "SECURITY_EVENT", entity: "User", entityId: user.id, reason: "password_reset" } });
   });
   return NextResponse.json({ reset: true });
 }

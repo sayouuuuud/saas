@@ -19,6 +19,9 @@ LINK_ID="$(printf '%s' "$good" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')"
 test -n "$LINK_ID"
 me_with_link="$(json_request "$BASE_URL/api/auth/me")"
 test "$(printf '%s' "$me_with_link" | grep -c 'Demo Academy')" -ge 1
+lms_links="$(json_request "$BASE_URL/api/lms-link?limit=999")"
+test "$(printf '%s' "$lms_links" | grep -c '"limit":50')" -eq 1
+test "$(printf '%s' "$lms_links" | grep -c "$LINK_ID")" -ge 1
 check="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/check")"
 test "$(printf '%s' "$check" | grep -c 'check')" -ge 1
 integration_request="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/request-integration")"
@@ -38,8 +41,9 @@ usage_history="$(json_request "$BASE_URL/api/usage/history")"
 test "$(printf '%s' "$usage_history" | grep -c 'saas_audit_log')" -eq 1
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"
 test "$(printf '%s' "$checkout" | grep -c 'ACTIVE')" -ge 1
-invoices="$(json_request "$BASE_URL/api/invoices")"
+invoices="$(json_request "$BASE_URL/api/invoices?limit=999")"
 test "$(printf '%s' "$invoices" | grep -c 'PAID')" -ge 1
+test "$(printf '%s' "$invoices" | grep -c '"limit":50')" -eq 1
 reports="$(json_request "$BASE_URL/api/reports")"
 test "$(printf '%s' "$reports" | grep -c '"invoiceCount":1')" -eq 1
 printf 'API smoke test passed for %s\n' "$EMAIL"

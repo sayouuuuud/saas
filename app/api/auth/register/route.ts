@@ -23,15 +23,17 @@ export async function POST(request: Request) {
   const verificationToken = crypto.randomBytes(32).toString("hex");
   const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const periodEnd = new Date(Date.now() + starter.trialDays * 86400000);
-  const user = await prisma.$transaction(async (tx) => {
+  const registration = await prisma.$transaction(async (tx) => {
     const createdUser = await tx.user.create({ data: { name, email, passwordHash, emailVerificationTokenHash: hash(verificationToken), emailVerificationExpiresAt: verificationExpiresAt } });
     const workspace = await tx.workspace.create({ data: { name: `${name} workspace`, ownerId: createdUser.id, planId: starter.id } });
     await tx.workspaceMember.create({ data: { workspaceId: workspace.id, userId: createdUser.id, role: "OWNER" } });
     await tx.subscription.create({ data: { workspaceId: workspace.id, planId: starter.id, status: "TRIAL", currentPeriodEnd: periodEnd, events: { create: { type: "trial_started", toStatus: "TRIAL" } } } });
     await tx.auditLog.create({ data: { actorId: createdUser.id, workspaceId: workspace.id, action: "CREATE", entity: "Workspace", entityId: workspace.id, reason: "initial_registration" } });
-    return createdUser;
+    return { user: createdUser, workspaceId: workspace.id };
   });
+  const { user, workspaceId } = registration;
   await createSession(user.id);
+  await prisma.auditLog.create({ data: { actorId: user.id, workspaceId, action: "LOGIN", entity: "Session", entityId: user.id, reason: "registration_session_created" } });
   const response: { user: { id: string; name: string; email: string }; verificationToken?: string } = { user: { id: user.id, name: user.name, email: user.email } };
   if (process.env.NODE_ENV !== "production") response.verificationToken = verificationToken;
   return NextResponse.json(response, { status: 201 });

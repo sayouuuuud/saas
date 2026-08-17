@@ -15,7 +15,11 @@ export async function POST(request: Request) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (user) {
       const token = crypto.randomBytes(32).toString("hex");
-      await prisma.user.update({ where: { id: user.id }, data: { passwordResetTokenHash: hash(token), passwordResetExpiresAt: new Date(Date.now() + 60 * 60 * 1000) } });
+      await prisma.$transaction(async (tx) => {
+        await tx.user.update({ where: { id: user.id }, data: { passwordResetTokenHash: hash(token), passwordResetExpiresAt: new Date(Date.now() + 60 * 60 * 1000) } });
+        const membership = await tx.workspaceMember.findFirst({ where: { userId: user.id }, orderBy: { createdAt: "asc" }, select: { workspaceId: true } });
+        if (membership) await tx.auditLog.create({ data: { actorId: user.id, workspaceId: membership.workspaceId, action: "SECURITY_EVENT", entity: "User", entityId: user.id, reason: "password_reset_requested" } });
+      });
       if (process.env.NODE_ENV !== "production") response.resetToken = token;
     }
   }
