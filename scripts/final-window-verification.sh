@@ -12,8 +12,22 @@ done
   printf 'system_epoch=%s\n' "$(date -u +%s)"
   printf 'required_epoch=%s\n' "$REQUIRED_EPOCH"
   cd "$ROOT_DIR"
+  printf 'tested_git_revision=%s\n' "$(git rev-parse HEAD)"
+  printf 'tested_git_branch=%s\n' "$(git branch --show-current)"
+  if [[ -n "$(git status --porcelain)" ]]; then
+    printf 'repository_clean=false\n'
+    git status --short
+    exit 1
+  fi
+  printf 'repository_clean=true\n'
   pnpm test:regression-matrix
   pnpm test:canonical-production
+  if [[ -n "$(git status --porcelain)" ]]; then
+    printf 'repository_clean_after_tests=false\n'
+    git status --short
+    exit 1
+  fi
+  printf 'repository_clean_after_tests=true\n'
   WINDOW_TMP="${WINDOW_FILE}.tmp"
   sed 's/"status": "active"/"status": "window_complete"/' "$WINDOW_FILE" > "$WINDOW_TMP"
   mv "$WINDOW_TMP" "$WINDOW_FILE"
