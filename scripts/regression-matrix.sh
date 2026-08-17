@@ -46,6 +46,7 @@ pnpm test:subscription-page
 pnpm test:account-pages
 pnpm test:client-fetch-cache
 pnpm test:admin-pages
+pnpm test:admin-error-boundary
 pnpm test:production-config
 pnpm test:final-window-status
 pnpm test:auth-boundaries
