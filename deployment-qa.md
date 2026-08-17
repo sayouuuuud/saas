@@ -520,3 +520,11 @@ At 2026-08-17T13:11:55Z, `scripts/realtime_window.py` was hardened to write comp
 
 عند `2026-08-17T13:11:55Z` تم تقوية `scripts/realtime_window.py` لكتابة metadata الإكمال عبر ملف مؤقت ثم `os.replace`، لمنع ترك `execution-window.json` ناقصًا إذا انقطع process. نجح Python syntax compilation وshell syntax checks وlint و`pnpm test:final-window-status` قبل دفع commit `a08a675`. تم التأكد من أن watchdog PID 5121 وfinal verifier المصحح PID 67767 يعملان، مع بقاء النافذة `active` قبل epoch المطلوب.
 
+Canonical production probe:
+
+At 2026-08-17T13:12:36Z, `https://saas-gold-seven-80.vercel.app/` returned HTTP 200. The live response exposed the expected CSP, HSTS, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Permissions-Policy`, and strict referrer policy headers. The probe also verified the canonical URL body request returned 200.
+
+فحص الإنتاج canonical:
+
+عند `2026-08-17T13:12:36Z` أعاد `https://saas-gold-seven-80.vercel.app/` HTTP 200. أظهر الرد الحي CSP وHSTS و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` و`Permissions-Policy` وسياسة referrer صارمة كما هو متوقع. كما تحقق الفحص من أن طلب body إلى العنوان canonical أعاد 200.
+
