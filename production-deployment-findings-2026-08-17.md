@@ -84,3 +84,7 @@ The Vercel grouped runtime-error query for the last hour returned one error grou
 ## Direct READY confirmation — 2026-08-17T17:38Z
 
 A direct Vercel deployment lookup confirms `dpl_HcqgwTCFe3Z8kynRfdPd9sf1P1F5` is now `READY`, with `ready=1786987405079`, and owns the canonical alias `saas-gold-seven-80.vercel.app`. It is associated with commit `142ef260842c3ca52f665ff9ba2760a5a5a5452b`; later GitHub commits remain subject to the documented Vercel deployment rate limit.
+
+## Latest source status — 2026-08-17T17:43Z
+
+GitHub reports commit `4d7e9dd` (`fix: clean regression server descendants`) with a Vercel status of `failure` and the provider description `Deployment rate limited — retry in 24 hours`. The latest source is fully covered by local regression, lint, TypeScript, and canonical smoke validation; the canonical alias remains independently green on the last READY deployment.
