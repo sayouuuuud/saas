@@ -132,3 +132,8 @@ Authentication abuse-resistance hardening:
 
 Added a bounded route-scoped burst limiter for login, registration, password recovery, password reset, and email verification. Production requests use the platform client address; explicit test identities are honored only outside production to keep local smoke suites deterministic. The security suite now proves login returns HTTP 429 after the configured threshold, and the complete lint, production build, API, authentication, edge-case, and tenant-isolation suites passed at 2026-08-17T11:38:04Z.
 
+
+Deployment propagation note:
+
+At 2026-08-17T11:39:28Z, GitHub reported the Vercel status for commit `ce58cd5` as `failure` with target `upgradeToPro=build-rate-limit`. No new deployment was listed for the commit. This is an external Vercel build-quota/platform limitation, distinct from the passing local lint/build/smoke suite and the still-healthy previous canonical READY deployment. The latest commit must not be described as live until Vercel accepts a new build or an alternative deployment path is explicitly used.
+
