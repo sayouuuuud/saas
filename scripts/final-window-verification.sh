@@ -33,7 +33,7 @@ done
     exit 1
   fi
   printf 'repository_clean=true\n'
-  pnpm test:regression-matrix
+  DATABASE_URL="${DATABASE_URL:-file:./dev.db}" PAYMENT_PROVIDER="${PAYMENT_PROVIDER:-mock}" pnpm test:regression-matrix
   pnpm test:canonical-production
   if [[ -n "$(git status --porcelain)" ]]; then
     printf 'repository_clean_after_tests=false\n'
