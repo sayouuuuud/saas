@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, Check, ChevronDown, CreditCard, Download, FileText, Link2, RefreshCw, ShieldCheck } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight, Check, ChevronDown, CreditCard, Download, FileText, Link2, Plus, RefreshCw, ShieldCheck, Trash2 } from 'lucide-react'
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 
 type Plan = { id: string; code: string; name: string; monthlyCents: number; yearlyCents: number; description: string }
 type Invoice = { id: string; number: string; createdAt: string; amountCents: number; status: string }
+type PaymentMethod = { id: string; brand: string; last4: string; expiryMonth: number; expiryYear: number; isDefault: boolean }
 
 const invoiceStatusLabels: Record<string, string> = {
   PAID: 'مدفوعة',
@@ -34,6 +35,13 @@ export default function BillingPage() {
   const [plans, setPlans] = useState<Plan[]>([])
   const [catalogDegraded, setCatalogDegraded] = useState(false)
   const [invoices, setInvoices] = useState<Invoice[]>([])
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
+  const [paymentError, setPaymentError] = useState('')
+  const [paymentBusy, setPaymentBusy] = useState(false)
+  const [paymentBrand, setPaymentBrand] = useState('Visa')
+  const [paymentLast4, setPaymentLast4] = useState('')
+  const [paymentMonth, setPaymentMonth] = useState('')
+  const [paymentYear, setPaymentYear] = useState('')
   const [message, setMessage] = useState('')
   const [loadError, setLoadError] = useState('')
   const [loading, setLoading] = useState(true)
@@ -99,14 +107,47 @@ export default function BillingPage() {
     }
   }, [invoicesNextOffset])
 
+  const loadPaymentMethods = useCallback(async () => {
+    try {
+      const response = await fetch('/api/billing/payment-methods', { cache: 'no-store' })
+      const payload = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(payload.error || 'تعذر تحميل طرق الدفع')
+      setPaymentMethods(payload.paymentMethods || [])
+    } catch (error) {
+      setPaymentError(error instanceof Error ? error.message : 'تعذر تحميل طرق الدفع')
+    }
+  }, [])
+
   useEffect(() => {
-    const timer = window.setTimeout(() => { void loadBillingData() }, 0)
+    const timer = window.setTimeout(() => { void loadBillingData(); void loadPaymentMethods() }, 0)
     return () => {
       window.clearTimeout(timer)
       loadControllerRef.current?.abort()
       invoicesControllerRef.current?.abort()
     }
-  }, [loadBillingData])
+  }, [loadBillingData, loadPaymentMethods])
+
+  async function savePaymentMethod(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setPaymentBusy(true); setPaymentError('')
+    try {
+      const response = await fetch('/api/billing/payment-methods', { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ brand: paymentBrand, last4: paymentLast4, expiryMonth: paymentMonth, expiryYear: paymentYear, default: paymentMethods.length === 0 }) })
+      const payload = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(payload.error || 'تعذر حفظ طريقة الدفع')
+      setPaymentMethods((current) => [payload.paymentMethod, ...current.map((method) => ({ ...method, isDefault: payload.paymentMethod.isDefault ? false : method.isDefault }))])
+      setPaymentLast4(''); setPaymentMonth(''); setPaymentYear('')
+    } catch (error) { setPaymentError(error instanceof Error ? error.message : 'تعذر حفظ طريقة الدفع') } finally { setPaymentBusy(false) }
+  }
+
+  async function removePaymentMethod(id: string) {
+    setPaymentBusy(true); setPaymentError('')
+    try {
+      const response = await fetch('/api/billing/payment-methods', { method: 'DELETE', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) })
+      const payload = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(payload.error || 'تعذر حذف طريقة الدفع')
+      await loadPaymentMethods()
+    } catch (error) { setPaymentError(error instanceof Error ? error.message : 'تعذر حذف طريقة الدفع') } finally { setPaymentBusy(false) }
+  }
 
   function exportInvoices() {
     downloadCsv('centralia-invoices.csv', [
@@ -139,6 +180,7 @@ export default function BillingPage() {
         {catalogDegraded && <div className="form-error" role="status"><span>بيانات الخطط غير متاحة مؤقتًا. يمكنك إعادة المحاولة الآن، ولن تتأثر بيانات اشتراكك الحالية.</span><button type="button" className="text-button" onClick={() => void loadBillingData()} disabled={loading}><RefreshCw size={14} /> إعادة المحاولة</button></div>}
         <div className="billing-current-grid"><article className="current-plan-card"><div className="current-card-top"><span className="plan-name">{loading ? 'جارٍ التحميل...' : current?.name || 'Growth'}</span><span className="current-pill"><i /> نشطة</span></div><p>{loading ? 'نحمّل تفاصيل الباقة الحالية.' : current?.description || 'للمدرسين الذين يريدون مساحة عمل أكثر تنظيمًا.'}</p><div className="current-price"><strong>{money(current?.monthlyCents || 3100)}</strong><span>/ شهر</span></div><small>التجديد القادم بعد تفعيل الاشتراك من مزود الدفع.</small><div className="plan-progress"><div><span>استخدام مساحة العمل</span><b>3 / 5 أعضاء</b></div><div className="progress-track"><i /></div></div><button type="button" className="button button-light" disabled={loading || !!loadError || catalogDegraded} onClick={() => setShowPlans(!showPlans)}>{showPlans ? 'إخفاء الخطط' : 'تغيير الباقة'} <ChevronDown size={14} /></button></article><article className="payment-card"><div className="billing-card-title"><span>طريقة الدفع</span><CreditCard size={17} /></div><div className="payment-method"><div className="mastercard"><i /><i /></div><div><b>لا توجد بطاقة محفوظة</b><small>يُخزن مرجع المزود فقط، وليس بيانات البطاقة.</small></div><button type="button" className="text-button" aria-label="إضافة طريقة دفع" disabled title="تتوفر بعد ربط مزود دفع حقيقي">إضافة</button></div><div className="payment-note"><Check size={13} /> لا تُرسل بيانات حساسة إلى تذاكر الدعم</div></article></div>
         {showPlans && <div className="billing-plan-switcher"><div><b>اختر ما يناسب مرحلتك القادمة</b><span>الدفع الحقيقي يحتاج مزودًا مهيأً. الوضع المحلي لا يُستخدم في الإنتاج.</span></div><div className="billing-plan-actions"><button type="button" className={annual ? '' : 'selected'} aria-pressed={!annual} onClick={() => setAnnual(false)}>شهري</button><button type="button" className={annual ? 'selected' : ''} aria-pressed={annual} onClick={() => setAnnual(true)}>سنوي <em>وفر 20%</em></button></div><div className="mini-plans">{plans.map((plan) => <div className={plan.code === 'growth' ? 'mini-plan-featured' : ''} key={plan.id}><b>{plan.name}</b><strong>{money(annual ? plan.yearlyCents : plan.monthlyCents)}</strong><button type="button" disabled={busy} onClick={() => choosePlan(plan.code)}>{busy ? 'جارٍ...' : plan.code === 'growth' ? 'الباقة الحالية' : 'اختيار'}</button></div>)}</div>{message && <p className="form-error" role="status">{message}</p>}</div>}
+        <section className="payment-methods-section"><div className="invoice-heading"><div><h2>مراجع طرق الدفع</h2><p>نحفظ آخر أربعة أرقام والمرجع الخارجي فقط، ولا نقبل رقم البطاقة الكامل.</p></div><CreditCard size={18} /></div>{paymentError && <p className="form-error" role="alert">{paymentError}</p>}<div className="payment-methods-list">{paymentMethods.length ? paymentMethods.map((method) => <div className="payment-method-row" key={method.id}><CreditCard size={16} /><span>{method.brand} •••• {method.last4}</span><small>{String(method.expiryMonth).padStart(2, '0')}/{method.expiryYear}{method.isDefault ? ' · افتراضية' : ''}</small><button type="button" className="text-button" disabled={paymentBusy} onClick={() => void removePaymentMethod(method.id)}><Trash2 size={14} /> حذف</button></div>) : <div className="invoice-empty">لا توجد طريقة دفع محفوظة. الوضع المحلي يحفظ مرجعًا تجريبيًا فقط.</div>}</div><form className="payment-method-form" onSubmit={savePaymentMethod}><label>النوع<input value={paymentBrand} onChange={(event) => setPaymentBrand(event.target.value)} maxLength={40} required /></label><label>آخر 4 أرقام<input inputMode="numeric" pattern="[0-9]{4}" value={paymentLast4} onChange={(event) => setPaymentLast4(event.target.value.replace(/\D/g, '').slice(0, 4))} placeholder="1234" required /></label><label>الشهر<input inputMode="numeric" value={paymentMonth} onChange={(event) => setPaymentMonth(event.target.value.replace(/\D/g, '').slice(0, 2))} placeholder="12" required /></label><label>السنة<input inputMode="numeric" value={paymentYear} onChange={(event) => setPaymentYear(event.target.value.replace(/\D/g, '').slice(0, 4))} placeholder="2028" required /></label><button type="submit" className="button button-dark" disabled={paymentBusy}><Plus size={14} /> {paymentBusy ? 'جارٍ الحفظ...' : 'إضافة مرجع'}</button></form></section>
         <div className="invoice-section"><div className="invoice-heading"><div><h2>الفواتير السابقة</h2><p>سجل واضح بكل المدفوعات والتجديدات.</p></div><button type="button" className="button button-outline" disabled={!invoices.length || loading || invoicesMoreLoading} onClick={exportInvoices}><Download size={14} /> تصدير السجل</button></div><div className="invoice-table"><div className="invoice-row invoice-table-head"><span>رقم الفاتورة</span><span>التاريخ</span><span>المبلغ</span><span>الحالة</span><span /></div>{loading ? <div className="invoice-empty" role="status">جارٍ تحميل الفواتير...</div> : invoices.length ? invoices.map((invoice) => <div className="invoice-row" key={invoice.id}><span className="invoice-id"><FileText size={15} /> {invoice.number}</span><span>{new Date(invoice.createdAt).toLocaleDateString('ar-EG')}</span><span dir="ltr">{money(invoice.amountCents)}</span><span className="paid-status"><Check size={12} /> {invoiceStatusLabels[invoice.status] || invoice.status}</span><button type="button" className="download-button" aria-label={`تحميل ${invoice.number}`} onClick={() => downloadInvoice(invoice)}><Download size={14} /></button></div>) : <div className="invoice-empty">لا توجد فواتير بعد. ستظهر هنا بعد تأكيد دفع اشتراك SaaS.</div>}</div>{invoiceMoreError && <p className="form-error" role="alert">{invoiceMoreError}</p>}{invoicesNextOffset !== null && !loadError && <button type="button" className="text-button" onClick={() => void loadMoreInvoices()} disabled={loading || invoicesMoreLoading} aria-busy={invoicesMoreLoading}>{invoicesMoreLoading ? 'جارٍ تحميل فواتير أقدم...' : invoiceMoreError ? 'إعادة المحاولة' : 'تحميل فواتير أقدم'} <ArrowLeft size={14} /></button>}</div>
         <div className="billing-help"><div className="billing-help-icon"><Link2 size={16} /></div><div><b>هل تحتاج إلى مساعدة في اشتراكك؟</b><span>فريق الدعم جاهز لمراجعة الفاتورة أو الإجابة عن أي سؤال.</span></div><Link href="/support" className="text-link">تواصل مع الدعم <ArrowLeft size={14} /></Link></div>
       </section>

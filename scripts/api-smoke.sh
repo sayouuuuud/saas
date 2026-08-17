@@ -82,6 +82,17 @@ grep -Eiq '^content-disposition:.*centralia-workspace-export' /tmp/saas-smoke-he
 export_body="$(cat /tmp/saas-smoke-response.json)"
 test "$(printf '%s' "$export_body" | grep -c 'saas_only')" -ge 1
 test "$(printf '%s' "$export_body" | grep -c 'educationalData')" -ge 1
+payment_methods_before="$(json_request "$BASE_URL/api/billing/payment-methods")"
+test "$(printf '%s' "$payment_methods_before" | grep -c 'paymentMethods')" -eq 1
+payment_method="$(json_request -X POST -d '{"brand":"Visa","last4":"4242","expiryMonth":12,"expiryYear":2030}' "$BASE_URL/api/billing/payment-methods")"
+PM_ID="$(printf '%s' "$payment_method" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')"
+test -n "$PM_ID"
+test "$(printf '%s' "$payment_method" | grep -c '4242')" -ge 1
+payment_methods_after="$(json_request "$BASE_URL/api/billing/payment-methods")"
+test "$(printf '%s' "$payment_methods_after" | grep -c "$PM_ID")" -ge 1
+payment_delete_status="$(status_request -X DELETE -d "{\"id\":\"$PM_ID\"}" "$BASE_URL/api/billing/payment-methods")"
+test "$payment_delete_status" = "200"
+test "$(cat /tmp/saas-smoke-response.json | grep -c '"ok":true')" -eq 1
 reports_status="$(status_and_headers_request "$BASE_URL/api/reports")"
 test "$reports_status" = "200"
 grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
