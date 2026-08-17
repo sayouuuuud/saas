@@ -844,3 +844,11 @@ The static dashboard mockup's add-LMS-link button is now explicitly disabled and
 تحسين صدق المعاينة في الصفحة الرئيسية في 2026-08-17T14:07:47Z:
 
 أصبح زر إضافة رابط LMS داخل نموذج لوحة التحكم الثابت معطلًا وموسومًا بوضوح بأنه معاينة ثابتة للمنتج، مما أزال عنصرًا تفاعليًا غير عامل دون تغيير مسار الصفحة التسويقية العامة. نجحت lint وstrict TypeScript.
+
+Enabled-control audit completed at 2026-08-17T14:08:01Z:
+
+A repository scan of client TSX sources found no enabled button lacking an onClick/onSubmit/type-submit action. Static or not-yet-implemented controls in the landing preview, dashboard, billing, and support surfaces are explicitly disabled. This audit complements the successful lint and strict TypeScript checks.
+
+اكتمل تدقيق عناصر التحكم المفعلة في 2026-08-17T14:08:01Z:
+
+لم يجد فحص مصادر TSX العميلية أي زر مفعل يفتقد إجراء onClick أو onSubmit أو type-submit. أصبحت العناصر الثابتة أو غير المنفذة بعد في المعاينة الرئيسية ولوحة التحكم والفوترة والدعم معطلة بوضوح. يكمل هذا التدقيق نتائج lint وstrict TypeScript الناجحة.
