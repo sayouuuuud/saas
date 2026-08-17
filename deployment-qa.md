@@ -744,3 +744,11 @@ The remaining collection handlers were hardened with the shared `safeAuthError` 
 دورة تقوية حدود API اكتملت عند `2026-08-17T13:48:51Z`:
 
 تمت إضافة حد `safeAuthError` المشترك إلى handlers المتبقية: GET وPOST في `tickets`، وGET وPOST في `lms-link`، وGET في `workspace`، وGET في `me`. تم الحفاظ على المعاملات الذرية، pagination المحدودة، ردود التحقق، وحقول الإسقاط المحدودة. نجحت lint الصارمة، وTypeScript، واختبار API، واختبار الأمان. كما أكد مسح شامل للمستودع عدم وجود route ضمن `app/api/**/route.ts` بدون استخدام `safeAuthError`.
+
+Admin and sensitive-page UX review completed at 2026-08-17T13:52:31Z:
+
+The staff-only admin page was reviewed and retained without code changes: it gates access with `user.isStaff`, performs SaaS-only aggregate queries, limits audit history to eight rows, and uses field-limited actor/workspace projections. It does not read LMS data. Billing and support pages were improved with abortable request controllers, retry actions, stale-response protection, and explicit loading/error recovery. An initial lint run correctly caught synchronous state initialization inside effects; both pages were refactored to schedule the initial load after effect setup, and the retest passed lint, strict TypeScript, and a 33-route production build.
+
+اكتملت مراجعة الإدارة وصفحات UX الحساسة عند 2026-08-17T13:52:31Z:
+
+تمت مراجعة صفحة الإدارة والاحتفاظ بها دون تعديل: فهي تفرض `user.isStaff`، وتستخدم استعلامات SaaS تجميعية فقط، وتحصر سجل التدقيق في ثمانية أحداث مع إسقاط محدود لحقول actor/workspace، ولا تقرأ بيانات LMS. تم تحسين صفحات billing وsupport باستخدام AbortController، وإجراءات إعادة المحاولة، ومنع الاستجابات القديمة، وحالات تحميل/فشل صريحة. كشف lint الأول بشكل صحيح عن تحديث state متزامن داخل effect؛ وبعد إعادة الجدولة الآمنة للتحميل الأولي نجح lint وstrict TypeScript وproduction build الذي ولّد 33 route.
