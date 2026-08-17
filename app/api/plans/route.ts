@@ -51,7 +51,7 @@ export async function GET() {
       console.error("[api/plans] database-backed catalog unavailable", details);
       return NextResponse.json(
         { plans: [], degraded: true },
-        { status: 200, headers: { "cache-control": "no-store", "x-centralia-degraded": "plans-database-unavailable" } },
+        { status: 200, headers: { "cache-control": "no-store", "retry-after": "60", "x-centralia-degraded": "plans-database-unavailable" } },
       );
     }
     return safeAuthError(error);

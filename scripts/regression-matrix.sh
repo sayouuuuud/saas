@@ -34,6 +34,7 @@ if ! curl -fsS http://localhost:3000/ >/dev/null 2>&1; then
   exit 1
 fi
 pnpm test:api
+pnpm test:plans-degraded
 pnpm test:security
 pnpm test:auth
 pnpm test:edge

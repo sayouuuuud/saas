@@ -24,6 +24,7 @@
     "test:auth-boundaries": "bash scripts/auth-error-boundary-audit.sh",
     "test:lms-independence": "bash scripts/lms-independence-audit.sh",
     "test:collection-bounds": "bash scripts/collection-bounds-audit.sh",
+    "test:plans-degraded": "bash scripts/plans-degraded-smoke.sh",
     "test:regression-matrix": "bash scripts/regression-matrix.sh",
     "verify:production": "node scripts/verify-production-config.mjs --strict",
     "test:production-config": "bash scripts/production-config-smoke.sh"

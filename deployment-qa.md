@@ -1221,3 +1221,8 @@ The tenant-sensitive `/api/auth/me`, `/api/me`, and `/api/workspace` routes now 
 ## 2026-08-17 15:39:17Z — route-local cache-header smoke coverage
 
 The API smoke suite now explicitly checks `cache-control` on authenticated `/api/auth/me`, `/api/me`, and `/api/workspace` responses, accepting the route-level `private, no-store` contract and the global `no-store` boundary. The complete `pnpm test:regression-matrix` passed at epoch `1786981157`, including build, migration, seed, API, security, auth, edge, tenant, subscription, configuration, boundary, LMS-independence, collection-bounds, and production dependency checks. The execution window remains active until epoch `1786999623` (`2026-08-17T20:47:03Z`).
+
+
+## 2026-08-17 15:44:08Z — degraded plan-catalog retry contract
+
+The public `/api/plans` degraded response now includes `retry-after: 60` alongside `cache-control: no-store` and `x-centralia-degraded: plans-database-unavailable`, making the temporary empty catalog explicit and safely retryable. A new `scripts/plans-degraded-smoke.sh` boots the built application against an uninitialized SQLite database and verifies HTTP 200, the empty/degraded payload, no-store semantics, the retry hint, and the diagnostic header. The complete `pnpm test:regression-matrix` passed at epoch `1786981448`, including the new isolated degraded-catalog gate and all existing build, API, security, auth, edge, tenant, subscription, configuration, boundary, LMS-independence, collection, and dependency checks. The execution window remains active until epoch `1786999623` (`2026-08-17T20:47:03Z`).
