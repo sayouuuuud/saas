@@ -5,8 +5,8 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const user = await getCurrentUser();
-    if (!user) return NextResponse.json({ user: null }, { status: 401 });
-    if (!user.workspace) return NextResponse.json({ user: { id: user.id, name: user.name, email: user.email, workspace: null } });
+    if (!user) return NextResponse.json({ user: null }, { status: 401, headers: { "cache-control": "no-store" } });
+    if (!user.workspace) return NextResponse.json({ user: { id: user.id, name: user.name, email: user.email, workspace: null } }, { headers: { "cache-control": "private, no-store" } });
 
     const [workspace, lmsLinks] = await Promise.all([
       prisma.workspace.findUnique({
@@ -35,7 +35,7 @@ export async function GET() {
           ? { id: workspace.id, name: workspace.name, plan: workspace.subscription?.plan.name ?? workspace.plan?.name ?? null, subscriptionStatus: workspace.subscription?.status ?? null, lmsLinks }
           : null,
       },
-    });
+    }, { headers: { "cache-control": "private, no-store" } });
   } catch (error) {
     return safeAuthError(error);
   }

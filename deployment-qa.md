@@ -1211,3 +1211,8 @@ A global Next.js header rule now applies `Cache-Control: no-store` to every `/ap
 ## 2026-08-17 15:34:11Z — shared authentication error cache boundary
 
 The shared `safeAuthError` helper now uses one explicit `cache-control: no-store` JSON header set for all unauthenticated, forbidden, missing-workspace, and unexpected-error responses. This keeps error payloads from being cached independently of route-level or framework-level API headers. The complete `pnpm test:regression-matrix` passed at epoch `1786980851`, including strict build, all smoke suites, production configuration, auth-boundary coverage for 28 routes, LMS independence, collection bounds, and dependency audit. The real-time execution window remains active through epoch `1786999623` (`2026-08-17T20:47:03Z`).
+
+
+## 2026-08-17 15:37:33Z — session, profile, and workspace privacy headers
+
+The tenant-sensitive `/api/auth/me`, `/api/me`, and `/api/workspace` routes now set explicit `private, no-store` headers on successful payloads and non-cacheable JSON headers on authorization, validation, and conflict responses. This complements the global API cache boundary with route-local guarantees for session bootstrap, personal profile data, workspace membership, subscription summary, and workspace mutations. The complete `pnpm test:regression-matrix` passed at epoch `1786981053`, including all build, API, security, auth, edge, tenant, subscription, configuration, boundary, LMS-independence, collection, and dependency checks. The required completion epoch remains `1786999623` (`2026-08-17T20:47:03Z`).
