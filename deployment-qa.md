@@ -879,3 +879,11 @@ Invoice append failures now render beside the invoice table with an alert role, 
 اكتمل تحسين ظهور أخطاء pagination للفواتير في 2026-08-17T14:10:28Z:
 
 تظهر الآن أخطاء إضافة الفواتير بجانب جدول الفواتير مع role=alert، ويتحول زر تحميل المزيد نفسه إلى إعادة محاولة عربية واضحة. لم يعد ظهور الخطأ يعتمد على فتح مبدّل الخطط، مع الحفاظ على سلوك التحديث وAbortController. نجحت lint وstrict TypeScript.
+
+Post-billing-error regression completed at 2026-08-17T14:11:01Z (epoch 1786975861):
+
+The 33-route production build passed, as did the API safeAuthError boundary audit for 28 routes and every API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-config, and final-window-status smoke suite. The invoice-pagination error-visibility fix introduced no regression. The required real-time window remained active.
+
+اكتملت regression بعد إصلاح ظهور خطأ pagination للفواتير في 2026-08-17T14:11:01Z (epoch 1786975861):
+
+نجح production build بعدد 33 route، كما نجح تدقيق حدود safeAuthError لـ 28 route وجميع اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن. لم يتسبب إصلاح ظهور أخطاء pagination للفواتير في أي regression. ظلت نافذة الزمن الحقيقية الإلزامية نشطة.
