@@ -1004,3 +1004,11 @@ The expanded regression matrix initially exposed one high-severity `deepmerge-ts
 اكتملت معالجة أمان التبعيات في 2026-08-17T14:27:04Z (epoch 1786976824):
 
 كشفت مصفوفة regression الموسعة أولًا عن advisory واحد عالي الخطورة لـ`deepmerge-ts` (`GHSA-ggr8-5vv4-36mx`) عبر Prisma 6.19.3. رُفضت المحاولة الأولى لوضع override داخل manifest لأن pnpm 11 لم يعد يقرأ مفتاح `pnpm`. نُقل override إلى خريطة overrides الموجودة في `pnpm-workspace.yaml`، وتمت مزامنة lockfile وشجرة التثبيت إلى `deepmerge-ts@8.0.1`، وأعاد `pnpm audit --prod` عدم وجود ثغرات معروفة. بعد ذلك نجح التحقق من مخططي Prisma وlint وstrict TypeScript وproduction build بعدد 33 route وجميع smoke suites وتدقيقات الحدود والتدقيق الأمني النظيف.
+
+Post-security Vercel deployment boundary rechecked at 2026-08-17T14:27:45Z (epoch 1786976865):
+
+The deployment inventory still shows `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` as the newest `READY` production deployment for `a34e9f5` (`docs: record disabled-style regression`). The subsequent team, LMS-independence, collection-bounds, final-verifier, and dependency-security commits are pushed and locally verified but are not claimed as live until a newer READY deployment is observed.
+
+تمت إعادة مراجعة حد Vercel بعد معالجة الأمان في 2026-08-17T14:27:45Z (epoch 1786976865):
+
+لا يزال سجل deployments يبين أن `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` هو أحدث deployment إنتاجي بحالة `READY` للـ commit `a34e9f5` بعنوان `docs: record disabled-style regression`. إن commits أعضاء الفريق واستقلال LMS وحدود المجموعات وverifier النهائي وأمان التبعيات مدفوعة ومتحقق منها محليًا، لكن لا تُعلن ككود حي حتى ظهور deployment أحدث بحالة READY.
