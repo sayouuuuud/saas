@@ -1480,3 +1480,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Added an `/admin` segment layout with `robots: noindex, nofollow`, inherited by the staff dashboard and all bounded admin sections.
 - Extended `admin-pages-smoke.sh` to assert noindex metadata on `/admin`, teachers, plans, subscriptions, billing, and LMS-link routes while preserving unauthenticated authorization-guard checks.
 - Lint, strict TypeScript, the SQLite production build, and the focused admin smoke passed.
+
+## 2026-08-17 — Full regression after private admin noindex
+
+- The complete `pnpm test:regression-matrix` passed after adding the private admin noindex boundary.
+- Evidence: 53-route production build, migrations/seed, all API/public/degraded/security/auth/edge/tenant/subscription/account/client-fetch/admin/production-config/final-window/auth-boundary/LMS-independence/collection-bounds suites, and `pnpm audit --prod` all passed; the cleanup trap left the repository clean.
