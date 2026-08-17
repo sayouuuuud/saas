@@ -9,6 +9,7 @@ grep -Fq 'href="/resources/status"' <<<"$landing"
 grep -Fq 'href="/privacy"' <<<"$landing"
 grep -Fq 'href="/terms"' <<<"$landing"
 grep -Fq 'href="/refund-policy"' <<<"$landing"
+grep -Fq 'href="/acceptable-use"' <<<"$landing"
 
 assert_page() {
   local path="$1"
@@ -28,6 +29,10 @@ assert_page "/how-it-works" "كيف تعمل المنصة" "كيف تعمل | م
 assert_page "/pricing" "أسعار واضحة" "الأسعار | مركزية" "خطط SaaS شفافة لإدارة الحساب والاشتراك والفوترة والدعم وروابط LMS الاختيارية."
 assert_page "/demo" "عرض عملي" "اطلب عرضًا | مركزية" "اطلب عرضًا عمليًا لمنصة مركزية لإدارة حساب SaaS والاشتراك والفوترة وروابط المنصة التعليمية."
 assert_page "/contact" "نحن هنا للمساعدة" "تواصل معنا | مركزية" "تواصل مع فريق مركزية بشأن الحساب والاشتراك والفوترة ورابط المنصة والدعم."
+assert_page "/terms" "الشروط والأحكام" "الشروط والأحكام | مركزية" "الشروط التي تحكم استخدام منصة مركزية SaaS المستقلة."
+assert_page "/privacy" "الخصوصية" "الخصوصية | مركزية" "كيف تتعامل مركزية مع بيانات حساب SaaS ومساحة العمل."
+assert_page "/refund-policy" "سياسة الاسترداد" "سياسة الاسترداد | مركزية" "سياسة الإلغاء والاسترداد لاشتراكات مركزية SaaS."
+assert_page "/acceptable-use" "الاستخدام المقبول" "الاستخدام المقبول | مركزية" "قواعد الاستخدام المقبول لمنصة مركزية SaaS."
 
 robots_headers=$(curl -fsSI --max-time 10 "${BASE_URL}/robots.txt")
 grep -Eiq 'content-type:.*text/plain' <<<"$robots_headers"
@@ -43,5 +48,9 @@ grep -Fq "/how-it-works</loc>" <<<"$sitemap"
 grep -Fq "/pricing</loc>" <<<"$sitemap"
 grep -Fq "/demo</loc>" <<<"$sitemap"
 grep -Fq "/contact</loc>" <<<"$sitemap"
+grep -Fq "/terms</loc>" <<<"$sitemap"
+grep -Fq "/privacy</loc>" <<<"$sitemap"
+grep -Fq "/refund-policy</loc>" <<<"$sitemap"
+grep -Fq "/acceptable-use</loc>" <<<"$sitemap"
 
-printf 'Public pages smoke test passed for /features, /how-it-works, /pricing, /demo, /contact, robots.txt, and sitemap.xml\n'
+printf 'Public pages smoke test passed for product, contact, policy routes, robots.txt, and sitemap.xml\n'

@@ -1341,3 +1341,11 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Updated the admin dashboard quick links to the dedicated sections and added `scripts/admin-pages-smoke.sh` to the regression matrix.
 - Validation passed: lint, strict TypeScript, production build with 44 routes, and unauthenticated guard smoke for all six admin routes.
 - No LMS database was accessed or modified; LMS links remain reference metadata only.
+
+## 2026-08-17 — Dedicated public policy surfaces
+
+- Added dedicated `/terms`, `/privacy`, `/refund-policy`, and `/acceptable-use` routes using the shared accessible public-information layout.
+- Policy content states SaaS-owned data boundaries, payment-webhook truth, cancellation handling, acceptable-use rules, and the prohibition on direct LMS database access or content copying.
+- Added all four routes to the canonical sitemap and linked acceptable-use from the landing-page legal footer.
+- Validation passed: lint, strict TypeScript, production build with 48 static/dynamic routes, and public discovery smoke including metadata, content markers, content types, footer links, and sitemap entries.
+- No LMS database was accessed or modified.
