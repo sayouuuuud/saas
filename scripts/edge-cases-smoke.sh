@@ -4,9 +4,10 @@ BASE_URL="${BASE_URL:-http://localhost:3000}"
 COOKIE_FILE="$(mktemp)"
 trap 'rm -f "$COOKIE_FILE"' EXIT
 EMAIL="edge-$(date +%s%N)@example.com"
+TEST_CLIENT="edge-smoke-$(date +%s%N)"
 
 status_request() {
-  curl -sS -o /tmp/saas-edge-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: edge-smoke' "$@"
+  curl -sS -o /tmp/saas-edge-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"
 }
 
 status_request -X POST -d "{\"name\":\"Edge QA\",\"email\":\"$EMAIL\",\"password\":\"secure-password-123\"}" "$BASE_URL/api/auth/register" | grep -qx '201'

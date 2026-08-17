@@ -4,9 +4,10 @@ BASE_URL="${BASE_URL:-http://localhost:3000}"
 COOKIE_FILE="$(mktemp)"
 trap 'rm -f "$COOKIE_FILE"' EXIT
 EMAIL="subscription-qa-$(date +%s%N)@example.com"
+TEST_CLIENT="subscription-lifecycle-smoke-$(date +%s%N)"
 EVENT_ID="subscription-lifecycle-webhook-$(date +%s%N)"
-json_request() { curl -sS -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: subscription-lifecycle-smoke' "$@"; }
-status_request() { curl -sS -o /tmp/saas-subscription-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: subscription-lifecycle-smoke' "$@"; }
+json_request() { curl -sS -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
+status_request() { curl -sS -o /tmp/saas-subscription-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
 
 json_request -X POST -d "{\"name\":\"Subscription QA\",\"email\":\"$EMAIL\",\"password\":\"correct-horse-123\"}" "$BASE_URL/api/auth/register" | grep -q 'Subscription QA'
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"

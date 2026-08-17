@@ -4,8 +4,9 @@ BASE_URL="${BASE_URL:-http://localhost:3000}"
 COOKIE_FILE="$(mktemp)"
 trap 'rm -f "$COOKIE_FILE"' EXIT
 EMAIL="qa-$(date +%s%N)@example.com"
-json_request() { curl -sS -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: api-smoke' "$@"; }
-status_request() { curl -sS -o /tmp/saas-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H 'x-test-client: api-smoke' "$@"; }
+TEST_CLIENT="api-smoke-$(date +%s%N)"
+json_request() { curl -sS -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
+status_request() { curl -sS -o /tmp/saas-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
 
 register="$(json_request -X POST -d "{\"name\":\"QA Teacher\",\"email\":\"$EMAIL\",\"password\":\"correct-horse-123\"}" "$BASE_URL/api/auth/register")"
 test "$(printf '%s' "$register" | grep -c 'QA Teacher')" -eq 1
@@ -26,6 +27,11 @@ TICKET_ID="$(printf '%s' "$ticket" | sed -n 's/.*"ticket":{"id":"\([^"]*\)".*/\1
 test -n "$TICKET_ID"
 bad_ticket_action="$(status_request -X POST -d '{"action":"archive"}' "$BASE_URL/api/tickets/$TICKET_ID")"
 test "$bad_ticket_action" = "400"
+tickets="$(json_request "$BASE_URL/api/tickets?limit=999")"
+test "$(printf '%s' "$tickets" | grep -c '"limit":50')" -eq 1
+test "$(printf '%s' "$tickets" | grep -c "$TICKET_ID")" -ge 1
+usage_history="$(json_request "$BASE_URL/api/usage/history")"
+test "$(printf '%s' "$usage_history" | grep -c 'saas_audit_log')" -eq 1
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"
 test "$(printf '%s' "$checkout" | grep -c 'ACTIVE')" -ge 1
 invoices="$(json_request "$BASE_URL/api/invoices")"
