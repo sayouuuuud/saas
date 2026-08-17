@@ -528,3 +528,11 @@ At 2026-08-17T13:12:36Z, `https://saas-gold-seven-80.vercel.app/` returned HTTP 
 
 عند `2026-08-17T13:12:36Z` أعاد `https://saas-gold-seven-80.vercel.app/` HTTP 200. أظهر الرد الحي CSP وHSTS و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` و`Permissions-Policy` وسياسة referrer صارمة كما هو متوقع. كما تحقق الفحص من أن طلب body إلى العنوان canonical أعاد 200.
 
+PostgreSQL schema validation recheck:
+
+At 2026-08-17T13:13:29Z, running `pnpm db:validate:postgres` against the development `.env` correctly rejected the SQLite URL because the PostgreSQL schema requires a `postgresql://` or `postgres://` protocol. Re-running with an isolated syntactically valid PostgreSQL URL succeeded, and `pnpm test:final-window-status` also passed. This confirms the dual-path validation is strict rather than silently accepting the wrong datasource protocol.
+
+إعادة فحص schema PostgreSQL:
+
+عند `2026-08-17T13:13:29Z` رفض تشغيل `pnpm db:validate:postgres` باستخدام `.env` التطويري عنوان SQLite بشكل صحيح لأن schema PostgreSQL يتطلب protocol من نوع `postgresql://` أو `postgres://`. عند إعادة التشغيل بعنوان PostgreSQL صحيح شكليًا نجح الفحص، كما نجح `pnpm test:final-window-status`. يؤكد ذلك أن dual-path validation صارم ولا يقبل protocol قاعدة البيانات الخاطئ بصمت.
+
