@@ -43,3 +43,10 @@ Public surface verification:
 
 - The canonical production domain returned HTTP 200 with `dir="rtl"` for the landing page, authentication pages, billing, support, legal pages, use-case pages, and resource pages.
 - The required real-time window remains active in `execution-window.json`; at 2026-08-17T09:53:13Z the measured elapsed duration was 3,970 seconds and the required completion epoch remained 1786999623 (2026-08-17T20:47:03Z).
+
+Regression and tenant-isolation verification for commit `056907d` and the follow-up QA additions:
+
+- After removing eager LMS-link loading from generic sessions, `/api/auth/me` was corrected to fetch the minimal five-link projection explicitly, preserving the dashboard's connected-link state while keeping other session queries lean.
+- The API smoke suite now asserts that an existing `Demo Academy` link is present in the authenticated user payload; the full API, security, authentication, edge-case, and tenant-isolation suites passed.
+- The tenant-isolation suite confirmed that a second workspace receives HTTP 404 when attempting to delete or check the first workspace's LMS link.
+- Direct canonical production smoke verification continued to return HTTP 200 with six security headers and Arabic RTL markers after the fix was pushed.
