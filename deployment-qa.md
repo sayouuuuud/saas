@@ -648,3 +648,11 @@ At 2026-08-17T13:29:52Z, the billing webhook received a top-level `safeAuthError
 
 عند `2026-08-17T13:29:52Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى billing webhook حول lookup الخاص بالأحداث، والتحقق من التوقيع، ومعالجة replay، وإنهاء payload، ومعالجة الدفع الذرية، مع الحفاظ على استجابات 400 و401 و404 و409 و500 الحالية وانتقالات idempotency. نجحت lint وstrict TypeScript وproduction build وsecurity smoke وsubscription-lifecycle smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `6319e79`.
 
+Login error handling:
+
+At 2026-08-17T13:30:53Z, the password-login route received a top-level `safeAuthError` boundary, preserving the existing rate limiter, malformed-body 400 response, credential-neutral 401 response, session creation, and workspace-scoped LOGIN audit event. Lint, strict TypeScript, authentication smoke, security smoke, edge-case smoke, API smoke, diff checks, and compiler-artifact cleanup passed before commit `325145d` was pushed.
+
+معالجة أخطاء تسجيل الدخول:
+
+عند `2026-08-17T13:30:53Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى مسار تسجيل الدخول بكلمة المرور، مع الحفاظ على rate limiter، واستجابة 400 للـ body غير الصالح، واستجابة 401 المحايدة للبيانات الخاطئة، وإنشاء session، وLOGIN audit event المرتبط بالـ workspace. نجحت lint وstrict TypeScript وauth smoke وsecurity smoke وedge-case smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `325145d`.
+
