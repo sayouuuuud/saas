@@ -52,6 +52,8 @@ button { font: inherit; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: 10px; padding: 10px 17px; font-size: 13px; font-weight: 800; cursor: pointer; transition: transform .16s ease, background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease; }
 .button:hover { transform: translateY(-2px); }
 .button:active { transform: scale(.97); }
+button:disabled { opacity: .58; cursor: not-allowed; }
+button:disabled:hover, button:disabled:active { transform: none; }
 .button-dark { background: var(--ink); color: white; box-shadow: 0 8px 18px rgba(32,40,43,.12); }
 .button-dark:hover { background: #303b3e; box-shadow: 0 10px 22px rgba(32,40,43,.2); }
 .button-light { background: white; color: var(--ink); }

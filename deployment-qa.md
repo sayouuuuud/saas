@@ -887,3 +887,11 @@ The 33-route production build passed, as did the API safeAuthError boundary audi
 اكتملت regression بعد إصلاح ظهور خطأ pagination للفواتير في 2026-08-17T14:11:01Z (epoch 1786975861):
 
 نجح production build بعدد 33 route، كما نجح تدقيق حدود safeAuthError لـ 28 route وجميع اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن. لم يتسبب إصلاح ظهور أخطاء pagination للفواتير في أي regression. ظلت نافذة الزمن الحقيقية الإلزامية نشطة.
+
+Disabled-control styling completed at 2026-08-17T14:11:59Z:
+
+Added a shared `button:disabled` visual and interaction state: reduced opacity, a not-allowed cursor, and no hover/active transform. This makes unavailable controls in the landing preview, billing, and support surfaces visibly honest for pointer and keyboard users. Lint and strict TypeScript passed.
+
+اكتمل تحسين تنسيق عناصر التحكم المعطلة في 2026-08-17T14:11:59Z:
+
+تمت إضافة حالة مشتركة لـ `button:disabled` تشمل خفض الشفافية ومؤشر عدم السماح وإلغاء تأثيرات hover/active. يجعل ذلك العناصر غير المتاحة في معاينة الصفحة الرئيسية والفوترة والدعم واضحة بصريًا لمستخدمي الفأرة ولوحة المفاتيح. نجحت lint وstrict TypeScript.
