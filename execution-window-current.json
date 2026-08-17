@@ -6,5 +6,12 @@
   "required_completion_utc": "2026-08-18T08:55:13Z",
   "measurement": "system clock seconds",
   "status": "active",
-  "scope": "implementation of remaining Centralia SaaS specification gaps"
+  "scope": "implementation of remaining Centralia SaaS specification gaps",
+  "last_checkpoint_utc": "2026-08-17T21:11:44Z",
+  "last_checkpoint_epoch": 1787001104,
+  "checkpoint_commit": "09f2eeb",
+  "checkpoint_summary": "Account aliases, overview, support ticket details, notification inbox, session revocation, SaaS-only export, expanded admin sections, and regression coverage completed.",
+  "quality_gate": "Centralia full regression matrix passed",
+  "remote_branch": "origin/main"
 }
+
