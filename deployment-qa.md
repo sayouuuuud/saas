@@ -432,3 +432,19 @@ At 2026-08-17T12:57:55Z, the system clock was epoch `1786971475`; the watchdog a
 
 عند `2026-08-17T12:57:55Z` كان epoch ساعة النظام `1786971475`، وبقي watchdog وfinal verifier نشطين، وظل epoch الإكمال المطلوب `1786999623`. لا يُعلن الاكتمال قبل ذلك epoch وقبل أن يؤكد final verification log نجاح المصفوفة.
 
+Complete pre-window regression:
+
+At 2026-08-17T12:58:55Z on commit `3a1276a`, the complete matrix passed: `pnpm db:validate`, `pnpm lint`, `pnpm build` with TypeScript validation enabled, API smoke including offset pagination, security, auth-security, edge-cases, tenant-isolation, subscription-lifecycle, production-config, and `pnpm audit --prod`. The repository remained clean; all smoke suites used per-run client identities.
+
+التحقق الشامل قبل نهاية النافذة:
+
+عند `2026-08-17T12:58:55Z` وعلى commit `3a1276a` نجحت المصفوفة الكاملة: `pnpm db:validate` و`pnpm lint` و`pnpm build` مع تفعيل TypeScript، واختبارات API التي تتضمن pagination بالإزاحة، والأمان، والمصادقة، والحالات الطرفية، وعزل المستأجر، ودورة الاشتراك، وإعدادات الإنتاج، و`pnpm audit --prod`. ظل المستودع نظيفًا، واستخدمت جميع smoke suites هويات منفصلة لكل تشغيل.
+
+Window status at this checkpoint:
+
+The measured system epoch was `1786971535`, while the required completion epoch is `1786999623`; `execution-window.json` was still `status: active`. The watchdog PID 5121 and final verifier PID 64081 were both running. The final verification log was intentionally not expected before the required epoch.
+
+حالة النافذة عند نقطة التحقق:
+
+كان epoch ساعة النظام المقاس `1786971535`، بينما epoch الإكمال المطلوب هو `1786999623`، وظل `execution-window.json` بالحالة `active`. بقي watchdog PID 5121 وfinal verifier PID 64081 قيد التشغيل. ولم يكن متوقعًا إنشاء final verification log قبل epoch المطلوب.
+
