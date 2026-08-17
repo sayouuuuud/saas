@@ -38,3 +38,8 @@ Session and runtime verification for commit `88ac057`:
 - Lint, production build, API, security, authentication, and edge-case smoke suites all passed after the optimization.
 - Vercel deployment `dpl_DtZHeStTUmrQEDn5VUDj9rmLR1xv` reached `READY` for commit `88ac057e4e13b78dd90d36d6cbf775f792946107`.
 - Vercel reported no grouped runtime errors for the SaaS project in the selected 24-hour production window.
+
+Public surface verification:
+
+- The canonical production domain returned HTTP 200 with `dir="rtl"` for the landing page, authentication pages, billing, support, legal pages, use-case pages, and resource pages.
+- The required real-time window remains active in `execution-window.json`; at 2026-08-17T09:53:13Z the measured elapsed duration was 3,970 seconds and the required completion epoch remained 1786999623 (2026-08-17T20:47:03Z).
