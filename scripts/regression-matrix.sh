@@ -13,11 +13,25 @@ terminate_tree() {
   done < <(pgrep -P "$root_pid" 2>/dev/null || true)
   kill -TERM "$root_pid" 2>/dev/null || true
 }
+terminate_project_next_processes() {
+  local pid
+  local args
+  while read -r pid args; do
+    [[ -n "$pid" ]] || continue
+    if [[ "$args" == *"$ROOT_DIR"* ]] && [[ "$args" == *"next dev"* || "$args" == *"next-server"* || "$args" == *"detached-flush.js"* ]]; then
+      kill -TERM "$pid" 2>/dev/null || true
+    fi
+  done < <(ps -eo pid=,args=)
+}
 cleanup() {
   if [[ -n "$SERVER_PID" ]] && kill -0 "$SERVER_PID" 2>/dev/null; then
     terminate_tree "$SERVER_PID"
     wait "$SERVER_PID" 2>/dev/null || true
   fi
+  for _ in 1 2 3; do
+    terminate_project_next_processes
+    sleep 1
+  done
   rm -f "$ROOT_DIR/tsconfig.tsbuildinfo"
   git checkout -- next-env.d.ts 2>/dev/null || true
 }
