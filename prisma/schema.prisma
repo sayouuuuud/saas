@@ -105,6 +105,7 @@ model User {
   auditEvents                AuditLog[]
   notifications              Notification[]
   sessions                   Session[]
+  twoFactorChallenges        TwoFactorChallenge[]
 }
 
 model Session {
@@ -116,6 +117,18 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model TwoFactorChallenge {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
 }
 
 model Workspace {
