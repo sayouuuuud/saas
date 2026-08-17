@@ -1490,3 +1490,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Strengthened `final-window-verification.sh` to parse `started_at_epoch`, `required_duration_seconds`, and `required_completion_epoch`, log the observed elapsed seconds, and require both the exact completion epoch and at least the configured 43,200 seconds before marking the window complete.
 - Updated the deterministic final-window smoke fixture to exercise the 43,200-second gate; `bash -n` for both scripts and `pnpm test:final-window-status` passed.
+
+## 2026-08-17 — Full regression after exact-duration gate
+
+- The complete `pnpm test:regression-matrix` passed after enforcing the real-time duration gate.
+- Evidence: 53-route build, migrations/seed, API/public/degraded/security/auth/edge/tenant/subscription/account/client-cache/admin/production-config/final-window/auth-boundary/LMS-independence/collection-bounds suites, and production audit all passed; cleanup left the repository clean.
