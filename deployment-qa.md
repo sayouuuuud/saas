@@ -1148,3 +1148,11 @@ The deployment inventory still shows `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` / commit
 فحص حد Vercel بعد إصلاح plans في 2026-08-17T14:42:55Z (epoch 1786977775):
 
 لا يزال deployment inventory يعرض `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` / commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d` كأحدث production deployment بحالة READY. إصلاح JSON الخاص بـ plans في commit `b1e3feb` وأدلة regression اللاحقة مدفوعة إلى GitHub لكنها لم تظهر بعد في deployment READY أحدث. لذلك تظل حالة 500 لمسار `/api/plans` في النسخة الحية الأقدم مشكلة live-boundary مفتوحة حتى ينجح deployment وإعادة الفحص.
+
+Public plans regression coverage at 2026-08-17T14:43:57Z (epoch 1786977837):
+
+Extended `scripts/api-smoke.sh` to assert that unauthenticated GET `/api/plans` returns HTTP 200 and includes the `plans` payload contract. The strengthened API smoke passed after the JSON-resilience fix.
+
+تغطية regression لمسار plans العام في 2026-08-17T14:43:57Z (epoch 1786977837):
+
+تم توسيع `scripts/api-smoke.sh` ليتحقق من أن GET غير الموثق لـ `/api/plans` يعيد HTTP 200 ويتضمن contract الخاص بـ `plans`. نجح API smoke المقوى بعد إصلاح تحمل JSON.

@@ -19,6 +19,9 @@ workspace_first_page="$(json_request "$BASE_URL/api/workspace?memberLimit=1&memb
 test "$(printf '%s' "$workspace_first_page" | grep -c '"membersPagination"')" -eq 1
 test "$(printf '%s' "$workspace_first_page" | grep -c '"limit":1')" -ge 1
 test "$(printf '%s' "$workspace_first_page" | grep -c '"role":"OWNER"')" -ge 1
+plans_status="$(status_request "$BASE_URL/api/plans")"
+test "$plans_status" = "200"
+test "$(cat /tmp/saas-smoke-response.json | grep -c '"plans"')" -eq 1
 bad_status="$(status_request -X POST -d '{"displayName":"Internal","publicUrl":"http://127.0.0.1:8080"}' "$BASE_URL/api/lms-link")"
 test "$bad_status" = "400"
 good="$(json_request -X POST -d '{"displayName":"Demo Academy","publicUrl":"https://example.com"}' "$BASE_URL/api/lms-link")"
