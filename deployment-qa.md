@@ -77,3 +77,8 @@ Support-page accessibility hardening:
 
 The support flow now uses explicit button types, names form controls, exposes success and error feedback to assistive technology, and labels ticket/filter controls. Lint, production build, API, security, authentication, edge-case, and tenant-isolation smoke tests all passed at 2026-08-17T11:21:58Z.
 
+
+Landing-page accessibility hardening:
+
+The high-traffic landing page now exposes mobile-menu state and controls, gives pricing-cycle buttons explicit pressed semantics, labels the preview action, and adds keyboard-friendly FAQ accordion relationships. Lint, production build, API, security, authentication, edge-case, and tenant-isolation smoke tests all passed at 2026-08-17T11:22:53Z.
+
