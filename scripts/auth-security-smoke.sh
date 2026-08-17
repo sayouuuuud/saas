@@ -19,6 +19,11 @@ reset="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -H 'Content-Type: applicatio
 printf '%s' "$reset" | grep -q '"reset":true'
 login1="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -c "$COOKIES" -H 'Content-Type: application/json' -d "{\"email\":\"$EMAIL\",\"password\":\"NewStrongPass123!\"}" "$BASE_URL/api/auth/login")"
 printf '%s' "$login1" | grep -q '"user"'
+two_factor_status="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/auth/2fa")"
+printf '%s' "$two_factor_status" | grep -q '"enabled":false'
+two_factor_start="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" -H 'Content-Type: application/json' -d '{"action":"start"}' "$BASE_URL/api/auth/2fa")"
+printf '%s' "$two_factor_start" | grep -q 'otpauthUri'
+printf '%s' "$two_factor_start" | grep -q 'secret'
 reports_before="$(curl -fsS -H "x-test-client: $TEST_CLIENT" -b "$COOKIES" "$BASE_URL/api/reports")"
 before_count="$(printf '%s' "$reports_before" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(Number(JSON.parse(s).summary.auditEventCount||0)))')"
 [ "$before_count" -ge 6 ] || { echo "registration, verification, password-reset, or login audit events missing" >&2; exit 1; }

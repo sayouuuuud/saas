@@ -89,6 +89,8 @@ model User {
   notificationEmailEnabled  Boolean           @default(true)
   notificationProductEnabled Boolean          @default(true)
   notificationBillingEnabled Boolean          @default(true)
+  twoFactorEnabled         Boolean           @default(false)
+  twoFactorSecretEncrypted String?
   emailVerifiedAt            DateTime?
   emailVerificationTokenHash String?           @unique
   emailVerificationExpiresAt DateTime?
