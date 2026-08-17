@@ -296,3 +296,10 @@ At 2026-08-17T12:25:37Z, Centralia added `pnpm verify:production` and `pnpm test
 بوابة إعداد الإنتاج:
 
 في `2026-08-17T12:25:37Z` أضيف الأمران `pnpm verify:production` و`pnpm test:production-config`. يرفض الفحص الصارم قيم `DATABASE_URL` الخاصة بـ SQLite، والأسرار القصيرة أو الافتراضية، و`APP_URL` غير الآمن، ومتطلبات Stripe الناقصة؛ ويغطي smoke test الرفض الآمن والقبول الحتمي لإعداد PostgreSQL صالح. نجحت lint وproduction build ومصفوفة اختبارات التطبيق الست كاملة. يوضح ذلك حد SQLite للتطوير وPostgreSQL للإنتاج ويمنع اعتبار بيئة Vercel غير الآمنة جاهزة لبيانات حقيقية.
+Strict gate observation:
+
+At 2026-08-17T12:26:04Z, `pnpm verify:production` was intentionally run against the current development environment and failed with the expected release blockers: SQLite `DATABASE_URL`, placeholder or short secrets, HTTP/local `APP_URL`, and absent real Stripe credentials. This is an accurate safety result, not a product regression. The valid-configuration smoke fixture passes separately; production readiness still requires the operator to supply real PostgreSQL, HTTPS, secret, and billing environment values in Vercel, then rerun the strict gate.
+
+ملاحظة الفحص الصارم:
+
+في `2026-08-17T12:26:04Z` شُغّل `pnpm verify:production` عمدًا على بيئة التطوير الحالية، وفشل بالحواجز المتوقعة للإصدار: `DATABASE_URL` من SQLite، أسرار افتراضية أو قصيرة، `APP_URL` محلي عبر HTTP، وغياب بيانات Stripe الحقيقية. هذه نتيجة أمان صحيحة وليست regression في المنتج. ينجح fixture الإعداد الصالح بشكل مستقل؛ ولا تزال الجاهزية الإنتاجية تتطلب إدخال PostgreSQL وHTTPS والأسرار وبيانات الفوترة الحقيقية في Vercel ثم إعادة تشغيل الفحص الصارم.
