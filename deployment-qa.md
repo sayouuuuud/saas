@@ -1356,3 +1356,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Dashboard navigation now separates usage and reports, and account smoke covers the page plus protected no-store `/api/reports` behavior.
 - Validation passed: lint, strict TypeScript, production build with 49 routes, and account smoke for profile, subscription, usage, reports, LMS connection, and protected APIs.
 - The reports page never infers learner, course, video, storage, or bandwidth metrics from an LMS link; no LMS database was accessed or modified.
+
+## 2026-08-17 — Full regression after reports
+
+- `pnpm test:regression-matrix` passed after adding `/app/reports`. The matrix confirmed a 49-route production build and green API, public/policy, degraded-plans, security, auth, edge-case, tenant-isolation, subscription, account, admin, production-config, final-window, safe-error, LMS-independence, collection-bounds, and dependency-audit checks.
+- Account smoke now passes for `/app/profile`, `/app/subscription`, `/app/usage`, `/app/reports`, `/app/lms-connection` and their protected APIs.
+- No LMS database was accessed or modified.
