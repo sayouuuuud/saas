@@ -1500,3 +1500,8 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Expanded `canonical-production-smoke.sh` to probe every dedicated account route and every bounded admin section, requiring HTTP 200 plus inherited `noindex` metadata.
 - The enhanced gate passed against a clean local Next.js server; it remains intentionally strict against the canonical alias until Vercel propagates the completed account/admin source revision.
+
+## 2026-08-17 — Full regression after canonical account/admin gate
+
+- The complete `pnpm test:regression-matrix` passed after the canonical smoke was expanded to require all dedicated account and staff routes with noindex metadata.
+- Evidence: 53-route build, all local functional/security/isolation/account/admin/final-window audits, and production dependency audit passed; cleanup left the repository clean.
