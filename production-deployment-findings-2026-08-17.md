@@ -52,3 +52,7 @@ The read-only `pnpm test:canonical-production` gate passed against `https://saas
 ## Vercel propagation success — 2026-08-17T17:09Z
 
 The deployment listing now shows READY production deployment `dpl_CB2LTcaiRDhgxJA5enV7rzNVSqfP`, created at epoch `1786986486628`, associated with GitHub commit `f8376381085c65f98edf39968396bf7845985c25` (`security: audit client fetch caching`). This confirms the client-fetch cache hardening reached a READY Vercel build. The subsequent documentation-only regression commit `069acc5` is newer than this deployment and remains pending in the observed list; canonical live behavior continues to be covered by the read-only production smoke gate.
+
+## Canonical smoke after READY cache deployment — 2026-08-17T17:10Z
+
+The read-only `pnpm test:canonical-production` gate passed after deployment `dpl_CB2LTcaiRDhgxJA5enV7rzNVSqfP` reached READY, reconfirming the canonical public routes, response security headers, robots/sitemap content types, and controlled `/api/plans` degradation behavior.
