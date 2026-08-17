@@ -1438,3 +1438,7 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 ## 2026-08-17 — Final 53-route regression after cleanup hardening
 
 - The complete regression matrix passed again after the reserved-port and process-group cleanup fixes. The build generated 53 routes, all public/account/admin/API/security/LMS-isolation/collection-boundary suites passed, and `pnpm audit --prod` reported no known vulnerabilities.
+
+## 2026-08-17 — Compliance report refresh
+
+- Updated `spec-gap-findings.md` to remove the obsolete team-surface gap, reflect the 53-route build, and document the canonical production smoke now included in final-window verification.
