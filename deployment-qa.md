@@ -808,3 +808,11 @@ Billing invoice pagination UX improvement completed at 2026-08-17T14:03:24Z:
 The billing page now consumes bounded invoice pagination, loads 25 invoices initially, exposes an Arabic load-more control for older invoices, appends pages with AbortController protection, and localizes known invoice statuses. A refresh aborts any in-flight append and resets its loading flag so stale pages cannot overwrite the refreshed ledger. Existing CSV export remains available for all invoices currently loaded. Lint and strict TypeScript passed.
 
 تستهلك صفحة الفوترة الآن pagination المحدود للفواتير، فتُحمّل 25 فاتورة أولًا وتعرض زرًا عربيًا لتحميل الفواتير الأقدم، مع حماية AbortController وترجمة الحالات المعروفة. عند إعادة التحميل يتم إلغاء أي طلب تحميل إضافي قائم وتصفير حالته لمنع الاستجابات القديمة من الكتابة فوق السجل المحدّث. يظل تصدير CSV متاحًا لكل الفواتير المحملة حاليًا. نجحت lint وstrict TypeScript.
+
+Vercel deployment boundary observed at 2026-08-17T14:04:20Z:
+
+The deployment inventory returned a latest READY production deployment  for commit  (). The newer pushed commits , , , , , and  were not present in this inventory at observation time, so no claim is made that ticket pagination, status localization, or billing invoice pagination is live on Vercel yet. The previous READY production surface remains the verified live boundary.
+
+حد النشر المرصود على Vercel في 2026-08-17T14:04:20Z:
+
+أظهر سجل النشر أن أحدث deployment بحالة READY هو  للالتزام  (). الالتزامات الأحدث  و و و و و لم تظهر في السجل وقت الملاحظة، لذلك لا يتم الادعاء بأنها منشورة على Vercel بعد. يظل deployment السابق بحالة READY هو الحد الحي المتحقق منه.
