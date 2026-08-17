@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, CircleCheck, ShieldCheck } from "lucide-react";
 
-export type PublicSection = { title: string; body: string; bullets?: string[] };
+export type PublicSection = { title: string; body: string; bullets?: readonly string[] };
 
 type Props = {
   eyebrow: string;
   title: string;
   accent: string;
   intro: string;
-  sections?: PublicSection[];
+  sections?: readonly PublicSection[];
   ctaLabel?: string;
   ctaHref?: string;
 };

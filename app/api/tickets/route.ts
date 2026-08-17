@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";
@@ -42,8 +43,11 @@ export async function POST(request: Request) {
   if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "أكمل موضوع الطلب وتفاصيله" }, { status: 400 });
-  const number = `SUP-${Date.now().toString().slice(-8)}`;
-  const ticket = await prisma.supportTicket.create({ data: { number, workspaceId: user.workspace.id, requesterId: user.id, ...parsed.data, messages: { create: { authorId: user.id, body: parsed.data.description } } }, include: { messages: true } });
-  await prisma.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "CREATE", entity: "SupportTicket", entityId: ticket.id, reason: "ticket created" } });
+  const number = `SUP-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+  const ticket = await prisma.$transaction(async (tx) => {
+    const created = await tx.supportTicket.create({ data: { number, workspaceId: user.workspace.id, requesterId: user.id, ...parsed.data, messages: { create: { authorId: user.id, body: parsed.data.description } } }, include: { messages: true } });
+    await tx.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace.id, action: "CREATE", entity: "SupportTicket", entityId: created.id, reason: "ticket created" } });
+    return created;
+  });
   return NextResponse.json({ ticket }, { status: 201 });
 }

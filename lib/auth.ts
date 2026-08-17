@@ -50,7 +50,7 @@ export async function getCurrentUser() {
     },
   });
   if (!session || session.expiresAt <= new Date()) {
-    if (session) await prisma.session.delete({ where: { id: session.id } });
+    if (session) await prisma.session.deleteMany({ where: { id: session.id } });
     return null;
   }
   const { memberships, ...user } = session.user;

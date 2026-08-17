@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { ArrowLeft, Bell, Check, ChevronDown, CircleHelp, CreditCard, ExternalLink, FileText, LayoutDashboard, Link2, Menu, Plus, Settings, ShieldCheck, Users, X } from 'lucide-react'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 
 type UserPayload = { name: string; email: string; workspace?: { name: string; plan: string | null; subscriptionStatus: string | null; lmsLinks: { id: string; displayName: string; publicUrl: string; status: string }[] } | null }
+type LmsLink = NonNullable<NonNullable<UserPayload['workspace']>['lmsLinks']>[number]
 
 const nav = [
   { label: 'نظرة عامة', icon: LayoutDashboard, href: '/dashboard' },
@@ -19,12 +20,13 @@ export default function DashboardPage() {
   const [user, setUser] = useState<UserPayload | null>(null)
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
-  const [link, setLink] = useState<UserPayload['workspace'] extends { lmsLinks: infer T } ? T extends Array<infer L> ? L : never : never>()
+  const [link, setLink] = useState<LmsLink>()
   const [showForm, setShowForm] = useState(false)
   const [displayName, setDisplayName] = useState('')
   const [publicUrl, setPublicUrl] = useState('')
   const [linkError, setLinkError] = useState('')
   const [saving, setSaving] = useState(false)
+  const loadErrorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -46,6 +48,10 @@ export default function DashboardPage() {
       .finally(() => setLoading(false))
     return () => controller.abort()
   }, [])
+
+  useEffect(() => {
+    if (loadError) loadErrorRef.current?.focus()
+  }, [loadError])
 
   async function addLink(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setSaving(true); setLinkError('')
@@ -72,7 +78,7 @@ export default function DashboardPage() {
       <section className="dashboard-main">
         <header className="dashboard-header"><button type="button" className="dashboard-menu" aria-label="فتح القائمة الجانبية" onClick={() => setMobileOpen(true)}><Menu size={19} /></button><div><span className="dashboard-date">مساحة عملك في مركزية</span><h1>صباح الخير، {name} <em>✦</em></h1></div><div className="dashboard-header-actions"><button type="button" className="notification-button" aria-label="الإشعارات"><Bell size={17} /><i /></button><Link href="/" className="button button-outline">العودة للموقع</Link></div></header>
         {loading && <div className="dashboard-alert" role="status" aria-live="polite"><div className="alert-icon"><Link2 size={16} /></div><div><b>جارٍ تحميل مساحة العمل</b><span>نجهز بيانات SaaS الخاصة بحسابك.</span></div></div>}
-        {loadError && !loading && <div className="dashboard-alert" role="alert"><div className="alert-icon"><ShieldCheck size={16} /></div><div><b>تعذر تحميل بيانات الحساب</b><span>{loadError}</span></div><button type="button" className="button button-light" onClick={() => window.location.reload()}>إعادة المحاولة</button></div>}
+        {loadError && !loading && <div ref={loadErrorRef} tabIndex={-1} className="dashboard-alert" role="alert"><div className="alert-icon"><ShieldCheck size={16} /></div><div><b>تعذر تحميل بيانات الحساب</b><span>{loadError}</span></div><button type="button" className="button button-light" onClick={() => window.location.reload()}>إعادة المحاولة</button></div>}
         {!loading && !loadError && <div className="dashboard-alert"><div className="alert-icon"><Link2 size={16} /></div><div><b>{link ? 'رابط منصتك متصل' : 'أضف رابط منصتك التعليمية'}</b><span>{link ? 'يمكنك الوصول إلى منصتك من مكان واحد.' : 'حسابك نشط. اربط منصتك للوصول إليها من هنا.'}</span></div>{link ? <span className="connected-badge"><Check size={12} /> {link.status === 'REACHABLE' ? 'متاح' : 'محفوظ'}</span> : <button type="button" className="button button-light" onClick={() => setShowForm(true)}>إضافة رابط</button>}</div>}
         {showForm && <form className="dashboard-link-form" onSubmit={addLink}><label>اسم المنصة<input required value={displayName} onChange={(event) => setDisplayName(event.target.value)} placeholder="أكاديمية النور" /></label><label>الرابط العام HTTPS<input required type="url" value={publicUrl} onChange={(event) => setPublicUrl(event.target.value)} placeholder="https://academy.example.com" /></label><div><button type="submit" className="button button-dark" disabled={saving}>{saving ? 'جارٍ الحفظ...' : 'حفظ الرابط'}</button><button type="button" className="button button-outline" onClick={() => setShowForm(false)}>إلغاء</button></div>{linkError && <p className="form-error">{linkError}</p>}</form>}
         <div className="dashboard-metrics"><article className="dash-card"><div className="dash-card-head"><span>الباقة الحالية</span><CreditCard size={16} /></div><strong>{workspace?.plan || 'غير محددة'}</strong><small>{workspace?.subscriptionStatus === 'TRIAL' ? 'تجربة مجانية نشطة' : 'حالة SaaS محفوظة في النظام'}</small><Link href="/billing" className="dash-link">إدارة الباقة <ArrowLeft size={13} /></Link></article><article className="dash-card"><div className="dash-card-head"><span>حالة الحساب</span><ShieldCheck size={16} /></div><strong className="status-active"><i /> {workspace?.subscriptionStatus || 'قيد التهيئة'}</strong><small>بيانات الحساب مستقلة عن LMS</small><div className="status-bars"><i /><i /><i /><i /><i /></div></article><article className="dash-card"><div className="dash-card-head"><span>آخر فاتورة</span><FileText size={16} /></div><strong>—</strong><small>ستظهر بعد أول دفع مؤكد</small><Link href="/billing" className="dash-link">عرض الفواتير <ArrowLeft size={13} /></Link></article></div>
