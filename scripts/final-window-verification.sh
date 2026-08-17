@@ -12,23 +12,7 @@ done
   printf 'system_epoch=%s\n' "$(date -u +%s)"
   printf 'required_epoch=%s\n' "$REQUIRED_EPOCH"
   cd "$ROOT_DIR"
-  pnpm db:validate
-  DATABASE_URL='postgresql://centralia:centralia@localhost:5432/centralia' pnpm db:validate:postgres
-  pnpm lint
-  pnpm exec tsc --noEmit
-  pnpm build
-  pnpm test:api
-  pnpm test:security
-  pnpm test:auth
-  pnpm test:edge
-  pnpm test:tenant
-  pnpm test:subscription
-  pnpm test:production-config
-  pnpm test:final-window-status
-  pnpm test:auth-boundaries
-  pnpm test:lms-independence
-  pnpm test:collection-bounds
-  pnpm audit --prod
+  pnpm test:regression-matrix
   WINDOW_TMP="${WINDOW_FILE}.tmp"
   sed 's/"status": "active"/"status": "window_complete"/' "$WINDOW_FILE" > "$WINDOW_TMP"
   mv "$WINDOW_TMP" "$WINDOW_FILE"

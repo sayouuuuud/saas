@@ -1052,3 +1052,11 @@ A newer READY production deployment is now observed: `dpl_DR19R2mjaMLCgzhSMhuScC
 تمت إعادة فحص حد deployment في Vercel في 2026-08-17T14:30:41Z (epoch 1786977041):
 
 ظهر deployment إنتاجي أحدث بحالة READY وهو `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` للـ commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d` بعنوان `docs: record latest deployment boundary`. لا يزال HEAD المحلي الحالي `c1fa808` وcommits أمان التبعيات ولوحة الفريق الأحدث خارج هذا الحد الحي، ولا تُعلن كمنشورة.
+
+Regression-matrix consolidation completed at 2026-08-17T14:32:22Z (epoch 1786977142):
+
+Added `scripts/regression-matrix.sh` and `test:regression-matrix` as the single auditable command for both local verification and the deferred final verifier. It runs both Prisma schemas, lint, strict TypeScript, production build, all smoke suites, all boundary guards, and `pnpm audit --prod`; its exit cleanup removes generated `tsconfig.tsbuildinfo`. The complete matrix passed, shell syntax passed, and cleanup was verified.
+
+اكتمل توحيد مصفوفة regression في 2026-08-17T14:32:22Z (epoch 1786977142):
+
+أضيف `scripts/regression-matrix.sh` والأمر `test:regression-matrix` ليكونا الأمر التدقيقي الموحد للتحقق المحلي وverifier النهائي المؤجل. يشغل الأمر مخططي Prisma وlint وstrict TypeScript وproduction build وجميع smoke suites وجميع boundary guards و`pnpm audit --prod`، مع تنظيف `tsconfig.tsbuildinfo` الناتج عند الخروج. نجحت المصفوفة كاملة وفحص shell syntax وتم التحقق من التنظيف.
