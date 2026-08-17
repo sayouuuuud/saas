@@ -27,7 +27,8 @@
     "test:plans-degraded": "bash scripts/plans-degraded-smoke.sh",
     "test:regression-matrix": "bash scripts/regression-matrix.sh",
     "verify:production": "node scripts/verify-production-config.mjs --strict",
-    "test:production-config": "bash scripts/production-config-smoke.sh"
+    "test:production-config": "bash scripts/production-config-smoke.sh",
+    "test:public-pages": "bash scripts/public-pages-smoke.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
