@@ -504,3 +504,11 @@ The deployment inventory queried at 2026-08-17T13:10:06Z showed a new production
 
 أظهر سجل النشر الذي استُعلم عنه عند `2026-08-17T13:10:06Z` نشرًا إنتاجيًا جديدًا `dpl_EG4XkUartvH2aK5dFY3XA6gyh1ax` بالحالة `READY`، أُنشئ عند `2026-08-17T13:06:23.936Z`، للـ commit `e71aa93189e016a0e18f9307e6e93662c6e74b65` بعنوان `docs: record post-audit security tests`. لم تظهر commits الأحدث `331c09d` و`3e4c7b5` و`89ccd86` في هذا السجل، ولذلك سُجلت كـ pushed وlocally verified فقط دون ادعاء أنها live.
 
+Release-gate recheck:
+
+At 2026-08-17T13:10:41Z, `pnpm test:final-window-status` and `pnpm test:production-config` both passed after the latest repository push. The status smoke confirms the corrected verifier’s `window_complete` transition, while the production-config smoke confirms rejection of invalid production settings and acceptance of the PostgreSQL/HTTPS configuration path.
+
+إعادة فحص بوابة الإصدار:
+
+عند `2026-08-17T13:10:41Z` نجح كل من `pnpm test:final-window-status` و`pnpm test:production-config` بعد آخر push للمستودع. يؤكد اختبار status انتقال verifier المصحح إلى `window_complete`، بينما يؤكد اختبار production-config رفض إعدادات الإنتاج غير الصالحة وقبول مسار PostgreSQL/HTTPS.
+
