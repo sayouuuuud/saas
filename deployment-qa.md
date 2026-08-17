@@ -338,3 +338,10 @@ At 2026-08-17T12:36:42Z, the build now selects `prisma/schema.prisma` for SQLite
 توليد Prisma حسب البروتوكول:
 
 في `2026-08-17T12:36:42Z` أصبح build يختار `prisma/schema.prisma` لعناوين SQLite و`prisma/postgresql/schema.prisma` لعناوين PostgreSQL قبل توليد Prisma Client. نجح نمطا التوليد، ثم نجح اختبار إعدادات الإنتاج وlint وproduction build واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك. يمنع ذلك نشر PostgreSQL من توليد client خاص بـ SQLite بصمت، مع الحفاظ على مسار التطوير المحلي.
+Verified Vercel production deployment:
+
+Vercel accepted commit `8f614518afe92df9576394bb8293aff931faaa41` (`build: select prisma schema by database protocol`) as production deployment `dpl_AvMzen2npiaYVd4XqjbcNF1H7xnp`. It reached `READY` at epoch `1786970253169` (2026-08-17T12:37:33.169Z), with deployment URL `saas-53unfb0o0-itz4kairo-5176s-projects.vercel.app`, aliases including the canonical `saas-gold-seven-80.vercel.app`, region `iad1`, and no alias error. This is distinct from earlier `build-rate-limit` failures; the current commit has a verified live production build.
+
+نشر Vercel الإنتاجي المتحقق:
+
+قبلت Vercel commit `8f614518afe92df9576394bb8293aff931faaa41` بعنوان `build: select prisma schema by database protocol` كنشر إنتاجي رقم `dpl_AvMzen2npiaYVd4XqjbcNF1H7xnp`. وصل إلى `READY` عند epoch `1786970253169` الموافق `2026-08-17T12:37:33.169Z`، مع deployment URL وaliases تتضمن النطاق canonical `saas-gold-seven-80.vercel.app`، والمنطقة `iad1`، ودون alias error. يختلف ذلك عن محاولات `build-rate-limit` السابقة؛ فالcommit الحالي لديه build إنتاجي حي ومتحقق.
