@@ -1140,3 +1140,11 @@ Post-plans-remediation regression matrix completed at 2026-08-17T14:42:14Z (epoc
 اكتملت مصفوفة regression بعد إصلاح plans في 2026-08-17T14:42:14Z (epoch 1786977734):
 
 نجح `pnpm test:regression-matrix` بالكامل: تحقق مخططي Prisma، وlint، وstrict TypeScript ضمن build الذي يحتوي 33 route، وجميع اختبارات API/security/auth/edge/tenant/subscription/production-config/final-window-status، وفحص safeAuthError لـ 28 route، وفحص استقلال SaaS عن LMS، وفحص حدود collection، و`pnpm audit --prod` دون ثغرات معروفة. لا يزال إصلاح plans بانتظار تحقق live READY.
+
+Post-fix Vercel boundary check at 2026-08-17T14:42:55Z (epoch 1786977775):
+
+The deployment inventory still shows `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` / commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d` as the newest READY production deployment. The plans JSON-resilience fix at commit `b1e3feb` and subsequent regression evidence are pushed to GitHub but are not yet represented by a newer READY deployment. Therefore the canonical `/api/plans` 500 observed on the older live revision remains an open live-boundary issue until deployment and re-probe succeed.
+
+فحص حد Vercel بعد إصلاح plans في 2026-08-17T14:42:55Z (epoch 1786977775):
+
+لا يزال deployment inventory يعرض `dpl_DR19R2mjaMLCgzhSMhuScCXyqnQe` / commit `ca999e7e55c76e99f749b6e3a4a11b309d518f7d` كأحدث production deployment بحالة READY. إصلاح JSON الخاص بـ plans في commit `b1e3feb` وأدلة regression اللاحقة مدفوعة إلى GitHub لكنها لم تظهر بعد في deployment READY أحدث. لذلك تظل حالة 500 لمسار `/api/plans` في النسخة الحية الأقدم مشكلة live-boundary مفتوحة حتى ينجح deployment وإعادة الفحص.
