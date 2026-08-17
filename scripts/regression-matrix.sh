@@ -4,9 +4,18 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 SERVER_PID=""
+terminate_tree() {
+  local root_pid="$1"
+  local child_pid
+  while read -r child_pid; do
+    [[ -n "$child_pid" ]] || continue
+    terminate_tree "$child_pid"
+  done < <(pgrep -P "$root_pid" 2>/dev/null || true)
+  kill -TERM "$root_pid" 2>/dev/null || true
+}
 cleanup() {
   if [[ -n "$SERVER_PID" ]] && kill -0 "$SERVER_PID" 2>/dev/null; then
-    kill -TERM -- -"$SERVER_PID" 2>/dev/null || kill "$SERVER_PID" 2>/dev/null || true
+    terminate_tree "$SERVER_PID"
     wait "$SERVER_PID" 2>/dev/null || true
   fi
   rm -f "$ROOT_DIR/tsconfig.tsbuildinfo"
