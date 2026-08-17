@@ -37,6 +37,7 @@ export default function BillingPage() {
   const [loadError, setLoadError] = useState('')
   const [loading, setLoading] = useState(true)
   const [invoicesMoreLoading, setInvoicesMoreLoading] = useState(false)
+  const [invoiceMoreError, setInvoiceMoreError] = useState('')
   const [invoicesNextOffset, setInvoicesNextOffset] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
 
@@ -46,6 +47,7 @@ export default function BillingPage() {
     loadControllerRef.current?.abort()
     invoicesControllerRef.current?.abort()
     setInvoicesMoreLoading(false)
+    setInvoiceMoreError('')
     const controller = new AbortController()
     loadControllerRef.current = controller
     setLoading(true)
@@ -77,6 +79,7 @@ export default function BillingPage() {
     const controller = new AbortController()
     invoicesControllerRef.current = controller
     setInvoicesMoreLoading(true)
+    setInvoiceMoreError('')
     try {
       const response = await fetch(`/api/invoices?limit=25&offset=${invoicesNextOffset}`, { signal: controller.signal })
       const payload = await response.json().catch(() => ({}))
@@ -85,7 +88,7 @@ export default function BillingPage() {
       setInvoices((current) => [...current, ...(payload.invoices || [])])
       setInvoicesNextOffset(typeof payload.pagination?.nextOffset === 'number' ? payload.pagination.nextOffset : null)
     } catch (error) {
-      if (!controller.signal.aborted) setMessage(error instanceof Error ? error.message : 'تعذر تحميل فواتير أقدم')
+      if (!controller.signal.aborted) setInvoiceMoreError(error instanceof Error ? error.message : 'تعذر تحميل فواتير أقدم')
     } finally {
       if (!controller.signal.aborted && invoicesControllerRef.current === controller) {
         setInvoicesMoreLoading(false)
@@ -133,7 +136,7 @@ export default function BillingPage() {
         {loadError && <div className="form-error" role="alert"><span>{loadError}</span><button type="button" className="text-button" onClick={() => void loadBillingData()} disabled={loading}><RefreshCw size={14} /> إعادة المحاولة</button></div>}
         <div className="billing-current-grid"><article className="current-plan-card"><div className="current-card-top"><span className="plan-name">{loading ? 'جارٍ التحميل...' : current?.name || 'Growth'}</span><span className="current-pill"><i /> نشطة</span></div><p>{loading ? 'نحمّل تفاصيل الباقة الحالية.' : current?.description || 'للمدرسين الذين يريدون مساحة عمل أكثر تنظيمًا.'}</p><div className="current-price"><strong>{money(current?.monthlyCents || 3100)}</strong><span>/ شهر</span></div><small>التجديد القادم بعد تفعيل الاشتراك من مزود الدفع.</small><div className="plan-progress"><div><span>استخدام مساحة العمل</span><b>3 / 5 أعضاء</b></div><div className="progress-track"><i /></div></div><button type="button" className="button button-light" disabled={loading || !!loadError} onClick={() => setShowPlans(!showPlans)}>{showPlans ? 'إخفاء الخطط' : 'تغيير الباقة'} <ChevronDown size={14} /></button></article><article className="payment-card"><div className="billing-card-title"><span>طريقة الدفع</span><CreditCard size={17} /></div><div className="payment-method"><div className="mastercard"><i /><i /></div><div><b>لا توجد بطاقة محفوظة</b><small>يُخزن مرجع المزود فقط، وليس بيانات البطاقة.</small></div><button type="button" className="text-button" aria-label="إضافة طريقة دفع" disabled title="تتوفر بعد ربط مزود دفع حقيقي">إضافة</button></div><div className="payment-note"><Check size={13} /> لا تُرسل بيانات حساسة إلى تذاكر الدعم</div></article></div>
         {showPlans && <div className="billing-plan-switcher"><div><b>اختر ما يناسب مرحلتك القادمة</b><span>الدفع الحقيقي يحتاج مزودًا مهيأً. الوضع المحلي لا يُستخدم في الإنتاج.</span></div><div className="billing-plan-actions"><button type="button" className={annual ? '' : 'selected'} aria-pressed={!annual} onClick={() => setAnnual(false)}>شهري</button><button type="button" className={annual ? 'selected' : ''} aria-pressed={annual} onClick={() => setAnnual(true)}>سنوي <em>وفر 20%</em></button></div><div className="mini-plans">{plans.map((plan) => <div className={plan.code === 'growth' ? 'mini-plan-featured' : ''} key={plan.id}><b>{plan.name}</b><strong>{money(annual ? plan.yearlyCents : plan.monthlyCents)}</strong><button type="button" disabled={busy} onClick={() => choosePlan(plan.code)}>{busy ? 'جارٍ...' : plan.code === 'growth' ? 'الباقة الحالية' : 'اختيار'}</button></div>)}</div>{message && <p className="form-error" role="status">{message}</p>}</div>}
-        <div className="invoice-section"><div className="invoice-heading"><div><h2>الفواتير السابقة</h2><p>سجل واضح بكل المدفوعات والتجديدات.</p></div><button type="button" className="button button-outline" disabled={!invoices.length || loading || invoicesMoreLoading} onClick={exportInvoices}><Download size={14} /> تصدير السجل</button></div><div className="invoice-table"><div className="invoice-row invoice-table-head"><span>رقم الفاتورة</span><span>التاريخ</span><span>المبلغ</span><span>الحالة</span><span /></div>{loading ? <div className="invoice-empty" role="status">جارٍ تحميل الفواتير...</div> : invoices.length ? invoices.map((invoice) => <div className="invoice-row" key={invoice.id}><span className="invoice-id"><FileText size={15} /> {invoice.number}</span><span>{new Date(invoice.createdAt).toLocaleDateString('ar-EG')}</span><span dir="ltr">{money(invoice.amountCents)}</span><span className="paid-status"><Check size={12} /> {invoiceStatusLabels[invoice.status] || invoice.status}</span><button type="button" className="download-button" aria-label={`تحميل ${invoice.number}`} onClick={() => downloadInvoice(invoice)}><Download size={14} /></button></div>) : <div className="invoice-empty">لا توجد فواتير بعد. ستظهر هنا بعد تأكيد دفع اشتراك SaaS.</div>}</div>{invoicesNextOffset !== null && !loadError && <button type="button" className="text-button" onClick={() => void loadMoreInvoices()} disabled={loading || invoicesMoreLoading} aria-busy={invoicesMoreLoading}>{invoicesMoreLoading ? 'جارٍ تحميل فواتير أقدم...' : 'تحميل فواتير أقدم'} <ArrowLeft size={14} /></button>}</div>
+        <div className="invoice-section"><div className="invoice-heading"><div><h2>الفواتير السابقة</h2><p>سجل واضح بكل المدفوعات والتجديدات.</p></div><button type="button" className="button button-outline" disabled={!invoices.length || loading || invoicesMoreLoading} onClick={exportInvoices}><Download size={14} /> تصدير السجل</button></div><div className="invoice-table"><div className="invoice-row invoice-table-head"><span>رقم الفاتورة</span><span>التاريخ</span><span>المبلغ</span><span>الحالة</span><span /></div>{loading ? <div className="invoice-empty" role="status">جارٍ تحميل الفواتير...</div> : invoices.length ? invoices.map((invoice) => <div className="invoice-row" key={invoice.id}><span className="invoice-id"><FileText size={15} /> {invoice.number}</span><span>{new Date(invoice.createdAt).toLocaleDateString('ar-EG')}</span><span dir="ltr">{money(invoice.amountCents)}</span><span className="paid-status"><Check size={12} /> {invoiceStatusLabels[invoice.status] || invoice.status}</span><button type="button" className="download-button" aria-label={`تحميل ${invoice.number}`} onClick={() => downloadInvoice(invoice)}><Download size={14} /></button></div>) : <div className="invoice-empty">لا توجد فواتير بعد. ستظهر هنا بعد تأكيد دفع اشتراك SaaS.</div>}</div>{invoiceMoreError && <p className="form-error" role="alert">{invoiceMoreError}</p>}{invoicesNextOffset !== null && !loadError && <button type="button" className="text-button" onClick={() => void loadMoreInvoices()} disabled={loading || invoicesMoreLoading} aria-busy={invoicesMoreLoading}>{invoicesMoreLoading ? 'جارٍ تحميل فواتير أقدم...' : invoiceMoreError ? 'إعادة المحاولة' : 'تحميل فواتير أقدم'} <ArrowLeft size={14} /></button>}</div>
         <div className="billing-help"><div className="billing-help-icon"><Link2 size={16} /></div><div><b>هل تحتاج إلى مساعدة في اشتراكك؟</b><span>فريق الدعم جاهز لمراجعة الفاتورة أو الإجابة عن أي سؤال.</span></div><Link href="/support" className="text-link">تواصل مع الدعم <ArrowLeft size={14} /></Link></div>
       </section>
     </main>

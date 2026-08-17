@@ -871,3 +871,11 @@ API-boundary-inclusive smoke matrix completed at 2026-08-17T14:09:57Z (epoch 178
 The new `test:auth-boundaries` audit passed for all 28 API route files, followed by passing API, security, auth, edge-case, tenant-isolation, subscription-lifecycle, production-config, and final-window-status suites. This confirms the static boundary guard and runtime smoke coverage coexist without regression. The real execution window remained active.
 
 نجح تدقيق `test:auth-boundaries` الجديد لجميع ملفات API البالغ عددها 28، ثم نجحت اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن. يؤكد ذلك توافق الحارس الثابت مع اختبارات التشغيل دون regression. ظلت نافذة التنفيذ الحقيقية نشطة.
+
+Billing invoice-pagination error visibility completed at 2026-08-17T14:10:28Z:
+
+Invoice append failures now render beside the invoice table with an alert role, and the same load-more control becomes an explicit Arabic retry action. The error no longer depends on the plan switcher being open, while refresh and AbortController behavior remain unchanged. Lint and strict TypeScript passed.
+
+اكتمل تحسين ظهور أخطاء pagination للفواتير في 2026-08-17T14:10:28Z:
+
+تظهر الآن أخطاء إضافة الفواتير بجانب جدول الفواتير مع role=alert، ويتحول زر تحميل المزيد نفسه إلى إعادة محاولة عربية واضحة. لم يعد ظهور الخطأ يعتمد على فتح مبدّل الخطط، مع الحفاظ على سلوك التحديث وAbortController. نجحت lint وstrict TypeScript.
