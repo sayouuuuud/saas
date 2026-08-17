@@ -247,3 +247,10 @@ At 2026-08-17T12:13:15Z, auth-security smoke coverage was extended to assert HTT
 تغطية payloads المصادقة غير الصالحة:
 
 في `2026-08-17T12:13:15Z` تم توسيع auth-security smoke للتحقق من إرجاع HTTP 400 عند إرسال JSON غير صالح إلى مساري تحقق البريد وإعادة ضبط كلمة المرور. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة، بما يؤكد رفض payloads غير الصالحة دون استثناءات غير معالجة.
+Dashboard UX resilience:
+
+At 2026-08-17T12:16:29Z, the authenticated dashboard gained cancellable `/api/auth/me` loading, explicit loading feedback, and an accessible network-error state with retry action. Placeholder workspace content is now gated until the identity payload is available. Lint, production build, and all six smoke suites passed.
+
+مرونة تجربة لوحة التحكم:
+
+في `2026-08-17T12:16:29Z` أضيفت إلى لوحة التحكم المصادق عليها عملية تحميل قابلة للإلغاء لـ `/api/auth/me`، ورسالة تحميل واضحة، وحالة خطأ شبكية قابلة للوصول مع إجراء إعادة المحاولة. لم تعد بيانات مساحة العمل الوهمية تظهر قبل وصول payload الهوية. نجحت lint وproduction build ومصفوفة الاختبارات الست كاملة.
