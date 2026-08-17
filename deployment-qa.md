@@ -536,3 +536,11 @@ At 2026-08-17T13:13:29Z, running `pnpm db:validate:postgres` against the develop
 
 عند `2026-08-17T13:13:29Z` رفض تشغيل `pnpm db:validate:postgres` باستخدام `.env` التطويري عنوان SQLite بشكل صحيح لأن schema PostgreSQL يتطلب protocol من نوع `postgresql://` أو `postgres://`. عند إعادة التشغيل بعنوان PostgreSQL صحيح شكليًا نجح الفحص، كما نجح `pnpm test:final-window-status`. يؤكد ذلك أن dual-path validation صارم ولا يقبل protocol قاعدة البيانات الخاطئ بصمت.
 
+LMS mutation error handling:
+
+At 2026-08-17T13:15:57Z, both LMS-link check and integration-request mutations were wrapped with the shared `safeAuthError` boundary. This preserves their existing workspace-scoped and transactional behavior while converting unexpected Prisma or authorization failures into the project’s deterministic JSON error contract. Lint, strict TypeScript, API smoke, tenant-isolation smoke, edge-case smoke, and diff checks all passed before commit `5121efe` was pushed.
+
+معالجة أخطاء mutations الخاصة بـ LMS:
+
+عند `2026-08-17T13:15:57Z` تم تغليف mutation فحص رابط LMS وطلب التكامل باستخدام boundary المشتركة `safeAuthError`. يحافظ ذلك على السلوك الحالي المقيّد بالworkspace والمعاملات الذرية، مع تحويل أخطاء Prisma أو الصلاحيات غير المتوقعة إلى JSON contract حتمي للمشروع. نجحت lint وstrict TypeScript وAPI smoke وtenant-isolation وedge-case وdiff checks قبل دفع commit `5121efe`.
+
