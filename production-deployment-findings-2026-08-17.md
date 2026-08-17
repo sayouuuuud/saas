@@ -68,3 +68,7 @@ The Vercel deployment listing remains capped at READY commit `f8376381085c65f98e
 ## Repeated propagation checkpoint — 2026-08-17T17:19Z
 
 A second read-only Vercel deployment listing returned the same newest READY production deployment `dpl_CB2LTcaiRDhgxJA5enV7rzNVSqfP` at commit `f8376381085c65f98edf39968396bf7845985c25`. No deployment for the private-admin noindex or exact-duration commits was visible yet; local source verification remains green and the live cutoff is explicitly retained.
+
+## Live propagation transition — 2026-08-17T17:23Z
+
+Vercel now reports a production deployment for commit `142ef260842c3ca52f665ff9ba2760a5a5a5452b` (`test: document final repository cleanliness recheck`) in `BUILDING` state (`dpl_HcqgwTCFe3Z8kynRfdPd9sf1P1F5`). The strengthened canonical smoke was run read-only during this transition and exited nonzero only because the current alias lacked the newly required `/admin` noindex metadata; no source or local-regression failure was observed. The final verifier must continue waiting for a READY deployment before its strict canonical gate can pass.
