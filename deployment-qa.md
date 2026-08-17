@@ -317,3 +317,10 @@ At 2026-08-17T12:30:28Z, session hydration was corrected to resolve the first au
 تصليب جلسة أعضاء مساحة العمل:
 
 في `2026-08-17T12:30:28Z` تم تصحيح hydration للجلسة بحيث يحل أول `WorkspaceMember` مصرح به عندما لا يكون المستخدم مالكًا لمساحة العمل، مع الإبقاء على projection ضيق للهوية فقط. أصبح `requireWorkspaceRole` قادرًا على تطبيق صلاحيات الفوترة والدعم ومساحة العمل على الأعضاء بدل إرجاع `WORKSPACE_NOT_FOUND` خطأً. نجحت lint وproduction build واختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك.
+Workspace-member query index:
+
+At 2026-08-17T12:31:31Z, an additive `WorkspaceMember(userId, createdAt)` index and SQLite migration `20260817123100_add_workspace_member_session_index` were added to support the membership-aware session lookup. `pnpm db:validate` and `pnpm db:migrate` applied successfully; lint, production build, and all API, security, auth, edge, tenant-isolation, and subscription suites passed afterward.
+
+فهرس بحث أعضاء مساحة العمل:
+
+في `2026-08-17T12:31:31Z` أضيف فهرس إضافي `WorkspaceMember(userId, createdAt)` مع migration SQLite رقم `20260817123100_add_workspace_member_session_index` لدعم lookup جلسة العضو. نجح `pnpm db:validate` و`pnpm db:migrate`، ثم نجحت lint وproduction build وجميع اختبارات API والأمان والمصادقة وedge وعزل المستأجر والاشتراك.
