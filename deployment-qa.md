@@ -87,3 +87,8 @@ Profile API input hardening:
 
 The authenticated profile PATCH endpoint now rejects malformed JSON and non-object payloads deterministically with HTTP 400 instead of falling through to a generic server error. The edge-case smoke suite now covers this regression and passed at 2026-08-17T11:24:05Z; the preceding full lint/build/API/security/auth/edge/tenant suite also passed.
 
+
+Live verification after profile hardening:
+
+The canonical Vercel domain returned HTTP 200 with Arabic RTL markers and the configured CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, and Permissions-Policy headers at 2026-08-17T11:24:31Z. The repository working tree was clean after the pushed commit.
+
