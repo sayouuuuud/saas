@@ -1319,3 +1319,11 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 - Added the route to dashboard navigation and expanded `scripts/account-pages-smoke.sh` to cover `/app/usage` and unauthenticated `/api/usage` no-store behavior.
 - Validation passed: lint, strict TypeScript, production build with 43 generated routes, and focused account smoke for profile, subscription, usage, and protected APIs.
 - No learner, video, storage, bandwidth, CPU, or RAM values are fabricated; unsupported metrics remain unavailable. No LMS database was accessed or modified.
+
+## 2026-08-17 — Dedicated LMS connection reference surface
+
+- Added `/app/lms-connection` for saving and viewing public/admin HTTPS links as SaaS-owned references, with bounded metadata, accessible add-link flow, no-store requests, empty/error/loading states, and honest reachability boundaries.
+- Dashboard navigation now points to the dedicated route instead of an in-page placeholder.
+- Expanded `scripts/account-pages-smoke.sh` to cover the page and unauthenticated `/api/lms-link` no-store behavior.
+- Validation passed: lint, strict TypeScript, production build with 44 generated routes, and account smoke for profile, subscription, usage, LMS connection, and protected APIs.
+- The page does not read or copy LMS content and does not infer LMS health from link reachability. No LMS database was accessed or modified.
