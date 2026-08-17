@@ -1176,3 +1176,13 @@ The consolidated `test:regression-matrix` was made self-contained after a clean 
 The full matrix passed at 2026-08-17T15:12:31Z: both Prisma schemas validated; lint passed; strict TypeScript passed; the 33-route production build passed; migrations and seed passed; API, security, authentication, edge-case, tenant-isolation, and subscription-lifecycle smoke suites passed; production-config and final-window status suites passed; all three boundary audits passed; and `pnpm audit --prod` reported no known vulnerabilities. The cleanup check confirmed no listener remained on port 3000.
 
 The matrix exposed and corrected three reproducibility defects during this cycle: a missing default `DATABASE_URL` after a clean checkout, an implicit production billing provider that prevented the local mock checkout assertion, and orphaned `next start` children after failed smoke runs. The final process-group-safe development-mode run is the authoritative successful result.
+
+
+## 2026-08-17 15:23:21Z — production database boundary and TLS guard cycle
+
+- The GitHub-triggered READY production deployment `dpl_9BbJXtb4DvLz6dPhyxVZQaQ2Nj47` built commit `4ca1960` successfully and selected `prisma/postgresql/schema.prisma` from the configured PostgreSQL URL.
+- Canonical verification at `https://saas-gold-seven-80.vercel.app/api/plans` changed from HTTP 500 to HTTP 200 with `{"plans":[],"degraded":true}` and `x-centralia-degraded: plans-database-unavailable`. The canonical home page remained HTTP 200.
+- Vercel runtime aggregation identified one `PrismaClientInitializationError` for `/api/plans`; the build log showed a redacted PostgreSQL endpoint at `169.58.172.222:5432/saas`. A sandbox TCP probe reached the port, but the endpoint did not return a PostgreSQL SSLRequest response, so database provisioning/connectivity remains an infrastructure issue rather than a route parsing issue.
+- Added a production configuration guard requiring `postgres://` or `postgresql://`, a host and database path, and explicit `sslmode=require`, `verify-ca`, or `verify-full`. Added a smoke fixture proving a PostgreSQL URL without TLS mode fails while the TLS-enabled fixture passes.
+- `pnpm test:regression-matrix` passed completely at system epoch `1786980201`, including schema validation, lint, TypeScript, build, migrations, seed, API/security/auth/edge/tenant/subscription smoke suites, production-config smoke, final-window status, safe-auth boundary audit, LMS independence audit, collection bounds audit, and `pnpm audit --prod`.
+- The 12-hour execution window remains active. Required completion is still `2026-08-17T20:47:03Z` (epoch `1786999623`).

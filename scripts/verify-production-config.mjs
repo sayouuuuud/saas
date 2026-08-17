@@ -14,6 +14,22 @@ const paymentProvider = (process.env.PAYMENT_PROVIDER ?? 'stripe').toLowerCase()
 
 if (!databaseUrl || databaseUrl.startsWith('file:')) {
   errors.push('DATABASE_URL must be a PostgreSQL connection string in production; SQLite file URLs are development-only.')
+} else {
+  try {
+    const parsedDatabaseUrl = new URL(databaseUrl)
+    if (!['postgres:', 'postgresql:'].includes(parsedDatabaseUrl.protocol)) {
+      errors.push('DATABASE_URL must use the postgres:// or postgresql:// protocol in production.')
+    }
+    const sslMode = parsedDatabaseUrl.searchParams.get('sslmode')
+    if (!['require', 'verify-ca', 'verify-full'].includes(sslMode ?? '')) {
+      errors.push('DATABASE_URL must set sslmode=require, verify-ca, or verify-full in production.')
+    }
+    if (!parsedDatabaseUrl.hostname || !parsedDatabaseUrl.pathname || parsedDatabaseUrl.pathname === '/') {
+      errors.push('DATABASE_URL must include a PostgreSQL host and database name in production.')
+    }
+  } catch {
+    errors.push('DATABASE_URL must be a valid PostgreSQL connection string in production.')
+  }
 }
 if (sessionSecret.length < 32 || sessionSecret.includes('replace-with-')) {
   errors.push('SESSION_SECRET must contain at least 32 non-placeholder characters.')
@@ -40,4 +56,4 @@ if (errors.length) {
   process.exit(1)
 }
 
-console.log('Production configuration check passed: PostgreSQL, HTTPS, secrets, and billing prerequisites are present.')
+console.log('Production configuration check passed: PostgreSQL TLS, HTTPS, secrets, and billing prerequisites are present.')
