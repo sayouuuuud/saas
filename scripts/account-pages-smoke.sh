@@ -30,8 +30,18 @@ grep -q 'حدود أمنية صريحة' <<<"$security_body"
 notifications_body=$(curl -fsS --max-time 10 "$BASE_URL/app/notifications")
 grep -q 'تنبيهات SaaS' <<<"$notifications_body"
 grep -q 'لا توجد إشعارات جديدة' <<<"$notifications_body"
+onboarding_body=$(curl -fsS --max-time 10 "$BASE_URL/onboarding")
+grep -q 'سجّل الدخول أولًا' <<<"$onboarding_body"
+grep -q 'noindex' <<<"$onboarding_body"
+admin_settings_body=$(curl -fsS --max-time 10 "$BASE_URL/admin/settings")
+grep -q 'هذه المساحة محمية' <<<"$admin_settings_body"
 for page in profile subscription usage reports team settings security notifications lms-connection; do
   private_body=$(curl -fsS --max-time 10 "$BASE_URL/app/$page")
+  grep -q 'noindex' <<<"$private_body"
+done
+
+for page in onboarding; do
+  private_body=$(curl -fsS --max-time 10 "$BASE_URL/$page")
   grep -q 'noindex' <<<"$private_body"
 done
 
@@ -45,4 +55,4 @@ for endpoint in me subscription usage lms-link reports workspace; do
   rm -f "$headers" "$body"
 done
 
-printf 'Account pages smoke test passed for private noindex metadata on all account pages, profile, subscription, usage, reports, team, settings, security, notifications, LMS connection, and protected SaaS APIs\n'
+printf 'Account pages smoke test passed for private noindex metadata on account and onboarding pages, profile, subscription, usage, reports, team, settings, security, notifications, LMS connection, admin guard, and protected SaaS APIs\n'

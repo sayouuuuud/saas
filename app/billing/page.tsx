@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Check, ChevronDown, CreditCard, Download, FileText, Link2, Plus, RefreshCw, ShieldCheck, Trash2 } from 'lucide-react'
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 
@@ -32,6 +33,7 @@ function downloadCsv(filename: string, rows: Array<Array<string | number>>) {
 }
 
 export default function BillingPage() {
+  const router = useRouter()
   const [annual, setAnnual] = useState(false)
   const [couponCode, setCouponCode] = useState('')
   const [showPlans, setShowPlans] = useState(false)
@@ -192,7 +194,8 @@ export default function BillingPage() {
       const response = await fetch('/api/checkout/session', { method: 'POST', cache: 'no-store', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ planCode, billingCycle: annual ? 'YEARLY' : 'MONTHLY', couponCode: couponCode.trim() || undefined }) })
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.error || 'تعذر بدء الدفع')
-      setMessage(payload.coupon ? `تم تحديث الاشتراك محليًا وتطبيق خصم ${payload.coupon.percentOff}% (${money(payload.coupon.discountCents)}). اربط بوابة دفع حقيقية قبل الإنتاج.` : 'تم تحديث الاشتراك في وضع الاختبار المحلي. اربط بوابة دفع حقيقية قبل الإنتاج.')
+      setMessage(payload.coupon ? `تم تحديث الاشتراك محليًا وتطبيق خصم ${payload.coupon.percentOff}% (${money(payload.coupon.discountCents)}). جارٍ فتح خطوات الإعداد.` : 'تم تحديث الاشتراك في وضع الاختبار المحلي. جارٍ فتح خطوات الإعداد.')
+      window.setTimeout(() => router.push('/onboarding?checkout=success'), 250)
     } catch (error) { setMessage(error instanceof Error ? error.message : 'تعذر بدء الدفع') } finally { setBusy(false) }
   }
 

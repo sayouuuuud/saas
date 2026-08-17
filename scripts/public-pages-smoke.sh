@@ -33,6 +33,12 @@ assert_page "/terms" "الشروط والأحكام" "الشروط والأحك�
 assert_page "/privacy" "الخصوصية" "الخصوصية | مركزية" "كيف تتعامل مركزية مع بيانات حساب SaaS ومساحة العمل."
 assert_page "/refund-policy" "سياسة الاسترداد" "سياسة الاسترداد | مركزية" "سياسة الإلغاء والاسترداد لاشتراكات مركزية SaaS."
 assert_page "/acceptable-use" "الاستخدام المقبول" "الاستخدام المقبول | مركزية" "قواعد الاستخدام المقبول لمنصة مركزية SaaS."
+guides_body=$(curl -fsSL --max-time 10 "${BASE_URL}/resources/guides")
+grep -Fq 'دليل دعوة عضو' <<<"$guides_body"
+grep -Fq 'نحفظ SaaS ونترك LMS مستقلًا.' <<<"$guides_body"
+status_body=$(curl -fsSL --max-time 10 "${BASE_URL}/resources/status")
+grep -Fq 'عند وجود عطل' <<<"$status_body"
+grep -Fq 'نحفظ SaaS ونترك LMS مستقلًا.' <<<"$status_body"
 
 robots_headers=$(curl -fsSI --max-time 10 "${BASE_URL}/robots.txt")
 grep -Eiq 'content-type:.*text/plain' <<<"$robots_headers"
@@ -53,4 +59,4 @@ grep -Fq "/privacy</loc>" <<<"$sitemap"
 grep -Fq "/refund-policy</loc>" <<<"$sitemap"
 grep -Fq "/acceptable-use</loc>" <<<"$sitemap"
 
-printf 'Public pages smoke test passed for product, contact, policy routes, robots.txt, and sitemap.xml\n'
+printf 'Public pages smoke test passed for product, contact, policy routes, resource guidance, robots.txt, and sitemap.xml\n'
