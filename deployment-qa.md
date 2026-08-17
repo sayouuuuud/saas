@@ -988,3 +988,11 @@ Added `test:collection-bounds`, which checks every Centralia `findMany` collecti
 اكتمل حارس حدود استعلامات المجموعات في 2026-08-17T14:23:12Z (epoch 1786976592):
 
 أضيف الأمر `test:collection-bounds` ليتحقق من وجود `take` صريح في كل سطح `findMany` داخل Centralia، ويتحقق من lookahead لأعضاء مساحة العمل عبر `take: memberLimit + 1`. نجح التدقيق مع lint وstrict TypeScript بعد تقييد استعلام الخطط العامة.
+
+Final verifier coverage expanded at 2026-08-17T14:23:41Z (epoch 1786976621):
+
+The deferred `final-window-verification.sh` now runs both Prisma schema validations, strict TypeScript, all smoke suites, the final-window-status smoke, the safeAuthError boundary audit, the SaaS/LMS-independence audit, the collection-query bounds audit, and the production dependency audit before transitioning `execution-window.json` to `window_complete`. Shell syntax and the expanded status contract passed without consuming or simulating the mandatory wait.
+
+تم توسيع تغطية verifier النهائي في 2026-08-17T14:23:41Z (epoch 1786976621):
+
+يشغل `final-window-verification.sh` المؤجل الآن التحقق من مخططي Prisma وstrict TypeScript وجميع smoke suites واختبار حالة النافذة وتدقيق safeAuthError وتدقيق استقلال SaaS عن LMS وتدقيق حدود استعلامات المجموعات وتدقيق تبعيات الإنتاج قبل نقل `execution-window.json` إلى `window_complete`. نجح فحص صياغة shell وعقد الحالة الموسع دون استهلاك أو محاكاة فترة الانتظار الإلزامية.
