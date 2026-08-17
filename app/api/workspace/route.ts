@@ -15,7 +15,8 @@ export async function PATCH(request: NextRequest) {
     if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
     const membership = await prisma.workspaceMember.findUnique({ where: { workspaceId_userId: { workspaceId: user.workspace.id, userId: user.id } } });
     if (!membership || !["OWNER", "BILLING_MANAGER"].includes(membership.role)) return new Response(JSON.stringify({ error: "لا تملك صلاحية تعديل مساحة العمل" }), { status: 403 });
-    const body = await request.json();
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== "object" || Array.isArray(body)) return new Response(JSON.stringify({ error: "بيانات الطلب غير صالحة" }), { status: 400, headers: { "content-type": "application/json" } });
     const name = typeof body.name === "string" ? body.name.trim() : "";
     if (name.length < 2 || name.length > 120) return new Response(JSON.stringify({ error: "اسم مساحة العمل يجب أن يكون بين حرفين و120 حرفًا" }), { status: 400 });
     const workspace = await prisma.workspace.update({ where: { id: user.workspace.id }, data: { name } });

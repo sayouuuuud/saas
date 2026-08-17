@@ -92,3 +92,8 @@ Live verification after profile hardening:
 
 The canonical Vercel domain returned HTTP 200 with Arabic RTL markers and the configured CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, and Permissions-Policy headers at 2026-08-17T11:24:31Z. The repository working tree was clean after the pushed commit.
 
+
+Workspace API input hardening:
+
+The workspace rename endpoint now rejects malformed JSON and non-object payloads with HTTP 400, and the edge-case smoke test covers both profile and workspace malformed PATCH requests. The expanded edge test, lint, and production build passed at 2026-08-17T11:25:14Z.
+
