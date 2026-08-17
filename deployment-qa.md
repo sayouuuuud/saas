@@ -1020,3 +1020,11 @@ The 24-hour grouped runtime-error query returned no runtime errors for the Centr
 تمت إعادة فحص صحة تشغيل Vercel بعد معالجة الأمان في 2026-08-17T14:28:15Z (epoch 1786976895):
 
 أعاد استعلام أخطاء التشغيل المجمعة خلال 24 ساعة عدم وجود أخطاء لمشروع Centralia. هذه نتيجة مراقبة للحد الحي الحالي ولا تعني أن commits الأحدث المتحقق منها محليًا قد نُشرت.
+
+Canonical production probe after dependency remediation at 2026-08-17T14:28:29Z (epoch 1786976909):
+
+`https://saas-gold-seven-80.vercel.app/` returned HTTP/2 200. The response included the expected CSP, HSTS with preload, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, strict-origin referrer policy, restrictive permissions policy, and HTML content type. The probe confirms the canonical surface is healthy; it does not identify a newer deployed commit beyond the Vercel deployment inventory boundary.
+
+تم فحص canonical production بعد معالجة التبعيات في 2026-08-17T14:28:29Z (epoch 1786976909):
+
+أعاد `https://saas-gold-seven-80.vercel.app/` الحالة HTTP/2 200. تضمنت الاستجابة CSP وHSTS مع preload و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` وسياسة referrer صارمة وسياسة permissions مقيدة ونوع محتوى HTML. يؤكد الفحص سلامة السطح canonical، لكنه لا يحدد commit منشورًا أحدث من حد deployment المرصود في Vercel.
