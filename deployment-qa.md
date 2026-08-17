@@ -903,3 +903,11 @@ The 33-route production build passed after the shared disabled-control CSS chang
 اكتملت regression بعد تنسيق عناصر التحكم المعطلة في 2026-08-17T14:12:24Z (epoch 1786975944):
 
 نجح production build بعدد 33 route بعد تغيير CSS المشترك لعناصر التحكم المعطلة. كما نجح تدقيق safeAuthError لمسارات API الثمانية والعشرين واختبار API واختبار حالة نافذة الزمن. لم يتغير أي سلوك تشغيلي أو عقد route. ظلت نافذة التنفيذ الحقيقية نشطة.
+
+Vercel deployment boundary observed at 2026-08-17T14:12:47Z:
+
+The newest GitHub commit `a34e9f5` (`docs: record disabled-style regression`) has deployment `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` in `BUILDING` state. The latest completed `READY` deployment is `dpl_7hEfLg5H47ksyhQVE2LwooofYQ7M` for commit `77f207f` (`feat: enable billing invoice exports`). Therefore the latest CSS/accessibility changes are pushed and building but are not yet claimed as live production code.
+
+حد Vercel المرصود في 2026-08-17T14:12:47Z:
+
+آخر commit على GitHub وهو `a34e9f5` بعنوان `docs: record disabled-style regression` لديه deployment رقم `dpl_4SWgBvRyhDfSGboJbqj9H8E3hSBf` بحالة `BUILDING`. أحدث deployment مكتمل بحالة `READY` هو `dpl_7hEfLg5H47ksyhQVE2LwooofYQ7M` للـ commit `77f207f` بعنوان `feat: enable billing invoice exports`. لذلك تغييرات CSS/accessibility الأخيرة مدفوعة وتُبنى، لكن لم تُعلن بعد ككود إنتاج حي.
