@@ -1156,3 +1156,23 @@ Extended `scripts/api-smoke.sh` to assert that unauthenticated GET `/api/plans` 
 تغطية regression لمسار plans العام في 2026-08-17T14:43:57Z (epoch 1786977837):
 
 تم توسيع `scripts/api-smoke.sh` ليتحقق من أن GET غير الموثق لـ `/api/plans` يعيد HTTP 200 ويتضمن contract الخاص بـ `plans`. نجح API smoke المقوى بعد إصلاح تحمل JSON.
+
+
+## Production catalog recovery cycle — 2026-08-17T15:04:54Z
+
+The sandbox reset was reconciled against GitHub main at commit `36e6f48`. The authoritative `execution-window.json` remains active with `started_at_epoch=1786956423` and `required_completion_epoch=1786999623`; the watchdog and final verifier were restarted at 2026-08-17T14:58:55Z and recorded a system-clock checkpoint with `elapsed_seconds=22312`.
+
+The Vercel deployment inventory was rechecked. The latest READY production deployment at the time of this cycle was `dpl_FMhYHDw3Rw5aVpG8iJn35tFBnEzr`, built from commit `43c13dc8ffb22e9f5d7273dbe1bc82b6841ab81c` (`perf: bound public plans query`). Direct commit comparison proved that this deployment predates the local main branch and still contains raw `JSON.parse` calls in `/api/plans`; local main contains the resilient parsers from `b1e3feb` and the public availability regression test from `36e6f48`. This is a deployment-boundary issue, not evidence that the current source fix is absent.
+
+A production resilience improvement was implemented in `app/api/plans/route.ts`: Prisma initialization and known missing-table/column failures are classified as a database-backed catalog outage, logged with only the error name/code, and returned as HTTP 200 with `{ plans: [], degraded: true }`, `cache-control: no-store`, and `x-centralia-degraded: plans-database-unavailable`. Unknown failures continue through `safeAuthError` and remain HTTP 500. `app/billing/page.tsx` now surfaces the degraded state, offers retry, and disables plan changes until the catalog is available. Lint, strict TypeScript, and `git diff --check` passed at 2026-08-17T15:04:40Z.
+
+This fallback does not create, read, or modify any LMS database. It only handles the Centralia SaaS `Plan` catalog.
+
+
+## Regression matrix reproducibility and plans resilience cycle — 2026-08-17T15:12:31Z
+
+The consolidated `test:regression-matrix` was made self-contained after a clean sandbox restore. It now defaults to the documented SQLite URL when no `.env` file is present, uses the local mock billing provider for smoke-only checkout assertions, applies SQLite migrations, seeds the three Centralia plans, starts a dedicated development-mode Next.js server for local verification-token coverage, waits for readiness, and terminates the complete server process group on every exit. This avoids stale-port contamination and keeps production validation separate: the production build still completed before the local smoke server, and `test:production-config` remains an explicit production environment gate.
+
+The full matrix passed at 2026-08-17T15:12:31Z: both Prisma schemas validated; lint passed; strict TypeScript passed; the 33-route production build passed; migrations and seed passed; API, security, authentication, edge-case, tenant-isolation, and subscription-lifecycle smoke suites passed; production-config and final-window status suites passed; all three boundary audits passed; and `pnpm audit --prod` reported no known vulnerabilities. The cleanup check confirmed no listener remained on port 3000.
+
+The matrix exposed and corrected three reproducibility defects during this cycle: a missing default `DATABASE_URL` after a clean checkout, an implicit production billing provider that prevented the local mock checkout assertion, and orphaned `next start` children after failed smoke runs. The final process-group-safe development-mode run is the authoritative successful result.
