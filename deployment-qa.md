@@ -141,3 +141,9 @@ Subscription lifecycle hardening verification:
 
 At 2026-08-17T11:45:25Z, cancellation, reactivation, and plan-change routes were hardened. Subscription mutations now require OWNER or BILLING_MANAGER membership, execute state changes and audit/event records atomically, reject terminal `CANCELLED` transitions with HTTP 409, reject inactive plans, and return idempotent `unchanged` responses for repeated cancel/reactivate requests. The new `scripts/subscription-lifecycle-smoke.sh` passed, as did the complete API, security, authentication, edge-case, and tenant-isolation smoke matrix, `pnpm lint`, and `pnpm build`.
 
+Vercel status for the pushed follow-up commit `db7f3e6` was checked at 2026-08-17T11:45:59Z and again returned `failure` with `upgradeToPro=build-rate-limit`; no new production deployment was accepted. The canonical live result therefore remains the previously verified READY deployment, while `db7f3e6` is verified locally and present on GitHub but not claimed as live.
+
+Checkout consistency hardening:
+
+At 2026-08-17T11:46:44Z, the mock checkout mutation was aligned with the subscription lifecycle policy: only OWNER and BILLING_MANAGER members may manage billing, request fields are bounded, terminal subscriptions can only be reactivated through an explicit checkout, and invoice/payment identifiers use UUIDs rather than millisecond timestamps to avoid collision under concurrent requests. Lint, production build, and all six smoke suites passed after the change.
+
