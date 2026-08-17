@@ -31,3 +31,10 @@ Performance verification for commit `7dd8cf9`:
 - Prisma validation, migration status, all four smoke suites, lint, build, and `pnpm audit --prod` passed after the migration.
 - Vercel deployment `dpl_32ebRoC8Q61FTQRifSKJDfYJoufE` reached `READY` and aliases the canonical production domains.
 - Final canonical smoke check returned HTTP 200, six security headers, and the Arabic/RTL markers.
+
+Session and runtime verification for commit `88ac057`:
+
+- Removed the unused eager `lmsLinks` relation from `getCurrentUser()` session hydration to reduce per-request database payloads without changing route contracts.
+- Lint, production build, API, security, authentication, and edge-case smoke suites all passed after the optimization.
+- Vercel deployment `dpl_DtZHeStTUmrQEDn5VUDj9rmLR1xv` reached `READY` for commit `88ac057e4e13b78dd90d36d6cbf775f792946107`.
+- Vercel reported no grouped runtime errors for the SaaS project in the selected 24-hour production window.
