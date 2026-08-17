@@ -640,3 +640,11 @@ At 2026-08-17T13:28:36Z, checkout-session creation was wrapped with `safeAuthErr
 
 عند `2026-08-17T13:28:36Z` تم تغليف إنشاء checkout-session باستخدام `safeAuthError`، مع الحفاظ على فحص صلاحية دور الفوترة داخل workspace، وحاجز mock provider، ومعرّفات الدفع UUID، والمعاملة الذرية الحالية للاشتراك والفاتورة والدفع وaudit، مع جعل الأخطاء غير المتوقعة حتمية. نجحت lint وstrict TypeScript وproduction build وAPI smoke وsecurity smoke وsubscription-lifecycle smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `a0ea73e`.
 
+Billing webhook error handling:
+
+At 2026-08-17T13:29:52Z, the billing webhook received a top-level `safeAuthError` boundary around event lookup, signature validation, replay handling, payload finalization, and transactional payment processing, while preserving the existing explicit 400/401/404/409/500 responses and idempotency state transitions. Lint, strict TypeScript, production build, security smoke, subscription-lifecycle smoke, API smoke, diff checks, and compiler-artifact cleanup passed before commit `6319e79` was pushed.
+
+معالجة أخطاء billing webhook:
+
+عند `2026-08-17T13:29:52Z` تمت إضافة boundary علوي باستخدام `safeAuthError` إلى billing webhook حول lookup الخاص بالأحداث، والتحقق من التوقيع، ومعالجة replay، وإنهاء payload، ومعالجة الدفع الذرية، مع الحفاظ على استجابات 400 و401 و404 و409 و500 الحالية وانتقالات idempotency. نجحت lint وstrict TypeScript وproduction build وsecurity smoke وsubscription-lifecycle smoke وAPI smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `6319e79`.
+
