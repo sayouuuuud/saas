@@ -766,3 +766,9 @@ Support ticket filtering improvement completed at 2026-08-17T13:55:29Z:
 The previously present ticket-filter control is now functional. It uses an accessible bounded status select for all, open, in-progress, waiting-on-customer, and closed tickets, filters the already bounded API response client-side, and distinguishes an empty filtered result from an empty account. The change preserved abortable loading and retry behavior. The first verification exposed only an unused icon warning; removing that import produced clean lint and strict TypeScript, while the preceding production build, API smoke, and edge-case smoke also passed.
 
 تم تفعيل تصفية تذاكر الدعم التي كانت معروضة كعنصر غير فعّال. أصبحت الآن قائمة حالة accessible ومحدودة تشمل كل التذاكر، المفتوحة، قيد المتابعة، بانتظار رد العميل، والمغلقة، وتعمل على الاستجابة المحدودة الموجودة دون توسيع API. كما تميز بين عدم وجود نتائج للتصفية وعدم وجود تذاكر للحساب. حافظ التغيير على التحميل القابل للإلغاء وإعادة المحاولة. كشف التحقق الأول تحذير import غير مستخدم فقط، وبعد حذفه نجحت lint وstrict TypeScript، كما نجح قبل ذلك production build واختبارا API وedge-case.
+
+Billing invoice export improvement completed at 2026-08-17T13:56:18Z:
+
+Billing’s previously inert ledger controls are now functional. The page exports the bounded invoice projection as UTF-8 CSV, supports one-invoice CSV downloads with safe quoted cells, keeps actions disabled while data is loading or absent, and defers object-URL revocation to avoid interrupting browser downloads. Lint, strict TypeScript, and the 33-route production build passed after the implementation.
+
+تم تفعيل أدوات الفواتير التي كانت غير منفذة في صفحة billing. أصبح السجل يصدّر projection الفواتير المحدود إلى CSV بترميز UTF-8، ويمكن تنزيل فاتورة واحدة بخلايا مقتبسة بأمان، مع تعطيل الإجراءات أثناء التحميل أو عند غياب البيانات، وتأجيل إبطال object URL حتى لا ينقطع التنزيل في المتصفح. نجحت lint وstrict TypeScript وproduction build الذي ولّد 33 route.
