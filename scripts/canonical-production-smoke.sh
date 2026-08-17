@@ -72,7 +72,7 @@ assert_private_page() {
   rm -f "$headers" "$body"
 }
 
-for path in / /features /how-it-works /pricing /demo /contact /terms /privacy /refund-policy /acceptable-use; do
+for path in / /features /how-it-works /pricing /demo /contact /terms /privacy /refund-policy /acceptable-use /resources/guides /resources/status; do
   assert_status "$path" 200
 done
 assert_status /robots.txt 200
@@ -81,7 +81,7 @@ assert_content_type /robots.txt 'text/plain'
 assert_content_type /sitemap.xml 'application/xml'
 assert_header / 'strict-transport-security: max-age='
 
-for path in /app/profile /app/lms-connection /app/subscription /app/usage /app/reports /app/team /app/notifications /app/security /app/settings /admin /admin/teachers /admin/plans /admin/subscriptions /admin/billing /admin/lms-links; do
+for path in /app/profile /app/lms-connection /app/subscription /app/usage /app/reports /app/team /app/notifications /app/security /app/settings /onboarding /admin /admin/teachers /admin/plans /admin/subscriptions /admin/billing /admin/lms-links /admin/settings; do
   assert_private_page "$path"
 done
 
@@ -106,4 +106,4 @@ else
 fi
 rm -f "$plans_headers" "$plans_body"
 
-printf 'Canonical production smoke passed for %s\n' "$BASE_URL"
+printf 'Canonical production smoke passed for %s, including onboarding, admin settings, and resource routes\n' "$BASE_URL"
