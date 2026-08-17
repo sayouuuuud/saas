@@ -14,6 +14,8 @@ grep -q 'مصدرها' <<<"$usage_body"
 lms_body=$(curl -fsS --max-time 10 "$BASE_URL/app/lms-connection")
 grep -q 'منصتك في مكان واحد' <<<"$lms_body"
 grep -q 'دون نقلها' <<<"$lms_body"
+grep -q 'Link-only mode' <<<"$lms_body"
+grep -q 'فحص الوصول' <<<"$lms_body"
 reports_body=$(curl -fsS --max-time 10 "$BASE_URL/app/reports")
 grep -q 'تقريرك في SaaS' <<<"$reports_body"
 grep -q 'بلا تخمين' <<<"$reports_body"
