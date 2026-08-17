@@ -1,5 +1,10 @@
 import PublicInfoPage from "@/components/public-info-page";
 
+export const metadata = {
+  title: "كيف تعمل | مركزية",
+  description: "تعرّف على خطوات التسجيل والاشتراك والدفع وربط رابط LMS الاختياري داخل منصة SaaS مستقلة.",
+};
+
 export default function HowItWorksPage() {
   return (
     <PublicInfoPage

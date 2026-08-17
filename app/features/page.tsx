@@ -1,5 +1,10 @@
 import PublicInfoPage from "@/components/public-info-page";
 
+export const metadata = {
+  title: "المزايا | مركزية",
+  description: "أدوات SaaS واضحة لإدارة الحساب والاشتراك والفوترة ورابط المنصة والدعم.",
+};
+
 export default function FeaturesPage() {
   return (
     <PublicInfoPage

@@ -1,5 +1,10 @@
 import PublicInfoPage from "@/components/public-info-page";
 
+export const metadata = {
+  title: "الأسعار | مركزية",
+  description: "خطط SaaS شفافة لإدارة الحساب والاشتراك والفوترة والدعم وروابط LMS الاختيارية.",
+};
+
 const plans = [
   { name: "Starter", price: "19", description: "للمدرس الفردي الذي يريد أساسًا واضحًا.", bullets: ["مدرس واحد ومساحة عمل واحدة", "رابط LMS واحد", "فواتير واشتراك واضح", "دعم عبر التذاكر"] },
   { name: "Growth", price: "39", description: "للفرق الصغيرة التي تحتاج تنظيمًا أوسع.", bullets: ["حتى 5 أعضاء في الفريق", "فحص دوري لرابط LMS", "تقارير SaaS أوسع", "أولوية في متابعة الدعم"] },
