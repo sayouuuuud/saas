@@ -24,3 +24,10 @@ Production security-header verification for commit `b2a9447`:
 - Vercel deployment `dpl_9qPnPz6oimgK4greuhArxEX43VmT` reached `READY` and aliases the canonical production domains.
 - The canonical URL returned HTTP 200 and emitted all six configured headers: CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, and HSTS.
 - The new edge-case suite passed for duplicate registration, malformed JSON, unknown checkout plan, logout, and unauthenticated workspace access.
+
+Performance verification for commit `7dd8cf9`:
+
+- Added and applied migration `20260817094331_add_query_indexes`, indexing payment-to-invoice history, payment-method workspace lookup, and support-message ticket chronology.
+- Prisma validation, migration status, all four smoke suites, lint, build, and `pnpm audit --prod` passed after the migration.
+- Vercel deployment `dpl_32ebRoC8Q61FTQRifSKJDfYJoufE` reached `READY` and aliases the canonical production domains.
+- Final canonical smoke check returned HTTP 200, six security headers, and the Arabic/RTL markers.
