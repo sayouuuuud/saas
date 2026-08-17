@@ -23,6 +23,12 @@ def write_log(record: dict) -> None:
         handle.flush()
 
 
+def write_window(window: dict) -> None:
+    temporary = WINDOW_FILE.with_name(f".{WINDOW_FILE.name}.tmp")
+    temporary.write_text(json.dumps(window, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    os.replace(temporary, WINDOW_FILE)
+
+
 def main() -> None:
     if not WINDOW_FILE.exists():
         raise SystemExit("execution-window.json is missing")
@@ -38,7 +44,7 @@ def main() -> None:
             window["status"] = "window_complete"
             window["completed_at_utc"] = iso
             window["completed_at_epoch"] = epoch
-            WINDOW_FILE.write_text(json.dumps(window, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            write_window(window)
             return
         time.sleep(60)
 
