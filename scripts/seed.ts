@@ -10,7 +10,9 @@ const plans = [
 
 async function main() {
   for (const plan of plans) await prisma.plan.upsert({ where: { code: plan.code }, update: plan, create: plan });
-  console.log(`Seeded ${plans.length} SaaS plans`);
+  const coupons = [{ code: 'WELCOME10', description: 'خصم ترحيبي للاختبار المحلي', percentOff: 10, active: true, maxRedemptions: null, redeemedCount: 0, expiresAt: null }];
+  for (const coupon of coupons) await prisma.coupon.upsert({ where: { code: coupon.code }, update: { description: coupon.description, percentOff: coupon.percentOff, active: coupon.active }, create: coupon });
+  console.log(`Seeded ${plans.length} SaaS plans and ${coupons.length} coupon`);
 }
 
 main().finally(() => prisma.$disconnect());

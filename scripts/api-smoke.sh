@@ -69,8 +69,12 @@ test "$usage_history_status" = "200"
 grep -Eiq '^cache-control: (private, )?no-store' /tmp/saas-smoke-headers.txt
 usage_history="$(cat /tmp/saas-smoke-response.json)"
 test "$(printf '%s' "$usage_history" | grep -c 'saas_audit_log')" -eq 1
-checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"
+checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY","couponCode":"WELCOME10"}' "$BASE_URL/api/checkout/session")"
 test "$(printf '%s' "$checkout" | grep -c 'ACTIVE')" -ge 1
+test "$(printf '%s' "$checkout" | grep -c 'WELCOME10')" -ge 1
+test "$(printf '%s' "$checkout" | grep -c 'discountCents')" -ge 1
+invalid_coupon_status="$(status_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY","couponCode":"NOTREAL"}' "$BASE_URL/api/checkout/session")"
+test "$invalid_coupon_status" = "400"
 invoices="$(json_request "$BASE_URL/api/invoices?limit=999&offset=1")"
 test "$(printf '%s' "$invoices" | grep -c '"limit":50')" -eq 1
 test "$(printf '%s' "$invoices" | grep -c '"offset":1')" -eq 1
