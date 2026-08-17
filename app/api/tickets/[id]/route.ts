@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 const schema = z.object({ status: z.enum(["OPEN", "IN_PROGRESS", "WAITING_ON_CUSTOMER", "RESOLVED", "CLOSED"]).optional(), priority: z.enum(["low", "normal", "high", "urgent"]).optional(), message: z.string().trim().min(2).max(5000).optional() });
+const actionSchema = z.object({ action: z.enum(["close", "reopen"]).optional(), message: z.string().trim().min(2).max(5000).optional() });
 type Context = { params: Promise<{ id: string }> };
 
 async function ticketForUser(id: string) {
@@ -42,10 +43,10 @@ export async function POST(request: Request, context: Context) {
   const { user, ticket } = await ticketForUser(id);
   if (!user?.workspace) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401 });
   if (!ticket) return NextResponse.json({ error: "التذكرة غير موجودة" }, { status: 404 });
-  const body = await request.json().catch(() => ({}));
-  const action = body.action === "close" ? "CLOSED" : body.action === "reopen" ? "OPEN" : null;
-  const message = typeof body.message === "string" ? body.message.trim() : "";
-  if (!action && message.length < 2) return NextResponse.json({ error: "أرسل رسالة أو اختر إغلاق/إعادة فتح" }, { status: 400 });
+  const parsed = actionSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success || (!parsed.data.action && !parsed.data.message)) return NextResponse.json({ error: "بيانات التذكرة غير صالحة" }, { status: 400 });
+  const action = parsed.data.action === "close" ? "CLOSED" : parsed.data.action === "reopen" ? "OPEN" : null;
+  const message = parsed.data.message || "";
   const updated = await prisma.$transaction(async (tx) => {
     const next = await tx.supportTicket.update({ where: { id }, data: action ? { status: action } : {} });
     if (message) await tx.supportMessage.create({ data: { ticketId: id, authorId: user.id, body: message } });

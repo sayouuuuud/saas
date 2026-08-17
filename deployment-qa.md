@@ -97,3 +97,8 @@ Workspace API input hardening:
 
 The workspace rename endpoint now rejects malformed JSON and non-object payloads with HTTP 400, and the edge-case smoke test covers both profile and workspace malformed PATCH requests. The expanded edge test, lint, and production build passed at 2026-08-17T11:25:14Z.
 
+
+Support-ticket action validation:
+
+Ticket close/reopen/message actions now use a bounded Zod schema that rejects unsupported actions, malformed payloads, and oversized messages before database mutation. API smoke coverage now asserts an unsupported action returns HTTP 400. After correcting the smoke test to extract the top-level ticket ID, the full lint, production build, API, security, authentication, edge-case, and tenant-isolation suite passed at 2026-08-17T11:27:21Z.
+

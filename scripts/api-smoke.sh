@@ -22,6 +22,10 @@ check="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/check")"
 test "$(printf '%s' "$check" | grep -c 'check')" -ge 1
 ticket="$(json_request -X POST -d '{"category":"GENERAL","subject":"Smoke test","description":"Reproducible support API smoke test","priority":"normal"}' "$BASE_URL/api/tickets")"
 test "$(printf '%s' "$ticket" | grep -c 'SUP-')" -ge 1
+TICKET_ID="$(printf '%s' "$ticket" | sed -n 's/.*"ticket":{"id":"\([^"]*\)".*/\1/p')"
+test -n "$TICKET_ID"
+bad_ticket_action="$(status_request -X POST -d '{"action":"archive"}' "$BASE_URL/api/tickets/$TICKET_ID")"
+test "$bad_ticket_action" = "400"
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"
 test "$(printf '%s' "$checkout" | grep -c 'ACTIVE')" -ge 1
 invoices="$(json_request "$BASE_URL/api/invoices")"
