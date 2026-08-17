@@ -972,3 +972,11 @@ Both Prisma schemas, lint, strict TypeScript, the 33-route production build, all
 اكتملت مصفوفة regression بعد تحديث smoke لأعضاء مساحة العمل في 2026-08-17T14:21:33Z (epoch 1786976493):
 
 نجح مخططا Prisma وlint وstrict TypeScript وproduction build بعدد 33 route وجميع اختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر والاشتراك وإعدادات الإنتاج وحالة النافذة وتدقيق safeAuthError وتدقيق استقلال SaaS عن LMS، كما نجح `pnpm audit --prod`. تضمنت suite الـAPI assertions جديدة للصفحة الأولى المحدودة لأعضاء مساحة العمل ودور المالك. ظلت نافذة التنفيذ الحقيقية نشطة.
+
+Public plans query hardening completed at 2026-08-17T14:22:24Z (epoch 1786976544):
+
+`GET /api/plans` now caps active plans at 50 and returns an explicit public projection instead of spreading internal lifecycle fields. Features and limits remain decoded exactly as before. Lint, strict TypeScript, the 33-route production build, and API smoke all passed.
+
+اكتمل تقوية استعلام الخطط العامة في 2026-08-17T14:22:24Z (epoch 1786976544):
+
+يقيد `GET /api/plans` الآن الخطط النشطة بـ50 سجلًا ويعيد projection عامًا صريحًا بدل نشر حقول دورة الحياة الداخلية. ظلت features وlimits مفكوكة بالطريقة نفسها. نجحت lint وstrict TypeScript وproduction build بعدد 33 route واختبار API.
