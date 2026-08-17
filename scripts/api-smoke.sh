@@ -12,8 +12,9 @@ register="$(json_request -X POST -d "{\"name\":\"QA Teacher\",\"email\":\"$EMAIL
 test "$(printf '%s' "$register" | grep -c 'QA Teacher')" -eq 1
 me="$(json_request "$BASE_URL/api/auth/me")"
 test "$(printf '%s' "$me" | grep -c 'Starter')" -eq 1
-workspace="$(json_request "$BASE_URL/api/workspace?memberLimit=999")"
+workspace="$(json_request "$BASE_URL/api/workspace?memberLimit=999&memberOffset=1")"
 test "$(printf '%s' "$workspace" | grep -c '"limit":50')" -eq 1
+test "$(printf '%s' "$workspace" | grep -c '"offset":1')" -eq 1
 bad_status="$(status_request -X POST -d '{"displayName":"Internal","publicUrl":"http://127.0.0.1:8080"}' "$BASE_URL/api/lms-link")"
 test "$bad_status" = "400"
 good="$(json_request -X POST -d '{"displayName":"Demo Academy","publicUrl":"https://example.com"}' "$BASE_URL/api/lms-link")"
@@ -21,9 +22,11 @@ LINK_ID="$(printf '%s' "$good" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')"
 test -n "$LINK_ID"
 me_with_link="$(json_request "$BASE_URL/api/auth/me")"
 test "$(printf '%s' "$me_with_link" | grep -c 'Demo Academy')" -ge 1
-lms_links="$(json_request "$BASE_URL/api/lms-link?limit=999")"
+lms_links="$(json_request "$BASE_URL/api/lms-link?limit=999&offset=1")"
 test "$(printf '%s' "$lms_links" | grep -c '"limit":50')" -eq 1
-test "$(printf '%s' "$lms_links" | grep -c "$LINK_ID")" -ge 1
+test "$(printf '%s' "$lms_links" | grep -c '"offset":1')" -eq 1
+lms_links_first_page="$(json_request "$BASE_URL/api/lms-link?limit=1&offset=0")"
+test "$(printf '%s' "$lms_links_first_page" | grep -c "$LINK_ID")" -ge 1
 check="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/check")"
 test "$(printf '%s' "$check" | grep -c 'check')" -ge 1
 integration_request="$(json_request -X POST "$BASE_URL/api/lms-link/$LINK_ID/request-integration")"
@@ -43,9 +46,11 @@ usage_history="$(json_request "$BASE_URL/api/usage/history")"
 test "$(printf '%s' "$usage_history" | grep -c 'saas_audit_log')" -eq 1
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"
 test "$(printf '%s' "$checkout" | grep -c 'ACTIVE')" -ge 1
-invoices="$(json_request "$BASE_URL/api/invoices?limit=999")"
-test "$(printf '%s' "$invoices" | grep -c 'PAID')" -ge 1
+invoices="$(json_request "$BASE_URL/api/invoices?limit=999&offset=1")"
 test "$(printf '%s' "$invoices" | grep -c '"limit":50')" -eq 1
+test "$(printf '%s' "$invoices" | grep -c '"offset":1')" -eq 1
+invoices_first_page="$(json_request "$BASE_URL/api/invoices?limit=1&offset=0")"
+test "$(printf '%s' "$invoices_first_page" | grep -c 'PAID')" -ge 1
 reports="$(json_request "$BASE_URL/api/reports")"
 test "$(printf '%s' "$reports" | grep -c '"invoiceCount":1')" -eq 1
 printf 'API smoke test passed for %s\n' "$EMAIL"

@@ -4,21 +4,26 @@ import { getCurrentUser, safeAuthError } from "@/lib/auth";
 
 const DEFAULT_MEMBER_LIMIT = 50;
 const MAX_MEMBER_LIMIT = 50;
+const MAX_MEMBER_OFFSET = 10_000;
 
-function parseMemberLimit(request: Request) {
-  const raw = new URL(request.url).searchParams.get("memberLimit");
-  const requested = raw ? Number(raw) : DEFAULT_MEMBER_LIMIT;
-  return Number.isInteger(requested) && requested > 0 ? Math.min(requested, MAX_MEMBER_LIMIT) : DEFAULT_MEMBER_LIMIT;
+function parseMemberPage(request: Request) {
+  const params = new URL(request.url).searchParams;
+  const requestedLimit = Number(params.get("memberLimit") || DEFAULT_MEMBER_LIMIT);
+  const requestedOffset = Number(params.get("memberOffset") || "0");
+  return {
+    limit: Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, MAX_MEMBER_LIMIT) : DEFAULT_MEMBER_LIMIT,
+    offset: Number.isInteger(requestedOffset) && requestedOffset >= 0 ? Math.min(requestedOffset, MAX_MEMBER_OFFSET) : 0,
+  };
 }
 
 export async function GET(request: Request) {
   const user = await getCurrentUser();
   if (!user?.workspace) return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
-  const memberLimit = parseMemberLimit(request);
-  const workspace = await prisma.workspace.findUnique({ where: { id: user.workspace.id }, include: { plan: true, subscription: { include: { plan: true } }, members: { orderBy: { createdAt: "asc" }, take: memberLimit + 1, include: { user: { select: { id: true, name: true, email: true } } } } } });
+  const { limit: memberLimit, offset: memberOffset } = parseMemberPage(request);
+  const workspace = await prisma.workspace.findUnique({ where: { id: user.workspace.id }, include: { plan: true, subscription: { include: { plan: true } }, members: { orderBy: { createdAt: "asc" }, skip: memberOffset, take: memberLimit + 1, include: { user: { select: { id: true, name: true, email: true } } } } } });
   if (!workspace) return new Response(JSON.stringify({ error: "مساحة العمل غير موجودة" }), { status: 404, headers: { "content-type": "application/json" } });
   const hasMoreMembers = workspace.members.length > memberLimit;
-  return Response.json({ workspace: { ...workspace, members: workspace.members.slice(0, memberLimit) }, membersPagination: { limit: memberLimit, hasMore: hasMoreMembers } });
+  return Response.json({ workspace: { ...workspace, members: workspace.members.slice(0, memberLimit) }, membersPagination: { limit: memberLimit, offset: memberOffset, hasMore: hasMoreMembers, nextOffset: hasMoreMembers ? memberOffset + memberLimit : null } });
 }
 
 export async function PATCH(request: NextRequest) {
