@@ -488,3 +488,11 @@ At 2026-08-17T13:07:25Z, inspection found that the deferred verifier ran the ful
 
 عند `2026-08-17T13:07:25Z` أظهر الفحص أن verifier المؤجل كان يشغل المصفوفة كاملة لكنه لا يحدّث `execution-window.json` بعد النجاح. تم تصحيح السكربت ليبدل بشكل ذري `status: active` إلى `status: window_complete` فقط بعد نجاح كل أوامر التحقق المطلوبة، ثم يطبع الانتقال في final log. أُوقف verifier القديم وشُغّل process جديد من السكربت المصحح مع وضع process log خارج المستودع. نجح فحص syntax وظل المستودع نظيفًا على commit `331c09d`.
 
+Final-window completion-state coverage:
+
+At 2026-08-17T13:09:17Z, the new `pnpm test:final-window-status` smoke test passed. It runs the deferred verifier in an isolated temporary window whose required epoch is already satisfied, stubs the validation command without executing production work, and asserts both `execution-window.json: status=window_complete` and the final log’s passed markers. Lint also passed before commit `3e4c7b5` was pushed.
+
+تغطية حالة اكتمال final-window:
+
+عند `2026-08-17T13:09:17Z` نجح اختبار `pnpm test:final-window-status` الجديد. يشغل verifier المؤجل داخل window مؤقتة مع epoch مستوفى، ويستبدل أمر التحقق بأداة harmless دون تنفيذ عمل إنتاجي، ثم يؤكد أن `execution-window.json` يحتوي `status=window_complete` وأن final log يحتوي markers النجاح. كما نجحت lint قبل دفع commit `3e4c7b5`.
+
