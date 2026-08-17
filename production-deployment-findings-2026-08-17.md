@@ -56,3 +56,7 @@ The deployment listing now shows READY production deployment `dpl_CB2LTcaiRDhgxJ
 ## Canonical smoke after READY cache deployment — 2026-08-17T17:10Z
 
 The read-only `pnpm test:canonical-production` gate passed after deployment `dpl_CB2LTcaiRDhgxJA5enV7rzNVSqfP` reached READY, reconfirming the canonical public routes, response security headers, robots/sitemap content types, and controlled `/api/plans` degradation behavior.
+
+## Runtime-error check after cache deployment — 2026-08-17T17:10Z
+
+The read-only grouped runtime-error query for the recent one-hour window returned exactly one group: `/api/plans` database-backed catalog unavailable (`PrismaClientInitializationError`), count 6 across 4 users, first seen 15:18:05Z and last seen 17:10:13Z, with last deployment `dpl_CB2LTcaiRDhgxJA5enV7rzNVSqfP`. No new runtime-error group was observed for the cache-hardening deployment or any other route.
