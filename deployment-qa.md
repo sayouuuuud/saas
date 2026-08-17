@@ -752,3 +752,17 @@ The staff-only admin page was reviewed and retained without code changes: it gat
 اكتملت مراجعة الإدارة وصفحات UX الحساسة عند 2026-08-17T13:52:31Z:
 
 تمت مراجعة صفحة الإدارة والاحتفاظ بها دون تعديل: فهي تفرض `user.isStaff`، وتستخدم استعلامات SaaS تجميعية فقط، وتحصر سجل التدقيق في ثمانية أحداث مع إسقاط محدود لحقول actor/workspace، ولا تقرأ بيانات LMS. تم تحسين صفحات billing وsupport باستخدام AbortController، وإجراءات إعادة المحاولة، ومنع الاستجابات القديمة، وحالات تحميل/فشل صريحة. كشف lint الأول بشكل صحيح عن تحديث state متزامن داخل effect؛ وبعد إعادة الجدولة الآمنة للتحميل الأولي نجح lint وstrict TypeScript وproduction build الذي ولّد 33 route.
+
+Final local regression matrix completed at 2026-08-17T13:53:31Z:
+
+Both SQLite and PostgreSQL Prisma schemas validated. Lint, strict TypeScript, the 33-route production build, API, security, authentication, edge-case, tenant-isolation, subscription-lifecycle, production-configuration, and final-window-status smoke suites all passed. `pnpm audit --prod` reported no known vulnerabilities. The API and auth suites generated unique per-run identities, and the final-window smoke confirmed the completion-state contract without altering the active real-time window.
+
+اكتملت مصفوفة الانحدار المحلية النهائية:
+
+تم التحقق من مخططي Prisma لـ SQLite وPostgreSQL. نجحت lint، وstrict TypeScript، وproduction build الذي ولّد 33 route، واختبارات API والأمان والمصادقة والحالات الطرفية وعزل المستأجر ودورة الاشتراك وإعدادات الإنتاج وحالة نافذة الزمن. أعاد `pnpm audit --prod` عدم وجود ثغرات معروفة. استخدمت اختبارات API وauth هويات فريدة لكل تشغيل، وأكد اختبار final-window عقد حالة الإكمال دون تغيير نافذة التشغيل الحقيقية النشطة.
+
+Support ticket filtering improvement completed at 2026-08-17T13:55:29Z:
+
+The previously present ticket-filter control is now functional. It uses an accessible bounded status select for all, open, in-progress, waiting-on-customer, and closed tickets, filters the already bounded API response client-side, and distinguishes an empty filtered result from an empty account. The change preserved abortable loading and retry behavior. The first verification exposed only an unused icon warning; removing that import produced clean lint and strict TypeScript, while the preceding production build, API smoke, and edge-case smoke also passed.
+
+تم تفعيل تصفية تذاكر الدعم التي كانت معروضة كعنصر غير فعّال. أصبحت الآن قائمة حالة accessible ومحدودة تشمل كل التذاكر، المفتوحة، قيد المتابعة، بانتظار رد العميل، والمغلقة، وتعمل على الاستجابة المحدودة الموجودة دون توسيع API. كما تميز بين عدم وجود نتائج للتصفية وعدم وجود تذاكر للحساب. حافظ التغيير على التحميل القابل للإلغاء وإعادة المحاولة. كشف التحقق الأول تحذير import غير مستخدم فقط، وبعد حذفه نجحت lint وstrict TypeScript، كما نجح قبل ذلك production build واختبارا API وedge-case.
