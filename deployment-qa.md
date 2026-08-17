@@ -50,3 +50,12 @@ Regression and tenant-isolation verification for commit `056907d` and the follow
 - The API smoke suite now asserts that an existing `Demo Academy` link is present in the authenticated user payload; the full API, security, authentication, edge-case, and tenant-isolation suites passed.
 - The tenant-isolation suite confirmed that a second workspace receives HTTP 404 when attempting to delete or check the first workspace's LMS link.
 - Direct canonical production smoke verification continued to return HTTP 200 with six security headers and Arabic RTL markers after the fix was pushed.
+
+Webhook robustness and regression coverage:
+
+- The billing webhook now catches malformed or non-object JSON after signature verification, marks the event as rejected with `invalid_json`, and returns HTTP 400 instead of throwing an unhandled exception.
+- `security-smoke.sh` now signs and exercises malformed JSON, and the complete local suite passed: lint, production build, API smoke, security smoke, authentication security, edge cases, and tenant isolation.
+- The tenant-isolation test continues to confirm that cross-workspace LMS-link delete and check requests return HTTP 404.
+
+Final local verification timestamp: 2026-08-17T10:10:00Z (recorded during the active real-time execution window).
+

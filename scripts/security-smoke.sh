@@ -11,4 +11,11 @@ status -X POST -d "{\"name\":\"Security QA\",\"email\":\"$EMAIL\",\"password\":\
 status -X POST "$BASE_URL/api/auth/logout" | grep -qx '200'
 status "$BASE_URL/api/auth/me" | grep -qx '401'
 status -X POST -d '{"type":"subscription.active","payload":{}}' -H 'x-billing-event-id: security-invalid-signature' -H 'x-billing-signature: invalid' "$BASE_URL/api/checkout/webhook" | grep -qx '401'
+WEBHOOK_SECRET="${BILLING_WEBHOOK_SECRET:-}"
+if [ -z "$WEBHOOK_SECRET" ] && [ -f .env.local ]; then WEBHOOK_SECRET="$(sed -n 's/^BILLING_WEBHOOK_SECRET="\(.*\)"$/\1/p' .env.local)"; fi
+if [ -n "$WEBHOOK_SECRET" ] && command -v openssl >/dev/null 2>&1; then
+  BODY='{not-json'
+  SIGNATURE="$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | awk '{print $NF}')"
+  status -X POST --data "$BODY" -H 'x-billing-event-id: security-malformed-json' -H "x-billing-signature: $SIGNATURE" "$BASE_URL/api/checkout/webhook" | grep -qx '400'
+fi
 printf 'Security smoke test passed\n'

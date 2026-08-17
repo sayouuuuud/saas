@@ -21,7 +21,15 @@ export async function POST(request: Request) {
   if (existing?.state === "processed") return NextResponse.json({ ok: true, duplicate: true });
   const event = await prisma.billingWebhookEvent.upsert({ where: { eventId }, update: { signatureValid, state: signatureValid ? "received" : "rejected" }, create: { provider: "configured", eventId, signatureValid, state: signatureValid ? "received" : "rejected", payloadHash: crypto.createHash("sha256").update(rawBody).digest("hex") } });
   if (!signatureValid) return NextResponse.json({ error: "invalid signature", eventId: event.id }, { status: 401 });
-  const payload = JSON.parse(rawBody) as { type?: string; workspaceId?: string; invoiceId?: string; amountCents?: number };
+  let payload: { type?: string; workspaceId?: string; invoiceId?: string; amountCents?: number };
+  try {
+    const parsed = JSON.parse(rawBody) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("invalid payload shape");
+    payload = parsed as { type?: string; workspaceId?: string; invoiceId?: string; amountCents?: number };
+  } catch {
+    await prisma.billingWebhookEvent.update({ where: { id: event.id }, data: { state: "rejected", errorCode: "invalid_json" } });
+    return NextResponse.json({ error: "invalid JSON payload" }, { status: 400 });
+  }
   if (payload.type !== "payment.succeeded" || !payload.workspaceId) return NextResponse.json({ ok: true, ignored: true });
   const subscription = await prisma.subscription.findUnique({ where: { workspaceId: payload.workspaceId } });
   if (!subscription) return NextResponse.json({ error: "subscription not found" }, { status: 404 });
