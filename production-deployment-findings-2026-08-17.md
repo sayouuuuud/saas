@@ -32,3 +32,7 @@ The canonical hostname returned HTTP 200 for the existing public and account rou
 The latest observed READY production deployment remains `dpl_5ZE2e6kUSXwEU1NEUgH2ix8tWpZc`, created from reports commit `e237a0feb731e4d584aa3c04d94a87c55afe01ce`. A read-only fetch of its deployment-specific hostname redirected to Vercel SSO (HTTP 302), so authenticated canonical routing remains the reliable public check.
 
 A non-destructive request to reuse the linked Vercel project and build the latest main branch was rejected by Vercel with `402 payment_required`, resource `api-deployments-free-per-day`, remaining `0`, reset epoch `1787071517428`. No source, production environment, or LMS resource was changed by that rejected request. Until the quota resets or a user-managed Vercel deployment is available, the latest commits remain published to GitHub and fully verified locally but pending canonical Vercel propagation.
+
+## Canonical account-route diagnosis — 2026-08-17T16:50Z
+
+Direct canonical probes returned HTTP 200 for `/app/settings`, `/app/security`, and `/app/notifications`, but each response was a 10.7 KB landing/not-found shell with the landing title and no route-specific marker. This confirms that the canonical alias is still serving an older deployment rather than the current GitHub source. Local production builds enumerate all three routes and the full regression matrix passes them; no source rollback or LMS access was performed.
