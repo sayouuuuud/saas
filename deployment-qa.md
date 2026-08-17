@@ -1468,3 +1468,9 @@ Strengthened `scripts/public-pages-smoke.sh` to require `text/plain` for `/robot
 
 - Extended `final-window-status-smoke.sh` with a deterministic Git fixture and assertions for tested revision, branch, clean repository state before and after tests, and canonical production smoke inclusion.
 - The first fixture run exposed a literal-newline mismatch in the Git stub; corrected it and reran successfully with `bash -n` and `pnpm test:final-window-status`.
+
+## 2026-08-17 — Regression cleanup and final-gate compatibility
+
+- Identified that the production build can regenerate tracked `next-env.d.ts` metadata after the full matrix, which would make the strengthened final verifier reject an otherwise passing run.
+- Updated the regression cleanup trap to restore `next-env.d.ts` alongside `tsconfig.tsbuildinfo`.
+- Reran `pnpm test:regression-matrix`: the complete 53-route build and every API, public, degraded, security, auth, tenant, subscription, account, client-cache, admin, boundary, independence, collection, and audit suite passed; the repository was clean after the run.

@@ -10,6 +10,7 @@ cleanup() {
     wait "$SERVER_PID" 2>/dev/null || true
   fi
   rm -f "$ROOT_DIR/tsconfig.tsbuildinfo"
+  git checkout -- next-env.d.ts 2>/dev/null || true
 }
 trap cleanup EXIT
 
