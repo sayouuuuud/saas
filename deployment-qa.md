@@ -10,4 +10,11 @@ A production URL fetch returned HTTP 302 to Vercel SSO, indicating deployment pr
 
 The subsequent application commit `adf876de903c207d8af525b7a7e51e098cad3a24` (`Complete SaaS product surfaces and auth security flows`) also reached `READY` as `dpl_G1SmME45ftmYAaLYFJdsNMSUNFqH`. A live fetch of `https://saas-cakvbtu5z-itz4kairo-5176s-projects.vercel.app/` returned HTTP 200 with `content-type: text/html`, `lang="ar"`, and `dir="rtl"`. The documentation-only follow-up commit is `32db101`.
 
-A local production dependency audit currently reports 27 advisories (2 low, 11 moderate, 14 high); the direct unused `shadcn` dependency and its MCP-related chain were removed, and the audit must be rerun after lockfile regeneration before final sign-off.
+Security-fix verification on 2026-08-17:
+
+- Updated `@prisma/client` and `prisma` from 6.16.2 to 6.19.3 within Prisma major 6, updated PostCSS to 8.5.26, and added a workspace override forcing `nanoid` to patched 3.3.18.
+- `pnpm audit --prod` now reports **No known vulnerabilities found**.
+- `pnpm lint` and `pnpm build` both pass; the build generates all 33 application routes.
+- Changes committed and pushed as `3e2a5a2` (`security: remove vulnerable dependency chain and patch transitive advisories`).
+- Vercel production deployment `dpl_54jHacHnovSTFWMwCmxfFZba2o7c` for commit `3e2a5a2c294593130f7c6940727909525e60a7e3` is `READY`.
+- Canonical domain `https://saas-gold-seven-80.vercel.app/` returns HTTP 200, `content-type: text/html`, `lang="ar"`, and `dir="rtl"`.
