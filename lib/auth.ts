@@ -74,5 +74,6 @@ export async function requireWorkspaceRole(userId: string, allowed: string[]) {
 export function safeAuthError(error: unknown) {
   if (error instanceof Error && error.message === "UNAUTHENTICATED") return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: { "content-type": "application/json" } });
   if (error instanceof Error && error.message === "FORBIDDEN") return new Response(JSON.stringify({ error: "لا تملك صلاحية تنفيذ هذا الإجراء" }), { status: 403, headers: { "content-type": "application/json" } });
+  if (error instanceof Error && error.message === "WORKSPACE_NOT_FOUND") return new Response(JSON.stringify({ error: "مساحة العمل غير موجودة" }), { status: 404, headers: { "content-type": "application/json" } });
   return new Response(JSON.stringify({ error: "حدث خطأ غير متوقع" }), { status: 500, headers: { "content-type": "application/json" } });
 }
