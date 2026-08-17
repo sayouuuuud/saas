@@ -592,3 +592,11 @@ At 2026-08-17T13:22:13Z, the session-hydration endpoint was wrapped with `safeAu
 
 عند `2026-08-17T13:22:13Z` تم تغليف endpoint hydration الخاص بالجلسة باستخدام `safeAuthError`، مع الحفاظ على responses الخاصة بالهوية، وحل workspace عبر العضوية، وتحميل روابط LMS بحدود، وسلوك 401 لغير المسجلين، مع إرجاع JSON حتمي عند الأخطاء غير المتوقعة. نجحت lint وstrict TypeScript وauth smoke وAPI smoke وsecurity smoke وdiff checks وتنظيف artifact الخاص بالمترجم قبل دفع commit `7c8c2b7`.
 
+Complete pre-window regression matrix:
+
+At 2026-08-17T13:24:23Z, the final pushed commit `a18c128` was validated with SQLite schema validation, PostgreSQL schema validation using an isolated syntactically valid PostgreSQL URL, lint, strict TypeScript compilation, production build, API smoke, security smoke, authentication smoke, edge-case smoke, tenant-isolation smoke, subscription-lifecycle smoke, production-configuration smoke, final-window status smoke, and `pnpm audit --prod`. Every command passed; the working tree was clean. The real-time execution window remained active at elapsed 16,580 seconds, with required completion epoch `1786999623` / `2026-08-17T20:47:03Z`.
+
+مصفوفة الاختبار الكاملة قبل نهاية النافذة:
+
+عند `2026-08-17T13:24:23Z` تم التحقق من آخر commit مدفوع `a18c128` عبر SQLite schema validation وPostgreSQL schema validation باستخدام PostgreSQL URL صالح نحويًا ومعزول، وlint وstrict TypeScript وproduction build وجميع smoke suites: API وsecurity وauth وedge وtenant-isolation وsubscription-lifecycle وproduction-config وfinal-window-status، إضافة إلى `pnpm audit --prod`. نجحت جميع الأوامر، وكان working tree نظيفًا. ظلت نافذة التنفيذ الحقيقية active عند elapsed قدره `16,580` ثانية، مع بقاء required completion epoch عند `1786999623` / `2026-08-17T20:47:03Z`.
+
