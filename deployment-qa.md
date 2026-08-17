@@ -112,3 +112,8 @@ Integrity and dependency audit:
 
 At 2026-08-17T11:29:15Z, Prisma validation passed, all three local migrations were applied with the database schema up to date, and `pnpm audit --prod` reported no known vulnerabilities.
 
+
+Performance footprint audit:
+
+At 2026-08-17T11:30:08Z, the deploy-relevant `.next/server` output measured 15 MB and `.next/static` measured 820 KB. The larger 604 MB aggregate `.next` size was dominated by local Turbopack development/cache artifacts (`.next/dev` and `.next/cache`), not production runtime assets. The largest client JavaScript chunk was approximately 229 KB before compression; no code change was required from this audit.
+
