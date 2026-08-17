@@ -15,7 +15,9 @@
     "test:auth": "bash scripts/auth-security-smoke.sh",
     "test:edge": "bash scripts/edge-cases-smoke.sh",
     "test:tenant": "bash scripts/tenant-isolation-smoke.sh",
-    "test:subscription": "bash scripts/subscription-lifecycle-smoke.sh"
+    "test:subscription": "bash scripts/subscription-lifecycle-smoke.sh",
+    "verify:production": "node scripts/verify-production-config.mjs --strict",
+    "test:production-config": "bash scripts/production-config-smoke.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

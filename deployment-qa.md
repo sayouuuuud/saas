@@ -289,3 +289,10 @@ Vercel deployment `dpl_J9HFj96iYKt2g9bRZ6amGhJEspSs` reached `READY` for commit 
 نشر إنتاجي تم التحقق منه:
 
 وصل نشر Vercel `dpl_J9HFj96iYKt2g9bRZ6amGhJEspSs` إلى `READY` للـ commit `95b0c89ccd9205d48332b68c226356470f442d76` (`style: support reduced motion in loading state`) في `2026-08-17T12:21:48.064Z`. النشر موجّه للإنتاج وله alias على `https://saas-gold-seven-80.vercel.app` ويستخدم Next.js في `iad1`. أعاد فحص النطاق canonical في `2026-08-17T12:21:54Z` HTTP 200 مع CSP وHSTS وX-Content-Type-Options وX-Frame-Options وReferrer-Policy. تبقى نافذة التشغيل الحقيقية المطلوبة نشطة؛ ولا يمثل هذا السجل اكتمال النافذة النهائية.
+Production configuration release gate:
+
+At 2026-08-17T12:25:37Z, Centralia added `pnpm verify:production` and `pnpm test:production-config`. The strict verifier rejects SQLite `DATABASE_URL` values, weak or placeholder session and webhook secrets, non-HTTPS `APP_URL`, and incomplete Stripe prerequisites; the smoke test covers both unsafe rejection and valid PostgreSQL acceptance. Lint, production build, and all six application smoke suites passed. This makes the SQLite-development/PostgreSQL-production boundary explicit and prevents treating an unsafe Vercel environment as data-production-ready.
+
+بوابة إعداد الإنتاج:
+
+في `2026-08-17T12:25:37Z` أضيف الأمران `pnpm verify:production` و`pnpm test:production-config`. يرفض الفحص الصارم قيم `DATABASE_URL` الخاصة بـ SQLite، والأسرار القصيرة أو الافتراضية، و`APP_URL` غير الآمن، ومتطلبات Stripe الناقصة؛ ويغطي smoke test الرفض الآمن والقبول الحتمي لإعداد PostgreSQL صالح. نجحت lint وproduction build ومصفوفة اختبارات التطبيق الست كاملة. يوضح ذلك حد SQLite للتطوير وPostgreSQL للإنتاج ويمنع اعتبار بيئة Vercel غير الآمنة جاهزة لبيانات حقيقية.

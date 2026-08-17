@@ -31,6 +31,8 @@ pnpm dev
 | `pnpm test:tenant` | اختبار عزل مساحات العمل ومنع الوصول المتقاطع |
 | `pnpm test:subscription` | اختبار إلغاء الاشتراك وإعادة تفعيله وسلوك العمليات المتكررة وتغيير الباقة |
 | `pnpm audit --prod` | فحص ثغرات اعتماديات الإنتاج |
+| `pnpm verify:production` | بوابة إصدار صارمة تتحقق من PostgreSQL وHTTPS والأسرار ومتطلبات Stripe |
+| `pnpm test:production-config` | اختبار قبول ورفض إعدادات الإنتاج بشكل حتمي |
 
 ## المصادقة وعزل البيانات
 
@@ -98,7 +100,7 @@ pnpm dev
 
 ## النشر
 
-المستودع الرسمي هو [`sayouuuuud/saas`](https://github.com/sayouuuuud/saas)، وفرع النشر هو `main`. يرتبط المستودع بمشروع Vercel، ويُنشئ كل push ناجح deployment إنتاجيًا. يجب ضبط `DATABASE_URL` على PostgreSQL في بيئة الإنتاج بدل SQLite المحلي، مع حفظ الأسرار في Vercel Environment Variables وعدم وضعها في Git.
+المستودع الرسمي هو [`sayouuuuud/saas`](https://github.com/sayouuuuud/saas)، وفرع النشر هو `main`. يرتبط المستودع بمشروع Vercel، ويُنشئ كل push ناجح deployment إنتاجيًا. يجب ضبط `DATABASE_URL` على PostgreSQL في بيئة الإنتاج بدل SQLite المحلي، مع حفظ الأسرار في Vercel Environment Variables وعدم وضعها في Git. قبل أي release شغّل `pnpm verify:production`؛ سيرفض الأمر روابط SQLite، الأسرار القصيرة أو الافتراضية، عناوين HTTP، وإعدادات Stripe الناقصة. يظل SQLite مخصصًا للتطوير المحلي والاختبارات فقط، ولا تُعد نسخة Vercel جاهزة للبيانات الحقيقية حتى ينجح هذا الفحص باستخدام متغيرات الإنتاج الفعلية.
 
 للمراجعة اليدوية بعد النشر، تحقق من HTTP 200 على النطاق canonical، ووجود `dir="rtl"` والمحتوى العربي، ووجود CSP و`X-Content-Type-Options: nosniff` و`X-Frame-Options: DENY` و`Referrer-Policy`. اربط حالة commit بحالة Vercel الفعلية؛ فإذا ظهر `upgradeToPro=build-rate-limit` فلا تُنسب نسخة READY سابقة إلى commit الجديد، ولا تُسجّل النسخة كمنشورة إلا بعد التحقق من deployment ID وcommit SHA وحالة `READY`.
 
