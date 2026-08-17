@@ -7,6 +7,7 @@ EMAIL="qa-$(date +%s%N)@example.com"
 TEST_CLIENT="api-smoke-$(date +%s%N)"
 json_request() { curl -sS -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
 status_request() { curl -sS -o /tmp/saas-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
+status_and_headers_request() { curl -sS -D /tmp/saas-smoke-headers.txt -o /tmp/saas-smoke-response.json -w '%{http_code}' -b "$COOKIE_FILE" -c "$COOKIE_FILE" -H 'content-type: application/json' -H "x-test-client: $TEST_CLIENT" "$@"; }
 
 register="$(json_request -X POST -d "{\"name\":\"QA Teacher\",\"email\":\"$EMAIL\",\"password\":\"correct-horse-123\"}" "$BASE_URL/api/auth/register")"
 test "$(printf '%s' "$register" | grep -c 'QA Teacher')" -eq 1
@@ -52,7 +53,10 @@ test "$(printf '%s' "$tickets" | grep -c '"offset":1')" -eq 1
 tickets_first_page="$(json_request "$BASE_URL/api/tickets?limit=1&offset=0")"
 test "$(printf '%s' "$tickets_first_page" | grep -c '"limit":1')" -eq 1
 test "$(printf '%s' "$tickets_first_page" | grep -c '"offset":0')" -eq 1
-usage_history="$(json_request "$BASE_URL/api/usage/history")"
+usage_history_status="$(status_and_headers_request "$BASE_URL/api/usage/history")"
+test "$usage_history_status" = "200"
+grep -Eiq '^cache-control: private, no-store' /tmp/saas-smoke-headers.txt
+usage_history="$(cat /tmp/saas-smoke-response.json)"
 test "$(printf '%s' "$usage_history" | grep -c 'saas_audit_log')" -eq 1
 checkout="$(json_request -X POST -d '{"planCode":"growth","billingCycle":"MONTHLY"}' "$BASE_URL/api/checkout/session")"
 test "$(printf '%s' "$checkout" | grep -c 'ACTIVE')" -ge 1
@@ -61,6 +65,9 @@ test "$(printf '%s' "$invoices" | grep -c '"limit":50')" -eq 1
 test "$(printf '%s' "$invoices" | grep -c '"offset":1')" -eq 1
 invoices_first_page="$(json_request "$BASE_URL/api/invoices?limit=1&offset=0")"
 test "$(printf '%s' "$invoices_first_page" | grep -c 'PAID')" -ge 1
-reports="$(json_request "$BASE_URL/api/reports")"
+reports_status="$(status_and_headers_request "$BASE_URL/api/reports")"
+test "$reports_status" = "200"
+grep -Eiq '^cache-control: private, no-store' /tmp/saas-smoke-headers.txt
+reports="$(cat /tmp/saas-smoke-response.json)"
 test "$(printf '%s' "$reports" | grep -c '"invoiceCount":1')" -eq 1
 printf 'API smoke test passed for %s\n' "$EMAIL"

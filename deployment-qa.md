@@ -1196,3 +1196,8 @@ The Prisma client generation script was corrected to import `node:fs`, ensuring 
 ## 2026-08-17 15:28:26Z — authenticated analytics cache isolation
 
 The authenticated `/api/reports`, `/api/usage`, and `/api/usage/history` endpoints now mark unauthorized responses `no-store` and successful workspace-scoped responses `private, no-store`. This prevents intermediary caching from replaying tenant-specific SaaS metrics across sessions while preserving the existing response contracts and LMS-independent data boundaries. The complete `pnpm test:regression-matrix` passed at epoch `1786980506`, including build, migrations, seed, all smoke suites, production configuration, final-window status, 28 auth boundaries, LMS independence, collection bounds, and dependency audit. The required real-time completion epoch remains `1786999623` (`2026-08-17T20:47:03Z`).
+
+
+## 2026-08-17 15:30:11Z — analytics cache-control regression coverage
+
+The API smoke suite now captures response headers and explicitly verifies `private, no-store` on authenticated `/api/usage/history` and `/api/reports` responses. This turns the tenant-cache isolation requirement into an executable end-to-end contract rather than a source-only assertion. The complete `pnpm test:regression-matrix` passed at epoch `1786980611`, including the new header checks and all existing build, smoke, security, boundary, LMS-independence, and dependency gates. The real-time execution window remains active until epoch `1786999623` (`2026-08-17T20:47:03Z`).
