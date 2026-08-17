@@ -64,7 +64,7 @@ export default function LoginPage() {
             {error && <p className="form-error" role="alert">{error}</p>}
             <button disabled={loading} type="submit" className="button button-dark button-large">{loading ? 'جارٍ التنفيذ...' : mode === 'signup' ? 'أنشئ حسابك' : 'تسجيل الدخول'} <ArrowLeft size={15} /></button>
           </form>
-          <div className="auth-switch">{mode === 'signup' ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟'} <button onClick={() => { setError(''); setMode(mode === 'signup' ? 'login' : 'signup') }}>{mode === 'signup' ? 'تسجيل الدخول' : 'ابدأ مجانًا'}</button></div>
+          <div className="auth-switch">{mode === 'signup' ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟'} <button type="button" onClick={() => { setError(''); setMode(mode === 'signup' ? 'login' : 'signup') }}>{mode === 'signup' ? 'تسجيل الدخول' : 'ابدأ مجانًا'}</button></div>
           <small className="auth-legal">بالمتابعة، أنت توافق على الشروط وسياسة الخصوصية الخاصة بمركزية.</small>
         </div>
       </section>

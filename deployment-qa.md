@@ -62,3 +62,8 @@ Final local verification timestamp: 2026-08-17T10:10:00Z (recorded during the ac
 
 The canonical Vercel domain was rechecked after the webhook-hardening push at approximately 2026-08-17T10:11:49Z. It returned HTTP 200, one CSP header, six configured security-header matches, and an Arabic RTL marker.
 
+
+Accessibility refinement verification:
+
+The dashboard, login, and billing surfaces now use explicit non-submit button types for interactive controls and Arabic `aria-label` values for icon-only actions such as sidebar, notification, settings, and payment controls. After these changes, lint, production build, API smoke, security smoke, authentication security, edge-case, and tenant-isolation suites all passed at 2026-08-17T11:17:50Z.
+
