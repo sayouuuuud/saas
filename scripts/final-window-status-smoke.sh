@@ -5,7 +5,7 @@ TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 mkdir -p "$TMP_DIR/scripts" "$TMP_DIR/bin"
 cp "$ROOT_DIR/scripts/final-window-verification.sh" "$TMP_DIR/scripts/final-window-verification.sh"
-printf '{\n  "started_at_epoch": 1,\n  "required_duration_seconds": 43200,\n  "required_completion_epoch": 1,\n  "status": "active"\n}\n' > "$TMP_DIR/execution-window.json"
+printf '{\n  "started_at_epoch": 1,\n  "required_duration_seconds": 43200,\n  "required_completion_epoch": 1,\n  "status": "active"\n}\n' > "$TMP_DIR/execution-window-current.json"
 ln -s "$(type -P true)" "$TMP_DIR/bin/pnpm"
 cat > "$TMP_DIR/bin/git" <<'EOF'
 #!/usr/bin/env bash
@@ -22,7 +22,7 @@ esac
 EOF
 chmod +x "$TMP_DIR/bin/git"
 PATH="$TMP_DIR/bin:$PATH" bash "$TMP_DIR/scripts/final-window-verification.sh"
-test "$(sed -n 's/.*"status": "\([^"]*\)".*/\1/p' "$TMP_DIR/execution-window.json")" = "window_complete"
+test "$(sed -n 's/.*"status": "\([^"]*\)".*/\1/p' "$TMP_DIR/execution-window-current.json")" = "window_complete"
 grep -q '^tested_git_revision=test-revision$' "$TMP_DIR/final-window-verification.log"
 grep -q '^tested_git_branch=main$' "$TMP_DIR/final-window-verification.log"
 grep -q '^observed_elapsed_seconds=' "$TMP_DIR/final-window-verification.log"
