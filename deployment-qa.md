@@ -512,3 +512,11 @@ At 2026-08-17T13:10:41Z, `pnpm test:final-window-status` and `pnpm test:producti
 
 عند `2026-08-17T13:10:41Z` نجح كل من `pnpm test:final-window-status` و`pnpm test:production-config` بعد آخر push للمستودع. يؤكد اختبار status انتقال verifier المصحح إلى `window_complete`، بينما يؤكد اختبار production-config رفض إعدادات الإنتاج غير الصالحة وقبول مسار PostgreSQL/HTTPS.
 
+Watchdog completion-write hardening:
+
+At 2026-08-17T13:11:55Z, `scripts/realtime_window.py` was hardened to write completion metadata through a temporary file followed by `os.replace`, preventing a process interruption from leaving `execution-window.json` partially written. Python syntax compilation, shell syntax checks, lint, and `pnpm test:final-window-status` all passed before commit `a08a675` was pushed. The active watchdog PID 5121 and corrected final verifier PID 67767 were both confirmed running, with the window still `active` before the required epoch.
+
+تقوية كتابة اكتمال watchdog:
+
+عند `2026-08-17T13:11:55Z` تم تقوية `scripts/realtime_window.py` لكتابة metadata الإكمال عبر ملف مؤقت ثم `os.replace`، لمنع ترك `execution-window.json` ناقصًا إذا انقطع process. نجح Python syntax compilation وshell syntax checks وlint و`pnpm test:final-window-status` قبل دفع commit `a08a675`. تم التأكد من أن watchdog PID 5121 وfinal verifier المصحح PID 67767 يعملان، مع بقاء النافذة `active` قبل epoch المطلوب.
+
