@@ -14,6 +14,7 @@
   "quality_gate": "Centralia full regression matrix and canonical production smoke passed after phase-four hardening",
   "production_deployment_verification": "canonical smoke passed on the current READY deployment, but the latest commits 8659473 and 140591b are not yet deployed because GitHub Vercel status reports build rate limit; no upgrade or paid action was taken",
   "latest_ready_deployment_commit": "35d4812b7d362a2c5fe77363b4e03fefd3a08edb",
+  "completion_scheduler": "schedule status returned empty; recreation attempt failed with TLS handshake timeout at 2026-08-18T00:39Z; local fallback verifier remains alive and is the active epoch-gated mechanism",
   "remote_branch": "origin/main"
 }
 
