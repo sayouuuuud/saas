@@ -1,81 +1,40 @@
 import Link from "next/link";
+import { ArrowLeft, BarChart3, Bell, CheckCircle2, CreditCard, LifeBuoy, Link2, ShieldCheck, Users } from "lucide-react";
+import WorkspaceShell from "@/components/workspace-shell";
 
 export const metadata = {
-  title: "حساب تجريبي | مركزية",
-  description: "عرض تجريبي للوحة حساب مركزية ببيانات وهمية للقراءة فقط دون تسجيل دخول.",
+  title: "حساب المدرس التجريبي | مركزية",
+  description: "نسخة مطابقة للقراءة فقط من مساحة حساب المدرس في مركزية.",
 };
 
-const sections = [
-  { slug: "overview", label: "نظرة عامة", note: "ملخص الحساب" },
-  { slug: "subscription", label: "الاشتراك", note: "الخطة والفوترة" },
-  { slug: "usage", label: "الاستخدام", note: "مؤشرات SaaS" },
-  { slug: "team", label: "الفريق", note: "الأعضاء والدعوات" },
-  { slug: "support", label: "الدعم", note: "التذاكر" },
-  { slug: "security", label: "الأمان", note: "حالة الحساب" },
-];
+const demoUser = { name: "محمد", email: "teacher.demo@centralia.test", workspaceName: "أكاديمية المدار" };
+const demoBasePath = "/demo/account";
 
 export default function DemoAccountPage() {
-  return (
-    <main className="demo-account-shell">
-      <div className="section-container">
-        <div className="demo-account-topbar">
-          <Link href="/" className="brand" aria-label="العودة إلى مركزية">
-            <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
-            مركزية
-          </Link>
-          <div className="demo-account-actions">
-            <span className="demo-badge">وضع العرض · قراءة فقط</span>
-            <Link href="/register" className="button button-dark">إنشاء حساب حقيقي</Link>
-          </div>
-        </div>
-
-        <div className="demo-disclaimer" role="note">
-          <strong>هذه بيانات تجريبية غير حساسة.</strong>
-          <span>لا توجد جلسة دخول، ولا يتم استدعاء APIs خاصة، وكل إجراءات الدفع والتعديل معطلة في هذا العرض.</span>
-        </div>
-
-        <div className="demo-account-layout">
-          <aside className="demo-sidebar" aria-label="تنقل العرض التجريبي">
-            <div className="demo-workspace">
-              <span className="demo-avatar">م</span>
-              <span><b>أكاديمية المدار</b><small>حساب مدرس تجريبي</small></span>
-            </div>
-            <span className="demo-nav-label">الحساب</span>
-            {sections.map((section) => (
-              <Link key={section.slug} href={`/demo/account/${section.slug}`} className={`demo-nav-link ${section.slug === "overview" ? "active" : ""}`}>
-                <span>{section.label}</span><small>{section.note}</small>
-              </Link>
-            ))}
-            <div className="demo-sidebar-footer">
-              <span className="demo-avatar muted">م</span>
-              <span><b>مستخدم العرض</b><small>demo@example.com</small></span>
-            </div>
-          </aside>
-
-          <section className="demo-account-main">
-            <div className="demo-heading-row">
-              <div><span className="section-eyebrow"><span className="eyebrow-dot" /> حساب SaaS تجريبي</span><h1>أهلًا بك في <em>لوحة التحكم</em></h1><p>استكشف شكل الحساب، الاشتراك، الاستخدام، الفريق، الدعم، والأمان قبل إنشاء حسابك.</p></div>
-              <span className="demo-status">● لا توجد جلسة حقيقية</span>
-            </div>
-
-            <div className="demo-metric-grid">
-              <article className="demo-metric-card"><span>الخطة الحالية</span><strong>Growth</strong><small>شهري · تجريبي</small></article>
-              <article className="demo-metric-card"><span>حالة الاشتراك</span><strong className="demo-green">نشط تجريبيًا</strong><small>لا توجد عملية دفع</small></article>
-              <article className="demo-metric-card"><span>أعضاء الفريق</span><strong>4</strong><small>من أصل 10 في العرض</small></article>
-              <article className="demo-metric-card"><span>تذاكر الدعم</span><strong>2</strong><small>تجريبية للعرض فقط</small></article>
-            </div>
-
-            <div className="demo-panel-grid">
-              <article className="demo-panel demo-panel-wide"><div className="demo-panel-heading"><div><b>نشاط SaaS خلال 30 يومًا</b><small>بيانات وهمية للشرح فقط</small></div><span className="demo-chip">عرض</span></div><div className="demo-bars" aria-label="رسم توضيحي للنشاط"><i style={{ height: "35%" }} /><i style={{ height: "52%" }} /><i style={{ height: "44%" }} /><i style={{ height: "70%" }} /><i style={{ height: "62%" }} /><i style={{ height: "82%" }} /><i style={{ height: "66%" }} /><i style={{ height: "91%" }} /><i style={{ height: "76%" }} /><i style={{ height: "98%" }} /></div><div className="demo-axis"><span>منذ 30 يومًا</span><span>اليوم</span></div></article>
-              <article className="demo-panel"><div className="demo-panel-heading"><div><b>رابط LMS</b><small>Link-only</small></div><span className="demo-dot-status">● محفوظ</span></div><div className="demo-link-card"><strong>academy.example.com</strong><span>آخر فحص: منذ ساعتين</span><Link href="/demo/account/overview">عرض الحالة ←</Link></div></article>
-            </div>
-
-            <div className="demo-quick-actions"><span>استكشف أقسام العرض</span>{sections.slice(1, 5).map((section) => <Link key={section.slug} href={`/demo/account/${section.slug}`} className="button button-outline">{section.label}</Link>)}</div>
-
-            <div className="demo-readonly-note"><strong>ماذا يحدث عند إنشاء حساب حقيقي؟</strong><span>تحصل على مساحة عمل خاصة، جلسة آمنة، APIs محمية، وفوترة مرتبطة بمزود الدفع عند تفعيله. هذا العرض لا يخلط بين تجربة المنتج وبيانات العملاء.</span><Link href="/register" className="text-link">ابدأ التسجيل ←</Link></div>
-          </section>
-        </div>
-      </div>
-    </main>
-  );
+  return <WorkspaceShell active="overview" title="نظرة عامة" intro="صورة عملية عن حسابك ومساحة عملك، مبنية على بيانات SaaS التجريبية للعرض فقط." demoBasePath={demoBasePath} demoUser={demoUser}>
+    <section className="workspace-card-grid">
+      <article className="workspace-panel workspace-panel-accent">
+        <span className="section-eyebrow"><span className="eyebrow-dot" />حالة الحساب</span>
+        <h2>Growth</h2>
+        <p>حالة الاشتراك: تجريبية. لا يوجد إلغاء مجدول حاليًا لأن هذه نسخة عرض للقراءة فقط.</p>
+        <ul className="workspace-bullets">
+          <li><CheckCircle2 size={15} />الفترة الحالية تنتهي في ١٥ سبتمبر ٢٠٢٦</li>
+          <li><CheckCircle2 size={15} />دورة الفوترة: شهرية</li>
+          <li><CheckCircle2 size={15} />كل الأرقام هنا خاصة بـ SaaS وليست بيانات تعليمية</li>
+        </ul>
+        <div className="workspace-next"><Link href={`${demoBasePath}/subscription`} className="button button-dark">إدارة الاشتراك <ArrowLeft size={14} /></Link><Link href={`${demoBasePath}/billing`} className="button button-outline">الفوترة</Link></div>
+      </article>
+      <article className="workspace-panel">
+        <div className="workspace-panel-heading"><b>خطة العمل السريعة</b><BarChart3 size={16} /></div>
+        <div className="workspace-stat-list"><div><span>أعضاء مساحة العمل</span><strong>4</strong></div><div><span>التذاكر المفتوحة</span><strong>2</strong></div><div><span>الروابط القابلة للوصول</span><strong>1</strong></div></div>
+        <p className="safe-note"><ShieldCheck size={15} /> لا نقرأ محتوى LMS ولا ننسخ بياناته.</p>
+      </article>
+    </section>
+    <section className="workspace-card-grid">
+      <article className="workspace-panel"><div className="workspace-panel-heading"><b>الفواتير الأخيرة</b><CreditCard size={16} /></div><div className="workspace-list"><Link href={`${demoBasePath}/billing`} className="workspace-list-row"><span>INV-DEMO-002<small>١ أغسطس ٢٠٢٦</small></span><strong dir="ltr">49.00 USD</strong><span>مدفوعة</span></Link><Link href={`${demoBasePath}/billing`} className="workspace-list-row"><span>INV-DEMO-001<small>١ يوليو ٢٠٢٦</small></span><strong dir="ltr">49.00 USD</strong><span>مدفوعة</span></Link></div><Link href={`${demoBasePath}/billing`} className="text-link">عرض كل الفواتير <ArrowLeft size={13} /></Link></article>
+      <article className="workspace-panel"><div className="workspace-panel-heading"><b>الدعم</b><LifeBuoy size={16} /></div><div className="workspace-list"><Link href={`${demoBasePath}/support`} className="workspace-list-row"><span>مشكلة في إعداد الرابط<small>تذكرة تجريبية · اليوم</small></span><strong>مفتوحة</strong></Link><Link href={`${demoBasePath}/support`} className="workspace-list-row"><span>استفسار عن الخطة<small>تذكرة تجريبية · أمس</small></span><strong>قيد المتابعة</strong></Link></div><Link href={`${demoBasePath}/support`} className="text-link">فتح مركز الدعم <ArrowLeft size={13} /></Link></article>
+      <article className="workspace-panel"><div className="workspace-panel-heading"><b>روابط المنصة</b><Link2 size={16} /></div><div className="workspace-list"><Link href={`${demoBasePath}/lms`} className="workspace-list-row"><span>المنصة التعليمية الرئيسية<small>آخر فحص: اليوم ١٠:٣٠</small></span><strong>قابل للوصول</strong></Link></div><Link href={`${demoBasePath}/lms`} className="text-link">إدارة الروابط <ArrowLeft size={13} /></Link></article>
+    </section>
+    <section className="workspace-panel"><div className="workspace-panel-heading"><div><b>إجراءات سريعة</b><span>الخطوات التالية المقترحة حسب حالة الحساب الحالية.</span></div><Users size={16} /></div><div className="workspace-next"><Link href={`${demoBasePath}/profile`} className="button button-outline">تحديث الملف</Link><Link href={`${demoBasePath}/team`} className="button button-outline">إدارة الفريق</Link><Link href={`${demoBasePath}/reports`} className="button button-outline">فتح التقارير</Link><Link href={`${demoBasePath}/notifications`} className="button button-outline">الإشعارات (3)<Bell size={14} /></Link></div></section>
+  </WorkspaceShell>;
 }

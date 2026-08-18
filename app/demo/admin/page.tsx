@@ -1,72 +1,24 @@
 import Link from "next/link";
+import { ArrowRight, BarChart3, CreditCard, ExternalLink, FileText, Link2, ShieldCheck, Ticket, Users } from "lucide-react";
 
-export const metadata = {
-  title: "لوحة الأدمن التجريبية | مركزية",
-  description: "عرض تجريبي للوحة تشغيل مركزية ببيانات وهمية للقراءة فقط دون تسجيل دخول.",
-};
+export const metadata = { title: "ديمو الأدمن | مركزية", description: "نسخة مطابقة للقراءة فقط من لوحة إدارة مركزية ببيانات تجريبية." };
 
 const adminSections = [
-  { label: "نظرة عامة", value: "ملخص التشغيل" },
-  { label: "المدرسون", value: "12 حسابًا تجريبيًا" },
-  { label: "الاشتراكات", value: "9 نشطة · 2 تجريبية" },
-  { label: "الدعم", value: "4 تذاكر مفتوحة" },
-  { label: "السجل والتشغيل", value: "آخر تحديث منذ 8 دقائق" },
-];
+  ["الخطط", "plans"], ["المدرسون", "teachers"], ["الاشتراكات", "subscriptions"], ["الفوترة", "billing"], ["روابط المنصات", "lms-links"], ["التكاملات", "integrations"], ["الاستخدام", "usage"], ["التقارير", "reports"], ["الدعم والتذاكر", "support"], ["الموظفون", "staff"], ["سجل التدقيق", "audit"], ["الإشعارات", "notifications"], ["أكواد الخصم", "coupons"], ["أحداث الدفع", "webhooks"], ["إعدادات النظام", "settings"],
+] as const;
+const demoBasePath = "/demo/admin";
 
 export default function DemoAdminPage() {
-  return (
-    <main className="demo-account-shell demo-admin-shell">
-      <div className="section-container">
-        <div className="demo-account-topbar">
-          <Link href="/" className="brand" aria-label="العودة إلى مركزية">
-            <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
-            مركزية
-          </Link>
-          <div className="demo-account-actions">
-            <span className="demo-badge">وضع الأدمن · قراءة فقط</span>
-            <Link href="/demo/account" className="button button-outline">ديمو المدرس</Link>
-            <Link href="/register" className="button button-dark">إنشاء حساب حقيقي</Link>
-          </div>
-        </div>
-
-        <div className="demo-disclaimer" role="note">
-          <strong>هذه لوحة تشغيل تجريبية ببيانات غير حساسة.</strong>
-          <span>لا توجد جلسة Staff، ولا يتم استدعاء APIs إدارية، وكل الأرقام والتنبيهات للشرح فقط.</span>
-        </div>
-
-        <section className="demo-admin-main" aria-labelledby="demo-admin-title">
-          <div className="demo-heading-row">
-            <div>
-              <span className="section-eyebrow"><span className="eyebrow-dot" /> مركز التحكم التجريبي</span>
-              <h1 id="demo-admin-title">رؤية تشغيلية <em>في لمحة.</em></h1>
-              <p>استكشف كيف يراجع فريق التشغيل حالة الحسابات والاشتراكات والدعم دون الوصول إلى بيانات عملاء حقيقية.</p>
-            </div>
-            <span className="demo-status">● بيئة عرض منفصلة</span>
-          </div>
-
-          <div className="demo-metric-grid demo-admin-metrics">
-            <article className="demo-metric-card"><span>إجمالي المدرسين</span><strong>12</strong><small>بيانات تجريبية</small></article>
-            <article className="demo-metric-card"><span>MRR تجريبي</span><strong>$1,248</strong><small>ليس إيرادًا فعليًا</small></article>
-            <article className="demo-metric-card"><span>تذاكر تحتاج متابعة</span><strong className="demo-orange">4</strong><small>حالات مصطنعة للعرض</small></article>
-            <article className="demo-metric-card"><span>حالة التشغيل</span><strong className="demo-green">مستقر</strong><small>آخر فحص منذ 8 دقائق</small></article>
-          </div>
-
-          <div className="demo-panel-grid demo-admin-grid">
-            <article className="demo-panel demo-panel-wide">
-              <div className="demo-panel-heading"><div><b>ملخص الأقسام</b><small>صلاحيات وبيانات افتراضية</small></div><span className="demo-chip">Demo</span></div>
-              <div className="demo-admin-section-list">
-                {adminSections.map((section) => <div key={section.label} className="demo-admin-section-row"><span>{section.label}</span><strong>{section.value}</strong><span className="demo-row-arrow">←</span></div>)}
-              </div>
-            </article>
-            <article className="demo-panel">
-              <div className="demo-panel-heading"><div><b>تنبيهات التشغيل</b><small>للعرض فقط</small></div><span className="demo-dot-status">● بلا حوادث</span></div>
-              <div className="demo-alert-list"><div><strong>Webhook تجريبي</strong><span>تمت المعالجة بنجاح</span></div><div><strong>طلب حذف تجريبي</strong><span>بانتظار المراجعة</span></div><div><strong>تحديث النظام</strong><span>لا يتطلب إجراءً</span></div></div>
-            </article>
-          </div>
-
-          <div className="demo-readonly-note"><strong>مهم: هذا ليس دخول Admin حقيقيًا.</strong><span>لا توجد أدوات تعديل أو حذف أو تصدير، ولا يمكن رؤية حسابات العملاء. عند استخدام الحساب الحقيقي، تُطبق StaffRole و2FA والصلاحيات server-side.</span><Link href="/demo/account" className="text-link">شاهد ديمو المدرس ←</Link></div>
-        </section>
-      </div>
-    </main>
-  );
+  return <main className="admin-page">
+    <header className="admin-header section-container"><Link href="/" className="brand"><span className="brand-mark"><span /><span /><span /></span>مركزية</Link><div><span className="section-eyebrow"><span className="eyebrow-dot" />مساحة الموظفين</span><h1>لوحة تشغيل <em>SaaS</em></h1></div><span className="staff-badge"><ShieldCheck size={13} /> Staff · Demo</span></header>
+    <section className="admin-content section-container">
+      <div className="demo-admin-notice" role="note"><strong>وضع الأدمن التجريبي · قراءة فقط</strong><span>هذه نسخة مطابقة لبنية لوحة الإدارة ببيانات ثابتة غير حساسة. لا توجد صلاحيات Staff حقيقية ولا تُستدعى APIs إدارية.</span><Link href="/register" className="button button-outline">إنشاء حساب حقيقي</Link></div>
+      <div className="admin-panel" aria-label="حالة البيئة والتشغيل"><div className="admin-stat-row"><span>بيئة التشغيل</span><strong>demo</strong></div><div className="admin-stat-row"><span>توفر التدقيق</span><strong className="safe-state">آخر حدث متاح</strong></div><div className="admin-stat-row"><span>آخر حدث تدقيق</span><strong>اليوم، 10:30</strong></div></div>
+      <div className="admin-panel"><div className="admin-panel-heading"><div><b>لا توجد حوادث تشغيلية فعلية</b><span>البيانات أدناه تجريبية ولا تمثل نظامًا حقيقيًا.</span></div><ShieldCheck size={17} /></div></div>
+      <div className="admin-metrics"><article><Users size={17} /><span>المدرسون</span><strong>128</strong></article><article><CreditCard size={17} /><span>اشتراكات نشطة</span><strong>96</strong></article><article><Ticket size={17} /><span>تذاكر مفتوحة</span><strong>14</strong></article><article><Link2 size={17} /><span>روابط LMS محفوظة</span><strong>84</strong></article></div>
+      <div className="admin-grid"><article className="admin-panel"><div className="admin-panel-heading"><div><b>نظرة تشغيلية</b><span>بيانات SaaS فقط، دون قراءة لمحتوى LMS.</span></div><BarChart3 size={17} /></div><div className="admin-stat-row"><span>الفواتير المدفوعة</span><strong>1,042</strong></div><div className="admin-stat-row"><span>حالة العزل</span><strong className="safe-state">مفعّل</strong></div><div className="admin-stat-row"><span>مصدر Usage</span><strong>بيانات SaaS التجريبية</strong></div></article><article className="admin-panel"><div className="admin-panel-heading"><div><b>روابط سريعة</b><span>نفس أقسام لوحة الإدارة الحقيقية.</span></div><ExternalLink size={17} /></div><div className="admin-links">{adminSections.map(([label, slug]) => <Link key={slug} href={`${demoBasePath}/${slug}`}><FileText size={14} /> {label}</Link>)}</div></article></div>
+      <article className="admin-panel audit-panel"><div className="admin-panel-heading"><div><b>آخر أحداث التدقيق</b><span>أحداث تجريبية مرتبطة بفاعل ومساحة عمل.</span></div><FileText size={17} /></div><div className="audit-list"><div className="audit-row"><span>SUBSCRIPTION_UPDATED</span><b>Subscription</b><small>demo.admin · أكاديمية المدار · اليوم 10:30</small></div><div className="audit-row"><span>SUPPORT_TICKET_CREATED</span><b>SupportTicket</b><small>demo.support · أكاديمية المدار · أمس 16:12</small></div><div className="audit-row"><span>LMS_LINK_CHECKED</span><b>LmsLink</b><small>system · أكاديمية المدار · أمس 09:45</small></div></div></article>
+      <div className="admin-panel"><div className="admin-panel-heading"><div><b>استكشف التحكم</b><span>هذه الروابط للعرض فقط ولا تنفذ عمليات إدارية.</span></div><ArrowRight size={17} /></div><div className="admin-links"><Link href="/demo/account"><Users size={14} /> ديمو حساب المدرس</Link><Link href="/"><ExternalLink size={14} /> الصفحة الرئيسية</Link></div></div>
+    </section>
+  </main>;
 }
