@@ -80,12 +80,20 @@ enum AuditAction {
   SECURITY_EVENT
 }
 
+enum StaffRole {
+  ADMIN
+  BILLING
+  SUPPORT
+  ANALYST
+}
+
 model User {
   id                         String            @id @default(cuid())
   email                      String            @unique
   name                       String
   passwordHash               String?
   isStaff                    Boolean           @default(false)
+  staffRole                  StaffRole         @default(ADMIN)
   notificationEmailEnabled  Boolean           @default(true)
   notificationProductEnabled Boolean          @default(true)
   notificationBillingEnabled Boolean          @default(true)
