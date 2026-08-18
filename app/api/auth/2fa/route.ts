@@ -11,7 +11,7 @@ export async function GET() {
   try {
     const user = await getCurrentUser();
     if (!user) return NextResponse.json({ error: "يجب تسجيل الدخول أولًا" }, { status: 401, headers });
-    return NextResponse.json({ enabled: user.twoFactorEnabled, enrollmentPending: Boolean(user.twoFactorSecretEncrypted && !user.twoFactorEnabled) }, { headers });
+    return NextResponse.json({ enabled: user.twoFactorEnabled, enrollmentPending: Boolean(user.twoFactorSecretEncrypted && !user.twoFactorEnabled), requiredForStaff: user.isStaff }, { headers });
   } catch (error) {
     return safeAuthError(error);
   }
@@ -32,6 +32,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ secret, otpauthUri: otpauthUri(user.email, secret), enrollmentPending: true }, { headers });
     }
 
+    if (action === "disable" && user.isStaff) return NextResponse.json({ error: "المصادقة الثنائية إلزامية لحسابات Staff ولا يمكن إيقافها" }, { status: 403, headers });
     if (!code) return NextResponse.json({ error: "أدخل رمز المصادقة المكون من 6 أرقام" }, { status: 400, headers });
     if (!user.twoFactorSecretEncrypted) return NextResponse.json({ error: "ابدأ إعداد المصادقة الثنائية أولًا" }, { status: 409, headers });
     const secret = decryptSecret(user.twoFactorSecretEncrypted);
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
     const enabled = action === "enable";
     await prisma.user.update({ where: { id: user.id }, data: { twoFactorEnabled: enabled, twoFactorSecretEncrypted: enabled ? user.twoFactorSecretEncrypted : null } });
     await prisma.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace?.id, action: "SECURITY_EVENT", entity: "TwoFactorAuth", entityId: user.id, reason: enabled ? "user enabled TOTP" : "user disabled TOTP" } });
-    return NextResponse.json({ enabled }, { headers });
+    return NextResponse.json({ enabled, requiredForStaff: user.isStaff }, { headers });
   } catch (error) {
     return safeAuthError(error);
   }

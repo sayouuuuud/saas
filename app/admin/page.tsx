@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { ArrowRight, BarChart3, CreditCard, ExternalLink, FileText, Link2, ShieldCheck, Ticket, Users } from 'lucide-react'
-import { getCurrentUser } from '@/lib/auth'
+import { getCurrentUser, staffTwoFactorRequired } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { accessibleStaffSections } from '@/lib/staff-access'
 
 export default async function AdminPage() {
   const user = await getCurrentUser()
   if (!user || !user.isStaff) return <main className="admin-guard"><ShieldCheck size={28} /><h1>لوحة الإدارة محمية</h1><p>تحتاج إلى حساب Staff مصرح للوصول إلى بيانات التشغيل. لا تعتمد هذه الصفحة على إخفاء زر فقط.</p><Link href="/dashboard" className="button button-dark"><ArrowRight size={14} /> العودة للوحة التحكم</Link></main>
+  if (staffTwoFactorRequired(user)) return <main className="admin-guard"><ShieldCheck size={28} /><h1>فعّل المصادقة الثنائية أولًا</h1><p>المصادقة الثنائية إلزامية لكل حساب Staff قبل الوصول إلى أدوات الإدارة. أكمل الإعداد من صفحة أمان الحساب ثم عد إلى هنا.</p><Link href="/app/security" className="button button-dark"><ShieldCheck size={14} /> فتح إعدادات الأمان</Link></main>
   const allowedSections = new Set(accessibleStaffSections(user.staffRole))
   const [teachers, subscriptions, tickets, links, invoices, audits] = await Promise.all([
     prisma.user.count({ where: { workspace: { isNot: null } } }),

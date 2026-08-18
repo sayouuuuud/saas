@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, BarChart3, Bell, CreditCard, ExternalLink, FileText, Link2, LifeBuoy, PlugZap, ScrollText, Settings, ShieldCheck, UserCog, Users } from 'lucide-react'
-import { getCurrentUser } from '@/lib/auth'
+import { getCurrentUser, staffTwoFactorRequired } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { canAccessStaffSection, staffRoleLabels } from '@/lib/staff-access'
 import type { ReactNode } from 'react'
@@ -39,6 +39,7 @@ export default async function AdminSectionPage({ params, searchParams }: { param
   const config = sections[section as SectionKey]
   const user = await getCurrentUser()
   if (!user || !user.isStaff) return <main className="admin-guard"><ShieldCheck size={28} /><h1>هذه المساحة محمية</h1><p>يلزم حساب Staff مصرح للوصول إلى تشغيل SaaS. لا يعتمد الحارس على إخفاء الرابط فقط.</p><Link href="/dashboard" className="button button-dark"><ArrowRight size={14} /> العودة للوحة التحكم</Link></main>
+  if (staffTwoFactorRequired(user)) return <main className="admin-guard"><ShieldCheck size={28} /><h1>فعّل المصادقة الثنائية أولًا</h1><p>المصادقة الثنائية إلزامية لكل حساب Staff قبل الوصول إلى أقسام الإدارة. أكمل الإعداد من صفحة أمان الحساب ثم عد إلى هنا.</p><Link href="/app/security" className="button button-dark"><ShieldCheck size={14} /> فتح إعدادات الأمان</Link></main>
   if (!config) return <main className="admin-guard"><h1>القسم غير موجود</h1><Link href="/admin" className="button button-dark">لوحة الإدارة</Link></main>
   if (!canAccessStaffSection(user.staffRole, section)) return <main className="admin-guard"><ShieldCheck size={28} /><h1>القسم غير متاح لدورك</h1><p>الدور الحالي: {staffRoleLabels[user.staffRole]}. اطلب من مدير النظام منحك الصلاحية المناسبة.</p><Link href="/admin" className="button button-dark">لوحة الإدارة</Link></main>
 

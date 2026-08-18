@@ -57,6 +57,16 @@ export async function getCurrentUser() {
   return { ...user, workspace: user.workspace ?? memberships[0]?.workspace ?? null };
 }
 
+export type StaffSecurityUser = { isStaff: boolean; twoFactorEnabled: boolean };
+
+export function staffTwoFactorRequired(user: StaffSecurityUser) {
+  return user.isStaff && !user.twoFactorEnabled;
+}
+
+export function requireStaffTwoFactor(user: StaffSecurityUser) {
+  if (staffTwoFactorRequired(user)) throw new Error("STAFF_2FA_REQUIRED");
+}
+
 export async function requireUser() {
   const user = await getCurrentUser();
   if (!user) throw new Error("UNAUTHENTICATED");
@@ -77,5 +87,6 @@ export function safeAuthError(error: unknown) {
   if (error instanceof Error && error.message === "UNAUTHENTICATED") return new Response(JSON.stringify({ error: "يجب تسجيل الدخول أولًا" }), { status: 401, headers: noStoreJsonHeaders });
   if (error instanceof Error && error.message === "FORBIDDEN") return new Response(JSON.stringify({ error: "لا تملك صلاحية تنفيذ هذا الإجراء" }), { status: 403, headers: noStoreJsonHeaders });
   if (error instanceof Error && error.message === "WORKSPACE_NOT_FOUND") return new Response(JSON.stringify({ error: "مساحة العمل غير موجودة" }), { status: 404, headers: noStoreJsonHeaders });
+  if (error instanceof Error && error.message === "STAFF_2FA_REQUIRED") return new Response(JSON.stringify({ error: "يجب تفعيل المصادقة الثنائية لحسابات Staff قبل الوصول إلى أدوات الإدارة" }), { status: 428, headers: noStoreJsonHeaders });
   return new Response(JSON.stringify({ error: "حدث خطأ غير متوقع" }), { status: 500, headers: noStoreJsonHeaders });
 }
