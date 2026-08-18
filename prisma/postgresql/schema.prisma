@@ -87,6 +87,14 @@ enum StaffRole {
   ANALYST
 }
 
+enum DataDeletionStatus {
+  REQUESTED
+  IN_REVIEW
+  APPROVED
+  COMPLETED
+  CANCELLED
+}
+
 model User {
   id                         String            @id @default(cuid())
   email                      String            @unique
@@ -115,6 +123,7 @@ model User {
   sessions                   Session[]
   twoFactorChallenges        TwoFactorChallenge[]
   workspaceInvitesCreated    WorkspaceInvite[] @relation("WorkspaceInviteCreator")
+  deletionRequests           DataDeletionRequest[] @relation("DataDeletionRequester")
 }
 
 model Session {
@@ -163,8 +172,25 @@ model Workspace {
   auditEvents    AuditLog[]
   notifications  Notification[]
   invites        WorkspaceInvite[]
+  deletionRequests DataDeletionRequest[]
   createdAt      DateTime                 @default(now())
   updatedAt      DateTime                 @updatedAt
+}
+
+model DataDeletionRequest {
+  id            String             @id @default(cuid())
+  workspaceId   String
+  requestedById String
+  status        DataDeletionStatus @default(REQUESTED)
+  reason        String?
+  requestedAt   DateTime           @default(now())
+  reviewedAt    DateTime?
+  completedAt   DateTime?
+  workspace     Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  requestedBy   User               @relation("DataDeletionRequester", fields: [requestedById], references: [id])
+
+  @@index([workspaceId, status, requestedAt])
+  @@index([requestedById, requestedAt])
 }
 
 model WorkspaceMember {

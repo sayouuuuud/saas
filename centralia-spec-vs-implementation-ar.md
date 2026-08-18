@@ -9,7 +9,7 @@
 
 الذي تم بناؤه ليس مجرد واجهة شكلية. توجد قاعدة SaaS مستقلة، تسجيل دخول وجلسات، Workspace وأدوار، خطط واشتراكات وفواتير، روابط LMS بنمط Link-only، تذاكر دعم، صفحات حساب، صفحات إدارة، واختبارات حماية وانحدار قوية. كما أن حدود الاستقلال عن LMS مطبقة بوضوح: لا توجد قاعدة بيانات LMS داخل المشروع، ولا إنشاء أو نسخ أو تشغيل LMS من خلال SaaS.[2] [3]
 
-لكن التنفيذ الحالي **ليس نسخة مكتملة من المواصفة الكبيرة بكل تفاصيلها**. الأدق أن نقول إنه نفّذ العمود الفقري للمنتج، ومعه عدد جيد من الصفحات والـ APIs، بينما بقيت طبقات مهمة جزئية أو غير موجودة: الفوترة الحقيقية، إدارة الدعوات، تكاملات LMS الرسمية، مركز الدعم الكامل، 2FA، مركز الإشعارات، إدارة الموظفين، تقارير الأدمن المتقدمة، Versioning للخطط، وبعض متطلبات التشغيل والإنتاج.
+لكن التنفيذ الحالي **ليس نسخة مكتملة من المواصفة الكبيرة بكل تفاصيلها**. الأدق أن نقول إنه نفّذ العمود الفقري للمنتج، ومعه عدد جيد من الصفحات والـ APIs، وأُغلقت في هذه الجولة فجوات 2FA الإلزامي للموظفين، أدوار Staff، بحث الأدمن المحدود، حماية SSRF، وطلب حذف البيانات المراجع يدويًا. وما زالت طبقات مهمة جزئية أو غير موجودة: الفوترة الحقيقية، إدارة الدعوات، تكاملات LMS الرسمية، مركز الدعم الكامل، مركز الإشعارات المتقدم، تقارير الأدمن المتقدمة، Versioning للخطط، والمراقبة الإنتاجية والنسخ الاحتياطي العملي.
 
 > **الحكم النهائي:** المشروع في حالة **MVP متقدم / أساس SaaS قوي**، وليس بعدُ منتجًا تجاريًا كاملًا مطابقًا للمواصفة بندًا بندًا.
 
@@ -117,7 +117,7 @@
 
 ### 7. Security — الأساس موجود، أدوات الحساب غير مكتملة
 
-توجد حماية كلمات المرور والجلسات وreset tokens وemail verification وrate limiting وبعض login/security events، مع اختبارات حماية وauth. لكن صفحة Security الحالية توضيحية فقط، ولا تقدم 2FA، أو قائمة الجلسات النشطة، أو revoke all، أو login history، أو trusted devices، أو security alerts بشكل كامل.
+توجد حماية كلمات المرور والجلسات وreset tokens وemail verification وrate limiting وبعض login/security events، مع اختبارات حماية وauth. أُضيف enrollment لـ TOTP ومنع Staff من الوصول إلى الإدارة قبل تفعيل 2FA، كما تعرض صفحة Security حالة الإلزام. وما زالت قائمة الجلسات النشطة وrevoke all وlogin history وtrusted devices والتنبيهات الأمنية الكاملة خارج نطاق التنفيذ الحالي.
 
 ## ثالثًا: ما تبقى بوضوح
 
@@ -129,13 +129,13 @@
 | `/app/billing` | الوظيفة الأقوى في `/billing`، وبعض العناصر معطلة. | توحيد المسار وإضافة Payments وPayment Methods وCoupons وBilling Profile وreceipts حقيقية. |
 | `/app/support` | التنفيذ الحقيقي في `/support`، والتفاصيل معطلة. | صفحة ticket details، messages، close/reopen، SLA، context، attachment reference، وconsent. |
 | الدعوات | لا يوجد تدفق كامل ظاهر في الواجهة. | WorkspaceInvite، accept invite، resend، revoke، expiration، وإشعارات الدعوة. |
-| 2FA والجلسات | غير مكتملين. | enrollment، recovery codes، active sessions، revoke all، login history، وstaff enforcement. |
+| 2FA والجلسات | 2FA وStaff enforcement منفذان؛ إدارة الجلسات غير مكتملة. | استكمال recovery codes وactive sessions وrevoke all وlogin history والتنبيهات. |
 | الإشعارات | صفحة توضيحية فقط. | Notification preferences، in-app inbox، email/digest، mark read، delivery status. |
-| Settings المتقدمة | تعديل الاسم وWorkspace فقط. | اللغة، timezone، defaults، export، delete request، policy consents، وAPI tokens إن اعتمدت. |
+| Settings المتقدمة | تعديل الاسم وWorkspace وexport موجودان، وdelete request أصبح workflow مراجعة يدويًا. | استكمال اللغة وtimezone وdefaults وpolicy consents وAPI tokens إن اعتمدت. |
 
 ### ب. فجوات لوحة الأدمن
 
-الموجود حاليًا هو `/admin` مع مؤشرات بسيطة، وخمس مناطق staff: teachers، plans، subscriptions، billing، lms-links. كل منطقة تعرض قوائم محدودة، غالبًا بحد 50 سجلًا، مع staff guard وnoindex.[2] [4] [8]
+الموجود حاليًا هو `/admin` مع مؤشرات تشغيلية ومناطق Staff متعددة: teachers، plans، subscriptions، billing، lms-links، integrations، usage، reports، support، staff، audit، notifications، coupons، webhooks، settings. القوائم محدودة غالبًا بحد 50 سجلًا مع بحث خادمي محدود، StaffRole guard، وnoindex.[2] [4] [8]
 
 أما المواصفة فتطلب لوحة تشغيل أوسع بكثير:
 
@@ -143,15 +143,15 @@
 |---|---|
 | `/admin/dashboard` بقرار تشغيلي وKPIs كثيرة | موجود `/admin` بشكل مبسط؛ ليس dashboard كاملًا. |
 | Teacher details بتبويبات Profile/Billing/Usage/Support/Audit | غير منفذ كتجربة كاملة. |
-| Global search وfilters وsaved views وexport | غير مكتملة. |
+| Global search وfilters وsaved views وexport | بحث خادمي محدود لكل قسم موجود؛ global search وsaved views وexport المتقدم غير مكتملة. |
 | Integrations catalog وconnection records | غير منفذ. |
 | Usage admin وstale snapshots وfailed syncs | غير منفذ. |
 | Reports admin: revenue/churn/conversion/renewal | غير منفذ. |
 | Support inbox وassignment وmacros وSLA | غير منفذ. |
-| Staff management وroles و2FA وaccess review | غير منفذ. |
+| Staff management وroles و2FA وaccess review | StaffRole ومصفوفة الوصول و2FA الإلزامي منفذة؛ إدارة الموظفين المتقدمة ومراجعة الوصول الدورية غير مكتملة. |
 | Audit Log page متكاملة وقابلة للبحث والتصدير | يوجد تخزين وبعض عرض مختصر في dashboard، وليس شاشة كاملة. |
 | Admin notifications templates/retries/delivery | غير منفذ. |
-| System Settings وfeature flags وmaintenance وretention | غير منفذ. |
+| System Settings وfeature flags وmaintenance وretention | إعدادات النظام تعرض سياسة retention ومؤشرات الطلبات المعلقة وWebhooks غير المعالجة؛ feature flags وmaintenance والتنفيذ الآلي للـ retention غير مكتملة. |
 
 هذه هي أكبر فجوة في المشروع من ناحية عدد المتطلبات.
 
@@ -169,7 +169,7 @@
 | `UsageSnapshot` و`UsageMetric` و`UsageSyncError` | غير موجودة كنماذج مستقلة. |
 | `AttachmentReference` | غير موجود. |
 | `FeatureFlag` و`Announcement` | غير موجودان. |
-| `StaffRole` | الموظف ممثل حاليًا بعلامة `isStaff` في User، وليس نظام أدوار مستقلًا. |
+| `StaffRole` | منفذ كـ enum وحقل User مع مصفوفة صلاحيات مركزية وحارس أقسام. |
 | `SecurityEvent` | ليس نموذجًا مستقلًا كما في المواصفة. |
 | `NotificationPreference` و`DeliveryAttempt` | غير موجودتين. |
 
@@ -183,7 +183,7 @@
 
 ### هـ. التشغيل والـ Hardening والـ Pilot
 
-تم تنفيذ قدر كبير من الاختبارات المحلية، لكن المواصفة ما زالت تتطلب عناصر تشغيلية لم يظهر اكتمالها في الأدلة الحالية، مثل backup/restore عملي، monitoring وalerting، سياسة data retention قابلة للتنفيذ، export/delete workflows كاملة، ومراحل Pilot مع مدرسين فعليين.
+تم تنفيذ قدر كبير من الاختبارات المحلية. أضيفت حماية SSRF أشد، rate limiting لمسار طلب الحذف، export قائم، وdelete-request workflow دائم ومراجع يدويًا مع audit، كما تعرض إعدادات الأدمن مؤشرات للطلبات المعلقة وWebhooks غير المعالجة وحدود التنبيه. ما زالت backup/restore العملية، monitoring وalerting الإنتاجية الفعلية، والتنظيف الآلي للـ retention ومراحل Pilot مع مدرسين فعليين بحاجة إلى تنفيذ وتشغيل موثق.
 
 كما أن سجل نافذة الـ12 ساعة في `execution-window.json` ما زال يحمل `status=active`، مع أن التنفيذ توقف بناءً على طلب المستخدم قبل بلوغ زمن الإكمال المطلوب. هذا سجل بروتوكول زمني منفصل عن نسبة إنجاز المنتج، ولا ينبغي استخدامه للقول إن المواصفة مكتملة أو غير مكتملة.[10]
 
@@ -192,14 +192,14 @@
 | المرحلة | الحكم | السبب المختصر |
 |---|---|---|
 | صفر: تثبيت الحدود والاستقلال | مكتملة بدرجة قوية | الحدود بين SaaS وLMS واضحة ومختبرة. |
-| الأولى: Product foundation | مكتملة جزئيًا بدرجة جيدة | Auth وWorkspace والأدوار موجودة، لكن الدعوات و2FA وبعض skeletons ناقصة. |
+| الأولى: Product foundation | مكتملة جزئيًا بدرجة جيدة | Auth وWorkspace والأدوار وStaffRole و2FA الإلزامي موجودة، لكن الدعوات وبعض skeletons ناقصة. |
 | الثانية: Marketing site | مكتملة أساسيًا | الصفحات العامة وUse Cases وResources موجودة، لكن المحتوى ونظام الإدارة بسيطان. |
 | الثالثة: Billing والاشتراك | جزئية | دورة الاشتراك وwebhook الأساسي موجودان، لكن الدفع الحقيقي والكوبونات وplan versioning ناقصة. |
 | الرابعة: Teacher Account | جزئية إلى جيدة | أغلب الصفحات موجودة، لكن Overview/Billing/Support/Security/Notifications ليست بمستوى المواصفة الكامل. |
-| الخامسة: Admin Control Panel | جزئية بوضوح | خمس مناطق أساسية فقط من منظومة الأدمن الكبيرة. |
-| السادسة: Link-only وReachability | Link-only مكتملة، Reachability جزئية | حفظ الرابط والفحص موجودان، لكن UX والتاريخ والحماية المتقدمة تحتاج استكمالًا. |
+| الخامسة: Admin Control Panel | جزئية متقدمة | مناطق الأدمن الرئيسية والبحث المحدود ومصفوفة StaffRole موجودة، لكن التفاصيل والتقارير والتصدير وإدارة التشغيل المتقدمة ناقصة. |
+| السادسة: Link-only وReachability | Link-only وReachability منفذتان ضمن حدود آمنة | حفظ الرابط والفحص والتحكم في الرابط موجودة، مع SSRF وredirect protection؛ لا يوجد تكامل LMS رسمي بلا API contract. |
 | السابعة: Integration الاختياري | غير منفذة | لا يوجد API contract رسمي، وهذا التأجيل صحيح حسب المواصفة. |
-| الثامنة: Hardening | جزئية قوية | اختبارات وحماية كثيرة موجودة، لكن backup/restore/monitoring/retention/export ليست مكتملة. |
+| الثامنة: Hardening | جزئية قوية | اختبارات وحماية كثيرة، 2FA Staff، SSRF، rate limits، export وdelete-request ومؤشرات تشغيلية موجودة؛ backup/restore والمراقبة الإنتاجية والتنظيف الآلي ناقصة. |
 | التاسعة: Pilot | غير مثبتة | لا يوجد في الأدلة ما يثبت Pilot فعليًا مع مستخدمين حقيقيين. |
 
 ## خامسًا: ترتيب المتبقي حسب الأولوية
@@ -212,11 +212,11 @@
 
 ### الأولوية الثانية: ما يمنع تشغيل فريق SaaS
 
-بعد الفوترة، تأتي لوحة الأدمن: تفاصيل المدرس، البحث والتصفية، Support Inbox، Staff roles، Audit Log قابل للبحث، وتقارير الإيراد والاشتراكات. بدون هذه العناصر يستطيع الموظف رؤية قوائم بسيطة، لكنه لا يملك Control Panel كاملًا لإدارة العمل اليومي.
+بعد الفوترة، تأتي استكمالات لوحة الأدمن: تفاصيل المدرس، Support Inbox، Audit Log قابل للتصدير، وتقارير الإيراد والاشتراكات. توجد الآن أدوار Staff وبحث محدود وحواجز 2FA، لكن هذه العناصر لا تزال تحتاج عمقًا تشغيليًا أكبر.
 
 ### الأولوية الثالثة: ما يكمل تجربة المستخدم
 
-تشمل هذه المرحلة Overview الحقيقية، Ticket details والمراسلات، الدعوات، Payment Methods، Coupons، إعدادات الإشعارات، 2FA، الجلسات النشطة، وعمليات export/delete. هذه البنود لا تغيّر حدود المنتج، لكنها تجعل تجربة الحساب مكتملة واحترافية.
+تشمل هذه المرحلة Overview الحقيقية، Ticket details والمراسلات، الدعوات، Payment Methods، Coupons، إعدادات الإشعارات، الجلسات النشطة، وعمليات export/delete المتقدمة. أصبح export وطلب delete المراجع يدويًا متاحين، بينما لا تزال بقية البنود مطلوبة لإكمال تجربة الحساب.
 
 ### الأولوية الرابعة: التكاملات والتشغيل المتقدم
 

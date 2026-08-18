@@ -75,6 +75,8 @@ pnpm test:client-fetch-cache
 pnpm test:admin-pages
 pnpm test:staff-role-access
 pnpm test:staff-2fa
+pnpm test:url-safety
+pnpm test:deletion-request
 pnpm test:admin-error-boundary
 pnpm test:production-config
 pnpm test:final-window-status
