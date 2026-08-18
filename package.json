@@ -36,6 +36,7 @@
     "test:staff-2fa": "tsx scripts/staff-2fa-smoke.ts",
     "test:url-safety": "tsx scripts/url-safety-smoke.ts",
     "test:deletion-request": "tsx scripts/deletion-request-smoke.ts",
+    "test:operational-health": "tsx scripts/operational-health-smoke.ts",
     "test:admin-error-boundary": "bash scripts/admin-error-boundary-audit.sh",
     "test:client-fetch-cache": "bash scripts/client-fetch-cache-audit.sh",
     "test:canonical-production": "bash scripts/canonical-production-smoke.sh"

@@ -44,13 +44,14 @@ pnpm dev
 | `pnpm test:staff-2fa` | اختبار enrollment وفرض 2FA على حسابات Staff ومنع التعطيل |
 | `pnpm test:url-safety` | اختبار رفض عناوين SSRF والشبكات المحجوزة والاعتمادات والمنافذ غير المسموحة |
 | `pnpm test:deletion-request` | اختبار طلب حذف البيانات لمالك Workspace، idempotency، ومنع العضو غير المالك |
+| `pnpm test:operational-health` | اختبار مؤشرات التشغيل Staff، حدود التنبيه، حالة retention، وحواجز 2FA والصلاحيات |
 | `pnpm test:regression-matrix` | تشغيل المصفوفة الكاملة: schema وbuild وsmoke وboundary audits وproduction audit |
 
 ## المصادقة وعزل البيانات
 
 تستخدم المنصة جلسات Cookie آمنة مع رموز جلسات مجزأة بـ SHA-256، وكلمات مرور مجزأة بـ bcrypt، ورموز تحقق واستعادة مجزأة ولا تُخزن بصورتها الخام. كل endpoint مصادق يربط الاستعلامات بـ `workspaceId` أو بمالك المورد، كما تُرفض عمليات الموارد غير التابعة لمساحة العمل الحالية.
 
-تُعالج Webhooks الفوترة بتوقيع HMAC ومعرّف حدث idempotent، بينما تُفحص روابط LMS باستخدام HTTPS وDNS ورفض عناوين loopback/private/link-local/reserved وIPv4-mapped IPv6، مع منع credentials والمنافذ غير الافتراضية وredirects قبل أي طلب وصول. 2FA إلزامي لحسابات Staff، ولا يمكنها تعطيل TOTP بعد enrollment.
+تُعالج Webhooks الفوترة بتوقيع HMAC ومعرّف حدث idempotent، بينما تُفحص روابط LMS باستخدام HTTPS وDNS ورفض عناوين loopback/private/link-local/reserved وIPv4-mapped IPv6، مع منع credentials والمنافذ غير الافتراضية وredirects قبل أي طلب وصول. 2FA إلزامي لحسابات Staff، ولا يمكنها تعطيل TOTP بعد enrollment. يعرض endpoint صحة التشغيل Staff فقط مع thresholds صريحة لحالات Webhook غير المعالجة وطلبات الحذف المتقدمة وتأخر التدقيق؛ حالة retention الحالية مراجعة يدوية بلا حذف تلقائي.
 
 ## مسارات الواجهة
 
@@ -112,6 +113,7 @@ pnpm dev
 | `GET /api/export` | جلسة | تصدير بيانات SaaS لمساحة العمل الحالية |
 | `GET /api/delete-request` | جلسة | جلب أحدث طلب حذف لمساحة العمل الحالية |
 | `POST /api/delete-request` | جلسة ومالك Workspace | إنشاء طلب حذف مراجَع يدويًا؛ idempotent ومحدود المعدل ولا ينفذ حذفًا تلقائيًا |
+| `GET /api/admin/operations/health` | Staff + 2FA + دور Admin | مؤشرات تشغيلية دقيقة، حدود تنبيه، وحالة retention؛ بدون بيانات LMS أو تخزين قابل للتخزين المؤقت |
 
 ## النشر
 
