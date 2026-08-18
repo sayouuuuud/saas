@@ -5,8 +5,10 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createSession, safeAuthError } from "@/lib/auth";
 import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { sendVerificationEmail } from "@/lib/email";
+import { getClientIp, getUserAgent } from "@/lib/request-context";
 
-const schema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().toLowerCase().email(), password: z.string().min(8).max(72) });
+const schema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().toLowerCase().email(), password: z.string().min(6).max(72) });
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export async function POST(request: Request) {
@@ -33,8 +35,12 @@ export async function POST(request: Request) {
     return { user: createdUser, workspaceId: workspace.id };
   });
   const { user, workspaceId } = registration;
-  await createSession(user.id);
+  const ipAddress = getClientIp(request);
+  const userAgent = getUserAgent(request);
+  await createSession(user.id, { ipAddress, userAgent });
   await prisma.auditLog.create({ data: { actorId: user.id, workspaceId, action: "LOGIN", entity: "Session", entityId: user.id, reason: "registration_session_created" } });
+  await prisma.loginEvent.create({ data: { userId: user.id, email: user.email, success: true, ipAddress, userAgent } }).catch(() => {});
+  await sendVerificationEmail(user.email, verificationToken);
   const response: { user: { id: string; name: string; email: string }; verificationToken?: string } = { user: { id: user.id, name: user.name, email: user.email } };
   if (process.env.NODE_ENV !== "production") response.verificationToken = verificationToken;
     return NextResponse.json(response, { status: 201 });

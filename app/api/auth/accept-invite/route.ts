@@ -6,7 +6,7 @@ import { createSession, safeAuthError } from "@/lib/auth";
 import { hashChallengeToken } from "@/lib/auth-challenge";
 
 const headers = { "cache-control": "no-store" };
-const schema = z.object({ token: z.string().min(32).max(128), name: z.string().trim().min(2).max(100), password: z.string().min(8).max(72) });
+const schema = z.object({ token: z.string().min(32).max(128), name: z.string().trim().min(2).max(100), password: z.string().min(6).max(72) });
 
 export async function POST(request: Request) {
   try {

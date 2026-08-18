@@ -9,10 +9,10 @@ function hashToken(token: string) {
   return crypto.createHash("sha256").update(token).digest("hex");
 }
 
-export async function createSession(userId: string) {
+export async function createSession(userId: string, context?: { ipAddress?: string | null; userAgent?: string | null }) {
   const rawToken = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + SESSION_TTL_SECONDS * 1000);
-  await prisma.session.create({ data: { tokenHash: hashToken(rawToken), userId, expiresAt } });
+  await prisma.session.create({ data: { tokenHash: hashToken(rawToken), userId, expiresAt, ipAddress: context?.ipAddress || null, userAgent: context?.userAgent || null } });
   const jar = await cookies();
   jar.set(SESSION_COOKIE, rawToken, {
     httpOnly: true,

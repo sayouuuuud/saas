@@ -63,7 +63,7 @@ export default function RegisterPage() {
           <form className="auth-form" onSubmit={submit}>
             <label>الاسم الكامل<input required minLength={2} maxLength={80} value={name} onChange={(event) => setName(event.target.value)} type="text" autoComplete="name" placeholder="أحمد علي" /></label>
             <label>البريد الإلكتروني<div className="input-with-icon"><Mail size={15} /><input required value={email} onChange={(event) => setEmail(event.target.value)} type="email" autoComplete="email" placeholder="you@example.com" /></div></label>
-            <label>كلمة المرور<div className="input-with-icon"><LockKeyhole size={15} /><input required minLength={8} maxLength={72} value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete="new-password" placeholder="8 أحرف على الأقل" /></div></label>
+            <label>كلمة المرور<div className="input-with-icon"><LockKeyhole size={15} /><input required minLength={6} maxLength={72} value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete="new-password" placeholder="6 أحرف على الأقل" /></div></label>
             <label className="auth-consent"><input required type="checkbox" /> أوافق على <Link href="/terms">الشروط</Link> و<Link href="/privacy">سياسة الخصوصية</Link>.</label>
             {error && <p className="form-error" role="alert">{error}</p>}
             {verificationToken && <p className="form-success" role="status">تم إنشاء الحساب. أكمل تحقق البريد من الصفحة التالية.</p>}
