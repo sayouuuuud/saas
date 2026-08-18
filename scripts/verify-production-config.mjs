@@ -49,6 +49,19 @@ if (paymentProvider !== 'mock' && !process.env.STRIPE_SECRET_KEY) {
 if (paymentProvider !== 'mock' && !process.env.STRIPE_WEBHOOK_SECRET) {
   errors.push('STRIPE_WEBHOOK_SECRET is required when PAYMENT_PROVIDER is not mock.')
 }
+const smtpConnectionUrl = process.env.SMTP_CONNECTION_URL ?? ''
+if (!smtpConnectionUrl) {
+  errors.push('SMTP_CONNECTION_URL is required in production so verification, password reset, and invite emails can be delivered.')
+} else {
+  try {
+    const parsedSmtpUrl = new URL(smtpConnectionUrl)
+    if (!['smtp:', 'smtps:'].includes(parsedSmtpUrl.protocol)) {
+      errors.push('SMTP_CONNECTION_URL must use the smtp:// or smtps:// protocol.')
+    }
+  } catch {
+    errors.push('SMTP_CONNECTION_URL must be a valid SMTP connection string.')
+  }
+}
 
 if (errors.length) {
   console.error('Production configuration check failed:')

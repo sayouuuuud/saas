@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { createOpaqueChallengeToken } from "@/lib/auth-challenge";
 import { requireWorkspaceRole, safeAuthError } from "@/lib/auth";
+import { sendWorkspaceInviteEmail } from "@/lib/email";
 
 const headers = { "cache-control": "no-store" };
+const roleLabels: Record<string, string> = { OWNER: "المالك", BILLING_MANAGER: "مدير الفوترة", ANALYST: "محلل", SUPPORT_CONTACT: "جهة اتصال الدعم", VIEWER: "مشاهد" };
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -38,6 +40,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       });
       return created;
     });
+    await sendWorkspaceInviteEmail(replacement.email, rawToken, access.workspace.name, roleLabels[replacement.role] || replacement.role);
     const origin = new URL(request.url).origin;
     return NextResponse.json({
       invite: { id: replacement.id, email: replacement.email, role: replacement.role, expiresAt: replacement.expiresAt, inviteUrl: `${origin}/invite/${rawToken}` },

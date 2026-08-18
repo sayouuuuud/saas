@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { safeAuthError } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { sendPasswordResetEmail } from "@/lib/email";
 
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
@@ -22,6 +23,7 @@ export async function POST(request: Request) {
         const membership = await tx.workspaceMember.findFirst({ where: { userId: user.id }, orderBy: { createdAt: "asc" }, select: { workspaceId: true } });
         if (membership) await tx.auditLog.create({ data: { actorId: user.id, workspaceId: membership.workspaceId, action: "SECURITY_EVENT", entity: "User", entityId: user.id, reason: "password_reset_requested" } });
       });
+      await sendPasswordResetEmail(user.email, token);
       if (process.env.NODE_ENV !== "production") response.resetToken = token;
     }
   }

@@ -3,8 +3,10 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createOpaqueChallengeToken } from "@/lib/auth-challenge";
 import { requireWorkspaceRole, safeAuthError } from "@/lib/auth";
+import { sendWorkspaceInviteEmail } from "@/lib/email";
 
 const headers = { "cache-control": "no-store" };
+const roleLabels: Record<string, string> = { OWNER: "المالك", BILLING_MANAGER: "مدير الفوترة", ANALYST: "محلل", SUPPORT_CONTACT: "جهة اتصال الدعم", VIEWER: "مشاهد" };
 const createSchema = z.object({
   email: z.string().trim().toLowerCase().email(),
   role: z.enum(["BILLING_MANAGER", "ANALYST", "SUPPORT_CONTACT", "VIEWER"]).default("VIEWER"),
@@ -52,6 +54,7 @@ export async function POST(request: Request) {
       await tx.auditLog.create({ data: { actorId: user.id, workspaceId: access.workspace.id, action: "CREATE", entity: "WorkspaceInvite", entityId: created.id, reason: "workspace_invite_created", metadataJson: JSON.stringify({ email: created.email, role: created.role, expiresAt: created.expiresAt.toISOString() }) } });
       return created;
     });
+    await sendWorkspaceInviteEmail(invite.email, rawToken, access.workspace.name, roleLabels[invite.role] || invite.role);
     const origin = new URL(request.url).origin;
     return NextResponse.json({ invite: { id: invite.id, email: invite.email, role: invite.role, expiresAt: invite.expiresAt, inviteUrl: `${origin}/invite/${rawToken}` } }, { status: 201, headers });
   } catch (error) {
