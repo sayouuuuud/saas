@@ -137,6 +137,8 @@ export default function Page() {
           <p className="hero-lede">مركزية تساعدك على إدارة حسابك، باقتك، فواتيرك، ورابط منصتك التعليمية دون تعقيد. أنت تملك منصتك، ونحن ننظم علاقتك بها.</p>
           <div className="hero-actions">
             <a href="#pricing" className="button button-dark button-large">ابدأ تجربتك الآن <ArrowLeft size={18} /></a>
+            <Link href="/demo/account" className="button button-outline button-large">ديمو المدرس <ArrowLeft size={18} /></Link>
+            <Link href="/demo/admin" className="button button-outline button-large">ديمو الأدمن <ArrowLeft size={18} /></Link>
             <a href="#how-it-works" className="text-link"><span className="play-icon"><Play size={12} fill="currentColor" /></span> شاهد كيف تعمل</a>
           </div>
           <div className="hero-proof">
