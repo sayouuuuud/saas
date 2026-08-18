@@ -12,6 +12,9 @@ export default function DemoPage() {
       title="شاهد كيف تصبح إدارة SaaS أوضح في دقائق"
       description="نستعرض لك رحلة صاحب مساحة العمل من إنشاء الحساب، إلى اختيار الخطة، ثم إدارة الفواتير ورابط المنصة والدعم — دون ادعاء أن مركزية بديل عن نظام LMS أو أنها تقرأ قاعدة بياناته."
       ctaLabel="أنشئ حسابًا تجريبيًا"
+      ctaHref="/demo/account"
+      secondaryCtaLabel="استكشف لوحة الحساب"
+      secondaryCtaHref="/demo/account"
       sections={[
         {
           eyebrow: "01 / قبل العرض",

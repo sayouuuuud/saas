@@ -15,6 +15,8 @@ export default function PublicInfoPage({
   sections,
   ctaLabel = "ابدأ الآن",
   ctaHref = "/register",
+  secondaryCtaLabel,
+  secondaryCtaHref,
 }: {
   eyebrow: string;
   title: string;
@@ -22,6 +24,8 @@ export default function PublicInfoPage({
   sections: PublicInfoSection[];
   ctaLabel?: string;
   ctaHref?: string;
+  secondaryCtaLabel?: string;
+  secondaryCtaHref?: string;
 }) {
   return (
     <main className="site-shell public-info-page" dir="rtl">
@@ -45,6 +49,7 @@ export default function PublicInfoPage({
         <p>{description}</p>
         <div className="hero-actions">
           <Link href={ctaHref} className="button button-dark button-large">{ctaLabel} <ArrowLeft size={18} /></Link>
+          {secondaryCtaLabel && secondaryCtaHref ? <Link href={secondaryCtaHref} className="button button-outline button-large">{secondaryCtaLabel}</Link> : null}
           <Link href="/" className="text-link">العودة للرئيسية</Link>
         </div>
       </section>
