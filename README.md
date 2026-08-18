@@ -40,13 +40,17 @@ pnpm dev
 | `pnpm test:auth-boundaries` | تدقيق وجود `safeAuthError` في جميع API routes |
 | `pnpm test:lms-independence` | تدقيق عدم إنشاء أو استخدام قاعدة بيانات LMS داخل Centralia |
 | `pnpm test:collection-bounds` | تدقيق أن جميع استعلامات القوائم محدودة أو تستخدم pagination |
+| `pnpm test:staff-role-access` | اختبار مصفوفة صلاحيات StaffRole حسب القسم |
+| `pnpm test:staff-2fa` | اختبار enrollment وفرض 2FA على حسابات Staff ومنع التعطيل |
+| `pnpm test:url-safety` | اختبار رفض عناوين SSRF والشبكات المحجوزة والاعتمادات والمنافذ غير المسموحة |
+| `pnpm test:deletion-request` | اختبار طلب حذف البيانات لمالك Workspace، idempotency، ومنع العضو غير المالك |
 | `pnpm test:regression-matrix` | تشغيل المصفوفة الكاملة: schema وbuild وsmoke وboundary audits وproduction audit |
 
 ## المصادقة وعزل البيانات
 
 تستخدم المنصة جلسات Cookie آمنة مع رموز جلسات مجزأة بـ SHA-256، وكلمات مرور مجزأة بـ bcrypt، ورموز تحقق واستعادة مجزأة ولا تُخزن بصورتها الخام. كل endpoint مصادق يربط الاستعلامات بـ `workspaceId` أو بمالك المورد، كما تُرفض عمليات الموارد غير التابعة لمساحة العمل الحالية.
 
-تُعالج Webhooks الفوترة بتوقيع HMAC ومعرّف حدث idempotent، بينما تُفحص روابط LMS باستخدام HTTPS وDNS ورفض عناوين loopback/private/link-local وIPv4-mapped IPv6 قبل أي طلب وصول.
+تُعالج Webhooks الفوترة بتوقيع HMAC ومعرّف حدث idempotent، بينما تُفحص روابط LMS باستخدام HTTPS وDNS ورفض عناوين loopback/private/link-local/reserved وIPv4-mapped IPv6، مع منع credentials والمنافذ غير الافتراضية وredirects قبل أي طلب وصول. 2FA إلزامي لحسابات Staff، ولا يمكنها تعطيل TOTP بعد enrollment.
 
 ## مسارات الواجهة
 
@@ -105,6 +109,9 @@ pnpm dev
 | `GET /api/usage` | جلسة | مؤشرات الاستخدام الحالية |
 | `GET /api/usage/history` | جلسة | سجل الاستخدام الزمني |
 | `GET /api/reports` | جلسة | تقارير مساحة العمل |
+| `GET /api/export` | جلسة | تصدير بيانات SaaS لمساحة العمل الحالية |
+| `GET /api/delete-request` | جلسة | جلب أحدث طلب حذف لمساحة العمل الحالية |
+| `POST /api/delete-request` | جلسة ومالك Workspace | إنشاء طلب حذف مراجَع يدويًا؛ idempotent ومحدود المعدل ولا ينفذ حذفًا تلقائيًا |
 
 ## النشر
 
