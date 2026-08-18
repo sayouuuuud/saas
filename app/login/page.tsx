@@ -74,8 +74,9 @@ export default function LoginPage() {
             <button disabled={loading} type="submit" className="button button-dark button-large">{loading ? 'جارٍ التنفيذ...' : challengeToken ? 'تأكيد الرمز' : mode === 'signup' ? 'أنشئ حسابك' : 'تسجيل الدخول'} <ArrowLeft size={15} /></button>
             {challengeToken && <button type="button" className="text-button" onClick={() => { setChallengeToken(''); setTwoFactorCode(''); setError('') }}>العودة إلى كلمة المرور</button>}
           </form>
+          {mode === 'login' && !challengeToken && <Link href="/forgot-password" className="text-button">نسيت كلمة المرور؟</Link>}
           <div className="auth-switch">{mode === 'signup' ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟'} <button type="button" onClick={() => { setError(''); setChallengeToken(''); setTwoFactorCode(''); setMode(mode === 'signup' ? 'login' : 'signup') }}>{mode === 'signup' ? 'تسجيل الدخول' : 'ابدأ مجانًا'}</button></div>
-          <small className="auth-legal">بالمتابعة، أنت توافق على الشروط وسياسة الخصوصية الخاصة بمركزية.</small>
+          <small className="auth-legal">بالمتابعة، أنت توافق على <Link href="/terms">الشروط</Link> و<Link href="/privacy">سياسة الخصوصية</Link> الخاصة بمركزية.</small>
         </div>
       </section>
     </main>

@@ -33,6 +33,13 @@ assert_page "/terms" "الشروط والأحكام" "الشروط والأحك�
 assert_page "/privacy" "الخصوصية" "الخصوصية | مركزية" "كيف تتعامل مركزية مع بيانات حساب SaaS ومساحة العمل."
 assert_page "/refund-policy" "سياسة الاسترداد" "سياسة الاسترداد | مركزية" "سياسة الإلغاء والاسترداد لاشتراكات مركزية SaaS."
 assert_page "/acceptable-use" "الاستخدام المقبول" "الاستخدام المقبول | مركزية" "قواعد الاستخدام المقبول لمنصة مركزية SaaS."
+assert_page "/data-retention" "سياسة الاحتفاظ بالبيانات" "سياسة الاحتفاظ بالبيانات | مركزية" "كيف تحتفظ مركزية ببيانات حساب SaaS ومساحة العمل والفوترة والدعم، ومتى تبدأ مراجعة الحذف."
+assert_page "/integration-policy" "سياسة التكامل" "سياسة التكامل | مركزية" "حدود تكامل مركزية مع الخدمات الخارجية وشرط API contract الرسمي قبل أي تكامل LMS أو SSO."
+assert_page "/session-expired" "الجلسة انتهت" "انتهت الجلسة | مركزية" "أعد تسجيل الدخول إلى حساب مركزية لمتابعة استخدام مساحة العمل بأمان."
+register_body=$(curl -fsSL --max-time 10 "${BASE_URL}/register")
+grep -Fq 'أنشئ حساب مركزية' <<<"$register_body"
+grep -Fq 'href="/terms"' <<<"$register_body"
+grep -Fq 'href="/privacy"' <<<"$register_body"
 guides_body=$(curl -fsSL --max-time 10 "${BASE_URL}/resources/guides")
 grep -Fq 'دليل دعوة عضو' <<<"$guides_body"
 grep -Fq 'نحفظ SaaS ونترك LMS مستقلًا.' <<<"$guides_body"
@@ -58,5 +65,8 @@ grep -Fq "/terms</loc>" <<<"$sitemap"
 grep -Fq "/privacy</loc>" <<<"$sitemap"
 grep -Fq "/refund-policy</loc>" <<<"$sitemap"
 grep -Fq "/acceptable-use</loc>" <<<"$sitemap"
+grep -Fq "/data-retention</loc>" <<<"$sitemap"
+grep -Fq "/integration-policy</loc>" <<<"$sitemap"
+grep -Fq "/session-expired</loc>" <<<"$sitemap"
 
-printf 'Public pages smoke test passed for product, contact, policy routes, resource guidance, robots.txt, and sitemap.xml\n'
+printf 'Public pages smoke test passed for product, conversion, policy, recovery, resource guidance, robots.txt, and sitemap.xml\n'

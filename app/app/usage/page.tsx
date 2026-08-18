@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 
 type Metric = { value: number | null; source: string | null; accuracy: string }
 type UsagePayload = { measuredAt: string; metrics: Record<string, Metric> }
+type UsageHistoryPayload = { source: string; accuracy: string; history: Array<{ date: string; count: number }> }
 
 const labels: Record<string, string> = {
   teamMembers: 'أعضاء الفريق',
@@ -26,6 +27,7 @@ function freshness(value: string) {
 
 export default function UsagePage() {
   const [payload, setPayload] = useState<UsagePayload | null>(null)
+  const [history, setHistory] = useState<UsageHistoryPayload | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const errorRef = useRef<HTMLDivElement>(null)
@@ -33,10 +35,15 @@ export default function UsagePage() {
   async function load(signal?: AbortSignal) {
     setLoading(true); setError('')
     try {
-      const response = await fetch('/api/usage', { cache: 'no-store', signal })
-      const body = await response.json().catch(() => ({}))
-      if (!response.ok) throw new Error(body.error || 'تعذر تحميل الاستخدام')
+      const [usageResponse, historyResponse] = await Promise.all([
+        fetch('/api/usage', { cache: 'no-store', signal }),
+        fetch('/api/usage/history', { cache: 'no-store', signal }),
+      ])
+      const body = await usageResponse.json().catch(() => ({}))
+      const historyBody = await historyResponse.json().catch(() => ({}))
+      if (!usageResponse.ok) throw new Error(body.error || 'تعذر تحميل الاستخدام')
       setPayload(body)
+      if (historyResponse.ok) setHistory(historyBody)
     } catch (loadError) {
       if (!(loadError instanceof DOMException && loadError.name === 'AbortError')) setError(loadError instanceof Error ? loadError.message : 'تعذر تحميل الاستخدام')
     } finally { if (!signal?.aborted) setLoading(false) }
@@ -58,6 +65,7 @@ export default function UsagePage() {
         {loading ? <div className="invoice-empty" role="status">جارٍ قياس بيانات SaaS...</div> : payload ? <>
           <div className="dashboard-footer-note"><Clock3 size={15} /> آخر قياس: {freshness(payload.measuredAt)} · كل الأرقام التالية exact من قاعدة SaaS</div>
           <div className="dashboard-metrics usage-metrics">{Object.entries(payload.metrics).map(([key, metric]) => <article className="dash-card" key={key}><div className="dash-card-head"><span>{labels[key] || key}</span><Activity size={16} /></div><strong>{metric.value === null ? 'غير متاح' : metric.value.toLocaleString('ar-EG')}</strong><small>{metric.value === null ? 'لا يوجد مصدر LMS رسمي موصول' : `المصدر: ${metric.source} · ${metric.accuracy}`}</small>{metric.value === null ? <span className="form-error" role="note"><Info size={13} /> غير متحقق</span> : <span className="connected-badge"><Check size={12} /> exact</span>}</article>)}</div>
+          {history && <section className="invoice-section" aria-labelledby="usage-history-title"><div className="invoice-heading"><div><h2 id="usage-history-title">سجل نشاط SaaS خلال 30 يومًا</h2><p>عدد أحداث التدقيق اليومية من قاعدة مركزية فقط، وليس نشاط المتعلمين داخل LMS.</p></div><Activity size={18} /></div>{history.history.length ? <div className="invoice-table"><div className="invoice-row invoice-table-head"><span>اليوم</span><span>أحداث التدقيق</span></div>{history.history.map((point) => <div className="invoice-row" key={point.date}><span>{new Date(point.date).toLocaleDateString('ar-EG')}</span><span>{point.count.toLocaleString('ar-EG')}</span></div>)}</div> : <div className="invoice-empty">لا توجد أحداث SaaS مسجلة خلال آخر 30 يومًا.</div>}<div className="dashboard-footer-note"><Info size={14} /> المصدر: {history.source} · {history.accuracy}</div></section>}
           <div className="billing-help"><ShieldCheck size={16} /><div><b>حدود القياس</b><span>أرقام مركزية تقيس نشاط SaaS مثل الفريق والدعم وفحوصات الروابط. حالة الرابط لا تعني صحة LMS، والمقاييس غير المدعومة تبقى غير متاحة بدل التخمين.</span></div></div>
         </> : null}
       </section>

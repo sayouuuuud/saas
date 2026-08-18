@@ -73,6 +73,19 @@ export default function TeamPage() {
     }
   }
 
+  async function resendInvite(id: string) {
+    setInviteError('')
+    try {
+      const response = await fetch(`/api/workspace/invites/${id}/resend`, { method: 'POST', cache: 'no-store' })
+      const body = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(body.error || 'تعذر إعادة إرسال الدعوة')
+      setInviteUrl(body.invite?.inviteUrl || '')
+      await load()
+    } catch (cause) {
+      setInviteError(cause instanceof Error ? cause.message : 'تعذر إعادة إرسال الدعوة')
+    }
+  }
+
   async function revokeInvite(id: string) {
     setInviteError('')
     try {
@@ -99,7 +112,7 @@ export default function TeamPage() {
           <div className="dashboard-footer-note"><Users size={15} /> مساحة العمل: {payload.workspace.name} · {payload.workspace.members.length} عضوًا في الصفحة الحالية</div>
           <div className="workspace-panel team-members-panel"><div className="workspace-panel-heading"><div><b id="team-members-title">أعضاء مساحة العمل</b><span>الأدوار المعروضة من SaaS فقط.</span></div><Users size={17} aria-hidden="true" /></div>{payload.workspace.members.length ? <div className="team-member-list" role="list" aria-labelledby="team-members-title">{payload.workspace.members.map((member) => <div className="team-member-row" key={member.id} role="listitem"><span className="team-member-avatar" aria-hidden="true">{member.user.name.slice(0, 1) || 'م'}</span><span className="team-member-meta"><b>{member.user.name}</b><small>{member.user.email}</small></span><span className="team-member-role">{roleLabels[member.role] || member.role}</span></div>)}</div> : <p className="workspace-empty">لا يوجد أعضاء إضافيون في مساحة العمل.</p>}{payload.membersPagination?.hasMore && <p className="dashboard-footer-note">توجد صفحات إضافية من الأعضاء، وتبقى كل صفحة محدودة لحماية الأداء.</p>}</div>
           <section className="workspace-panel" aria-labelledby="invite-title"><div className="workspace-panel-heading"><div><b id="invite-title">دعوة عضو جديد</b><span>الدعوة تخص مساحة SaaS فقط وتنتهي بعد 7 أيام.</span></div><Send size={17} aria-hidden="true" /></div><form className="inline-form" onSubmit={createInvite}><label>البريد الإلكتروني<input required type="email" value={inviteEmail} onChange={(event) => setInviteEmail(event.target.value)} placeholder="teammate@example.com" /></label><label>الدور<select value={inviteRole} onChange={(event) => setInviteRole(event.target.value)}><option value="VIEWER">مشاهد</option><option value="ANALYST">محلل</option><option value="SUPPORT_CONTACT">جهة اتصال للدعم</option><option value="BILLING_MANAGER">مدير الفوترة</option></select></label><button disabled={inviteLoading} type="submit" className="button button-dark">{inviteLoading ? 'جارٍ الإنشاء...' : 'إنشاء دعوة'} <Send size={14} /></button></form>{inviteUrl && <div className="form-success" role="status"><span>تم إنشاء الرابط:</span><code>{inviteUrl}</code><button type="button" className="text-button" onClick={() => void copyInviteUrl()}><Copy size={14} /> نسخ الرابط</button></div>}{inviteError && <p className="form-error" role="alert">{inviteError}</p>}</section>
-          <section className="workspace-panel" aria-labelledby="pending-invites-title"><div className="workspace-panel-heading"><div><b id="pending-invites-title">الدعوات الأخيرة</b><span>لا نعرض رموز الدعوات المخزنة؛ يظهر الرابط مرة واحدة عند الإنشاء.</span></div><Send size={17} aria-hidden="true" /></div>{invites.length ? <div className="team-member-list" role="list" aria-label="دعوات مساحة العمل">{invites.map((invite) => <div className="team-member-row" key={invite.id}><span className="team-member-avatar" aria-hidden="true"><Send size={14} /></span><span className="team-member-meta"><b>{invite.email}</b><small>{roleLabels[invite.role] || invite.role} · {invite.acceptedAt ? 'تم القبول' : invite.revokedAt ? 'ملغاة' : new Date(invite.expiresAt).toLocaleDateString('ar-EG')}</small></span>{!invite.acceptedAt && !invite.revokedAt && <button type="button" className="text-button" onClick={() => void revokeInvite(invite.id)}><Ban size={14} /> إلغاء</button>}</div>)}</div> : <p className="workspace-empty">لا توجد دعوات بعد.</p>}</section>
+          <section className="workspace-panel" aria-labelledby="pending-invites-title"><div className="workspace-panel-heading"><div><b id="pending-invites-title">الدعوات الأخيرة</b><span>لا نعرض رموز الدعوات المخزنة؛ يظهر الرابط مرة واحدة عند الإنشاء.</span></div><Send size={17} aria-hidden="true" /></div>{invites.length ? <div className="team-member-list" role="list" aria-label="دعوات مساحة العمل">{invites.map((invite) => <div className="team-member-row" key={invite.id}><span className="team-member-avatar" aria-hidden="true"><Send size={14} /></span><span className="team-member-meta"><b>{invite.email}</b><small>{roleLabels[invite.role] || invite.role} · {invite.acceptedAt ? 'تم القبول' : invite.revokedAt ? 'ملغاة' : new Date(invite.expiresAt).toLocaleDateString('ar-EG')}</small></span>{!invite.acceptedAt && !invite.revokedAt && <><button type="button" className="text-button" onClick={() => void resendInvite(invite.id)}><RefreshCw size={14} /> إعادة الإرسال</button><button type="button" className="text-button" onClick={() => void revokeInvite(invite.id)}><Ban size={14} /> إلغاء</button></>}</div>)}</div> : <p className="workspace-empty">لا توجد دعوات بعد.</p>}</section>
           <div className="billing-help"><ShieldCheck size={16} /><div><b>حدود الفريق</b><span>الأدوار هنا لإدارة مساحة SaaS فقط. لا تعني حالة العضو أو دوره امتلاك وصول إلى قاعدة LMS أو صحة نظام LMS.</span></div></div>
         </> : null}
       </section>
