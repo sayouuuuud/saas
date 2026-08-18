@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
   const token = typeof body.token === "string" ? body.token.trim() : "";
   const password = typeof body.password === "string" ? body.password : "";
-  if (!token || password.length < 8 || password.length > 72) return NextResponse.json({ error: "الرمز وكلمة المرور الجديدة مطلوبان" }, { status: 400 });
+  if (!token || password.length < 6 || password.length > 72) return NextResponse.json({ error: "الرمز وكلمة المرور الجديدة مطلوبان" }, { status: 400 });
   const user = await prisma.user.findFirst({ where: { passwordResetTokenHash: hash(token) } });
   if (!user || !user.passwordResetExpiresAt || user.passwordResetExpiresAt <= new Date()) return NextResponse.json({ error: "رمز الاستعادة غير صالح أو منتهي" }, { status: 400 });
   await prisma.$transaction(async (tx) => {

@@ -8,7 +8,7 @@ import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { sendVerificationEmail } from "@/lib/email";
 import { getClientIp, getUserAgent } from "@/lib/request-context";
 
-const schema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().toLowerCase().email(), password: z.string().min(8).max(72) });
+const schema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().toLowerCase().email(), password: z.string().min(6).max(72) });
 const hash = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export async function POST(request: Request) {
