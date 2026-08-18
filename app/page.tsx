@@ -116,13 +116,13 @@ export default function Page() {
           ))}
           <a href="#contact" onClick={() => setMobileMenuOpen(false)}>تواصل معنا</a>
           <div className="mobile-nav-actions">
-            <a href="#login" className="button button-ghost">تسجيل الدخول</a>
+            <a href="login" className="button button-ghost">تسجيل الدخول</a>
             <Link href="/register" className="button button-dark">ابدأ الآن <ArrowLeft size={16} /></Link>
           </div>
         </nav>
 
         <div className="header-actions">
-          <a href="#login" className="login-link">تسجيل الدخول</a>
+          <a href="login" className="login-link">تسجيل الدخول</a>
           <a href="#pricing" className="button button-dark header-cta">ابدأ الآن <ArrowLeft size={16} /></a>
           <button type="button" className="menu-toggle" onClick={() => setMobileMenuOpen((value) => !value)} aria-expanded={mobileMenuOpen} aria-controls="main-navigation" aria-label={mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}>
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
