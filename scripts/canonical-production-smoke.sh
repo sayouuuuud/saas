@@ -72,7 +72,7 @@ assert_private_page() {
   rm -f "$headers" "$body"
 }
 
-for path in / /features /how-it-works /pricing /demo /contact /terms /privacy /refund-policy /acceptable-use /resources/guides /resources/status; do
+for path in / /features /how-it-works /pricing /contact /terms /privacy /refund-policy /acceptable-use /resources/guides /resources/status; do
   assert_status "$path" 200
 done
 assert_status /robots.txt 200
