@@ -122,6 +122,7 @@ model User {
   auditEvents                AuditLog[]
   notifications              Notification[]
   sessions                   Session[]
+  loginEvents                LoginEvent[]
   twoFactorChallenges        TwoFactorChallenge[]
   workspaceInvitesCreated    WorkspaceInvite[] @relation("WorkspaceInviteCreator")
   deletionRequests           DataDeletionRequest[] @relation("DataDeletionRequester")
@@ -131,11 +132,28 @@ model Session {
   id        String   @id @default(cuid())
   tokenHash String   @unique
   userId    String
+  ipAddress String?
+  userAgent String?
   expiresAt DateTime
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model LoginEvent {
+  id            String   @id @default(cuid())
+  userId        String?
+  email         String
+  success       Boolean
+  failureReason String?
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime @default(now())
+  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([email, createdAt])
 }
 
 model TwoFactorChallenge {
