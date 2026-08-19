@@ -58,14 +58,14 @@ export async function POST(request: Request) {
       await createSession(user.id, { ipAddress, userAgent });
       await prisma.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace?.id ?? null, action: "LOGIN", entity: "Session", entityId: user.id, reason: "password_login_2fa_success" } });
       await recordLoginEvent({ userId: user.id, email: user.email, success: true });
-      return NextResponse.json({ user: { id: user.id, name: user.name, email: user.email } }, { headers });
+      return NextResponse.json({ user: { id: user.id, name: user.name, email: user.email, isStaff: user.isStaff } }, { headers });
     }
 
     await createSession(user.id, { ipAddress, userAgent });
     const staffTwoFactorSetupRequired = Boolean(user.isStaff && !user.twoFactorEnabled);
     await prisma.auditLog.create({ data: { actorId: user.id, workspaceId: user.workspace?.id ?? null, action: "LOGIN", entity: "Session", entityId: user.id, reason: staffTwoFactorSetupRequired ? "password_login_staff_2fa_setup_required" : "password_login_success" } });
     await recordLoginEvent({ userId: user.id, email: user.email, success: true });
-    return NextResponse.json({ user: { id: user.id, name: user.name, email: user.email }, twoFactorSetupRequired: staffTwoFactorSetupRequired }, { headers });
+    return NextResponse.json({ user: { id: user.id, name: user.name, email: user.email, isStaff: user.isStaff }, twoFactorSetupRequired: staffTwoFactorSetupRequired }, { headers });
   } catch (error) {
     return safeAuthError(error);
   }

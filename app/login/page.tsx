@@ -32,7 +32,11 @@ export default function LoginPage() {
         setError('تم التحقق من كلمة المرور. أدخل رمز تطبيق المصادقة للمتابعة.')
         return
       }
-      router.push('/dashboard')
+      if (payload.user?.isStaff) {
+        router.push('/admin')
+      } else {
+        router.push('/dashboard')
+      }
       router.refresh()
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'تعذر إتمام العملية')
